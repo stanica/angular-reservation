@@ -8,7 +8,7 @@ angular.module('myApp', [
 //Configuration of reservation module
 angular.module('myApp').config(function (reservationConfigProvider) {
     var config = {
-        getAvailableHoursAPIUrl: "https://mean-hector.rhcloud.com/getAvailableHours", //API url endpoint to load list of available hours
+        getAvailableHoursAPIUrl: "https://mean-hector.rhcloud.com/availableHours", //API url endpoint to load list of available hours
         reserveAPIUrl: "https://mean-hector.rhcloud.com/reserve", //API url endpoint to do a reserve
         language: "es",
         dateFormat: "dd/MM/yyyy",
