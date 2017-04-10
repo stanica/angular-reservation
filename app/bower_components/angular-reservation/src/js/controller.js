@@ -4,10 +4,10 @@
  */
 (function () {
     //Controller
-    angular.module('hm.reservation').controller('ReservationCtrl', ['$scope', '$translate', 'reservationAPIFactory', 'reservationConfig', 'reservationService', reservationCtrl]);
+    angular.module('hm.reservation').controller('ReservationCtrl', ['$scope', '$filter', '$translate', 'reservationAPIFactory', 'reservationConfig', 'reservationService', reservationCtrl]);
 
-    function reservationCtrl($scope, $translate, reservationAPIFactory, reservationConfig, reservationService) {
-        //Capture the this context of the Controller using vm, standing for procedureModel
+    function reservationCtrl($scope, $filter, $translate, reservationAPIFactory, reservationConfig, reservationService) {
+        //Capture the this context of the Controller using vm, standing for viewModel
         var vm = this;
 
         vm.selectedTab = 0;
@@ -26,7 +26,10 @@
 
         vm.dateFormat = reservationConfig.dateFormat;
 
-        vm.clientForm = reservationConfig.clientFormTemplate;
+        vm.datepickerTemplate = reservationConfig.datepickerTemplate;
+        vm.availableHoursTemplate = reservationConfig.availableHoursTemplate;
+        vm.noAvailableHoursTemplate = reservationConfig.noAvailableHoursTemplate;
+        vm.clientFormTemplate = reservationConfig.clientFormTemplate;
 
         vm.datepickerOptions = $scope.datepickerOptions;
 
@@ -35,6 +38,7 @@
 
         //METHODS
         vm.onSelectDate = function() {
+            vm.selectedDate = $filter('date')(vm.selectedDate, vm.dateFormat);
             vm.secondTabLocked = false;
             vm.selectedTab = 1;
             onBeforeGetAvailableHours();
@@ -118,8 +122,8 @@
             reservationAPIFactory.reserve(params).then(function () {
                 vm.loader = false;
 
-                var level = reservationAPIFactory.level;
-                var message = reservationAPIFactory.message;
+                var level = vm.reservationState = reservationAPIFactory.level;
+                var message = vm.reservationMessage = reservationAPIFactory.message;
 
                 //Completed reserve callback
                 reservationService.onCompletedReserve(level, message, vm.selectedDate, vm.selectedHour, vm.userData);

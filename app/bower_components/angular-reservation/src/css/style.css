@@ -1,12 +1,42 @@
 /*UI Bootstap fix @see https://angular-ui.github.io/bootstrap/#/getting_started */
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
+.box {
+    border: 2px solid gainsboro;
+}
+
+.icon-size {
+    font-size: 18px;
+}
+
 .selected {
     color: #fff !important;
     background-color: #5cb85c;
 }
 
+.selected:hover {
+    color: #fff !important;
+    background-color: #5cb85c !important;
+}
+
 .datepicker {
-    margin-top: 50px;
-    margin-bottom: 50px;
+    width: 252px;
+    margin: auto;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.availableHour {
+    margin: 2em;
+}
+
+.noAvailableHours {
+    margin: 2em 2em;
+    display: block;
+    text-align: center;
+}
+
+.clientForm {
+    margin-top: 2em;
+    margin-bottom: 2em;
 }
