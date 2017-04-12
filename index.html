@@ -125,8 +125,9 @@
                 <h4>Getting started</h4>
 
                 <strong>Load scripts</strong>
-                <p>Load AngularJS, dependencies script files and the script file angular-reservation.min.js in your index.html</p>
+                <p>Load AngularJS, dependencies script files and the script file <em>angular-reservation.min.js</em> in your <em>index.html</em>.</p>
                 <pre class="prettyprint">
+
                     &lt;!-- Angular reservation dependencies --&gt;
                     &lt;script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap.min.js"&gt;&lt;/script&gt;
                     &lt;script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"&gt;&lt;/script&gt;
@@ -137,8 +138,10 @@
                 </pre>
 
                 <strong>Load styles</strong>
-                <p>Load <a href="http://getbootstrap.com/getting-started/" target="_blank">bootstrap css</a> and angular-reservation.min.css in your index.html</p>
+                <p>Load <a href="http://getbootstrap.com/getting-started/" target="_blank">bootstrap css</a> and <em>angular-reservation.min.css</em> in your
+                    <em>index.html</em>.</p>
                 <pre class="prettyprint">
+
                     &lt;!-- Compiled and minified Bootstrap CSS --&gt;
                     &lt;link rel="stylesheet" href="components/bootstrap/bootstrap.min.css"&gt;
                     &lt;!-- Angular reservation minified css --&gt;
@@ -146,22 +149,25 @@
                 </pre>
 
                 <strong>Add module dependency</strong>
-                <p>Add 'hm.reservation' to the list of module dependencies.</p>
+                <p>Add <em>'hm.reservation'</em> to the list of module dependencies.</p>
                 <pre class="prettyprint">
+
                     angular.module('myApp', [
                         'hm.reservation'
                     ])
                 </pre>
 
                 <strong>HTML Markup</strong>
-                <p>Add angular-reservation directive in an html page.</p>
+                <p>Add <em>angular-reservation</em> directive in an html page.</p>
                 <pre class="prettyprint">
+
                     &lt;!-- angular-reservation directive --&gt;
                     &lt;reservation&gt;&lt;/reservation&gt;
                 </pre>
 
                 <strong>Setup</strong>
                 <pre class="prettyprint">
+
                     //Configuration of reservation module
                     angular.module('myApp').config(function (reservationConfigProvider) {
                         var config = {
@@ -208,6 +214,24 @@
                     </li><br/>
 
                     <li>
+                        <strong>datepickerTemplate</strong>:
+                        Datepicker template to override default datepicker template, see examples above. Default value is
+                        <a href="https://github.com/hmartos/angular-reservation/blob/master/src/templates/datepicker.html" target="_blank">datepicker.html</a>.
+                    </li><br/>
+
+                    <li>
+                        <strong>availableHoursTemplate</strong>:
+                        Available hours template to override default available hours template, see examples above. Default value is
+                        <a href="https://github.com/hmartos/angular-reservation/blob/master/src/templates/availableHours.html" target="_blank">availableHours.html</a>.
+                    </li><br/>
+
+                    <li>
+                        <strong>noAvailableHoursTemplate</strong>:
+                        No available hours template to override default no available hours template, see examples above. Default value is
+                        <a href="https://github.com/hmartos/angular-reservation/blob/master/src/templates/noAvailableHours.html" target="_blank">noAvailableHours.html</a>.
+                    </li><br/>
+
+                    <li>
                         <strong>clientFormTemplate</strong>:
                         Form template to override default client form, see examples above. Default value is
                         <a href="https://github.com/hmartos/angular-reservation/blob/master/src/templates/clientForm.html" target="_blank">clientForm.html</a>.
@@ -222,6 +246,7 @@
 
                 <strong>Example</strong>
                 <pre class="prettyprint">
+
                     //Configuration of reservation module
                     angular.module('myApp').config(function (reservationConfigProvider) {
                         var config = {
@@ -230,6 +255,9 @@
                             language: "es",
                             dateFormat: "dd/MM/yyyy",
                             showConfirmationModal: false,
+                            datepickerTemplate: "partials/datepicker.html",
+                            availableHoursTemplate: "partials/availableHours.html",
+                            noAvailableHoursTemplate: "partials/noAvailableHours.html"
                             clientFormTemplate: "partials/clientFormTemplate.html",
                             confirmationModalTemplate: "partials/confirmModal.html"
                         };
@@ -238,13 +266,84 @@
                     });
                 </pre>
 
-                <strong>Overriding client form template</strong>
+                <strong>Overriding datepicker template</strong>
                 <ul>
-                    <li>All client data inputs should have an ng-model pointing to a property in reservationCtrl.userData JSON.</li>
-                    <li>The form to do validations is available at reserveForm.</li>
-                    <li>There should be one a button with type="submit".</li>
+                    <li>You can override datepicker template and use your preferred datepicker.</li>
+                    <li>You can configure your datepicker with the datepicker options object you passed to the directive (See above). This options are
+                        available at <em>reservationCtrl.datepickerOptions</em>.
+                    </li>
+                    <li>The model of your datepicker should be <em>reservationCtrl.selectedDate</em>.</li>
+                    <li>When you select a date on your datepicker you should call <em>reservationCtrl.onSelectDate()</em> function.</li>
                 </ul>
                 <pre class="prettyprint">
+
+                    &lt;h3 class="text-center"&gt;Select an available date&lt;/h3&gt;
+
+                    &lt;div style="width: 50%; margin: 0 auto"&gt;
+                        &lt;p class="input-group"&gt;
+                            &lt;input type="text" class="form-control" uib-datepicker-popup ng-model="reservationCtrl.selectedDate" is-open="isOpen"
+                                   datepicker-options="reservationCtrl.datepickerOptions" ng-change="reservationCtrl.onSelectDate()"/&gt;
+                            &lt;span class="input-group-btn"&gt;
+                                &lt;button type="button" class="btn btn-default" ng-click="isOpen = !isOpen"&gt;&lt;i class="glyphicon glyphicon-calendar"&gt;&lt;/i&gt;&lt;/button&gt;
+                            &lt;/span&gt;
+                        &lt;/p&gt;
+                    &lt;/div&gt;
+                </pre>
+
+                <strong>Overriding available hours template</strong>
+                <ul>
+                    <li>This template is shown after get available hours request if available hours array is not empty.</li>
+                    <li>The list of available hours is available at <em>reservationCtrl.availableHours</em>.</li>
+                    <li>The model for selected hour should be reservationCtrl.selectedHour.</li>
+                    <li>When you select an hour you should call <em>reservationCtrl.selectHour(hour)</em> function passing selected hour by parameter.</li>
+                    <li>The status of get available hours request will be available at <em>reservationCtrl.availableHoursStatus</em> and additional message is available at
+                        <em>reservationCtrl.availableHoursMessage</em>.</li>
+                </ul>
+                <pre class="prettyprint">
+
+                    &lt;h3 class="text-center"&gt;Select an available hour&lt;/h3&gt;
+
+                    &lt;div ng-repeat="hour in reservationCtrl.availableHours" ng-click="reservationCtrl.selectHour(hour)"&gt;
+                        &lt;div ng-class="{'selected': reservationCtrl.selectedHour == hour}" class="hour"&gt;
+                            &lt;span&gt;{{hour}}&lt;/span&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+
+                    &lt;style&gt;
+                        .hour{
+                            border: 1px solid black;
+                            border-radius: 4px;
+                            text-align: center;
+                            padding: 1em 1em;
+                            margin: 1em 1em;
+                            cursor: pointer;
+                        }
+                    &lt;/style&gt;
+                </pre>
+
+                <strong>Overriding no available hours template</strong>
+                <ul>
+                    <li>This template is shown after get available hours request if available hours array is empty.</li>
+                    <li>The status of get available hours request will be available at <em>reservationCtrl.availableHoursStatus</em> and additional message is available at
+                        <em>reservationCtrl.availableHoursMessage</em>.</li>
+                </ul>
+                <pre class="prettyprint">
+
+                     &lt;div&gt;
+                        &lt;h3 class="text-justify" style="padding: 2em 2em;"&gt;Oh no! There is no available hours for selected date, try another date!&lt;/h3&gt;
+                    &lt;/div&gt;
+                </pre>
+
+                <strong>Overriding client form template</strong>
+                <ul>
+                    <li>All client data inputs should have an ng-model pointing to a property in <em>reservationCtrl.userData</em> JSON.</li>
+                    <li>The form to do validations is available at <em>reserveForm</em>.</li>
+                    <li>There should be one button with type="submit".</li>
+                    <li>The status of reserve request will be available at <em>reservationCtrl.reservationStatus</em> and additional message is available at
+                        <em>reservationCtrl.reservationMessage</em>.</li>
+                </ul>
+                <pre class="prettyprint">
+
                     &lt;div class="form-group col-md-12"&gt;
                         &lt;label class="col-md-4 control-label" for="name"&gt;Name&lt;/label&gt;
                         &lt;div class="col-md-8"&gt;
@@ -327,6 +426,7 @@
                     <li>Confirm button should close the modal.</li>
                 </ul>
                 <pre class="prettyprint">
+
                     &lt;div class="modal-header"&gt;
                         &lt;h3 class="modal-title"&gt;Confirm amazing stuff&lt;/h3&gt;
                     &lt;/div&gt;
@@ -355,11 +455,13 @@
 
                 <strong>HTML Markup</strong>
                 <pre class="prettyprint">
+
                     &lt;reservation datepicker-options="myCtrl.datepickerOptions"&gt;&lt;/reservation&gt;
                 </pre>
 
                 <strong>Controller</strong>
                 <pre class="prettyprint">
+
                     //Controller
                     angular.module('myApp').controller('MyCtrl', function () {
                         var vm = this;
@@ -392,7 +494,8 @@
         <div class="row">
             <div class="col-md-12">
                 <h4>Callbacks</h4>
-                <p>There are some callbacks available at reservationService that can be use to do some business logic. Open browser console to see callback logging for demo.</p>
+                <p>There are some callbacks available at <em>reservationService</em> that can be use to do some business logic. Open browser console to see callback
+                    logging for demo.</p>
                 <ul>
                     <li>
                         <strong>onBeforeGetAvailableHours</strong>:
@@ -437,6 +540,7 @@
 
                 <strong>Example</strong>
                 <pre class="prettyprint">
+
                     angular.module('myApp').controller('MyCtrl', function ($q, reservationService) {
                         var vm = this;
 
