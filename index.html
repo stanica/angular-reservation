@@ -24,6 +24,10 @@
     <link rel="stylesheet" href="app/bower_components/angular-reservation/dist/angular-reservation.min.css">
 
     <!-- JS -->
+    <!-- jQuery -->
+    <script src="js/jquery.min.js"></script>
+    <!-- Bootstrap JS-->
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <!--html5 boilerplate-->
     <script type="text/javascript" src="js/modernizr-2.8.3.min.js"></script>
     <!-- Prettify -->
@@ -39,409 +43,445 @@
     <script type="text/javascript" src="app/bower_components/angular-reservation/dist/angular-reservation.min.js"></script>
     <!--Controller-->
     <script type="text/javascript" src="js/controller.js"></script>
+
+    <style>
+        .menu-padding{
+            padding-top: 50px;
+        }
+    </style>
 </head>
 
 <body ng-controller="MyCtrl as myCtrl">
 
-<div class="container">
+<!-- Navigation -->
+<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span> Menu <i class="glyphicon glyphicon-menu-hamburger"></i>
+            </button>
+            <a class="navbar-brand page-scroll" href="#page-top">
+                <span>angular-reservation</span>
+            </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#demo">Demo</a>
+                </li>
+                <li>
+                    <a href="#docs">Docs</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div id="page-top" class="container menu-padding">
     <div class="row">
         <div class="col-md-12">
             <h1>angular-reservation</h1>
-            <h2>
-                AngularJS module for time reservation management. It can be use to reserve a citation in a restaurant, barber shop, or any kind of service
-                provided in time slots.
+            <h2 class="text-justify">
+                AngularJS module to set up an appointment on a calendar. It can be used to make a reservation in a restaurant, clinic, barber shop,
+                or any kind of service provided in time slots
             </h2>
         </div>
     </div>
 </div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Demo</h3>
-            <div class="col-md-4 col-md-offset-4" style="margin-top: 100px;">
-                <reservation datepicker-options="myCtrl.datepickerOptions"></reservation>
+<section id="demo" class="menu-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Demo</h3>
+                <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12" style="margin-top: 100px;">
+                    <reservation datepicker-options="myCtrl.datepickerOptions"></reservation>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Docs</h3>
+<section id="docs" class="menu-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Docs</h3>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h4>Getting started</h4>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Getting started</h4>
 
-            <strong>Load scripts</strong>
-            <p>Load AngularJS, dependencies script files and the script file angular-reservation.min.js in your index.html</p>
-            <pre class="prettyprint">
-                &lt;!-- Angular reservation dependencies --&gt;
-                &lt;script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap.min.js"&gt;&lt;/script&gt;
-                &lt;script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"&gt;&lt;/script&gt;
-                &lt;script type="text/javascript" src="bower_components/angular-translate/angular-translate.min.js"&gt;&lt;/script&gt;
-                &lt;script src="bower_components/angular-messages/angular-messages.min.js"&gt;&lt;/script&gt;
-                &lt;!-- Angular reservation minified --&gt;
-                &lt;script type="text/javascript" src="bower_components/angular-reservation/dist/angular-reservation.min.js"&gt;&lt;/script&gt;
-            </pre>
+                <strong>Load scripts</strong>
+                <p>Load AngularJS, dependencies script files and the script file angular-reservation.min.js in your index.html</p>
+                <pre class="prettyprint">
+                    &lt;!-- Angular reservation dependencies --&gt;
+                    &lt;script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap.min.js"&gt;&lt;/script&gt;
+                    &lt;script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"&gt;&lt;/script&gt;
+                    &lt;script type="text/javascript" src="bower_components/angular-translate/angular-translate.min.js"&gt;&lt;/script&gt;
+                    &lt;script src="bower_components/angular-messages/angular-messages.min.js"&gt;&lt;/script&gt;
+                    &lt;!-- Angular reservation minified --&gt;
+                    &lt;script type="text/javascript" src="bower_components/angular-reservation/dist/angular-reservation.min.js"&gt;&lt;/script&gt;
+                </pre>
 
-            <strong>Load styles</strong>
-            <p>Load <a href="http://getbootstrap.com/getting-started/" target="_blank">bootstrap css</a> and angular-reservation.min.css in your index.html</p>
-            <pre class="prettyprint">
-                &lt;!-- Compiled and minified Bootstrap CSS --&gt;
-                &lt;link rel="stylesheet" href="components/bootstrap/bootstrap.min.css"&gt;
-                &lt;!-- Angular reservation minified css --&gt;
-                &lt;link rel="stylesheet" href="bower_components/angular-reservation/dist/angular-reservation.min.css"&gt;
-            </pre>
+                <strong>Load styles</strong>
+                <p>Load <a href="http://getbootstrap.com/getting-started/" target="_blank">bootstrap css</a> and angular-reservation.min.css in your index.html</p>
+                <pre class="prettyprint">
+                    &lt;!-- Compiled and minified Bootstrap CSS --&gt;
+                    &lt;link rel="stylesheet" href="components/bootstrap/bootstrap.min.css"&gt;
+                    &lt;!-- Angular reservation minified css --&gt;
+                    &lt;link rel="stylesheet" href="bower_components/angular-reservation/dist/angular-reservation.min.css"&gt;
+                </pre>
 
-            <strong>Add module dependency</strong>
-            <p>Add 'hm.reservation' to the list of module dependencies.</p>
-            <pre class="prettyprint">
-                angular.module('myApp', [
-                    'hm.reservation'
-                ])
-            </pre>
+                <strong>Add module dependency</strong>
+                <p>Add 'hm.reservation' to the list of module dependencies.</p>
+                <pre class="prettyprint">
+                    angular.module('myApp', [
+                        'hm.reservation'
+                    ])
+                </pre>
 
-            <strong>HTML Markup</strong>
-            <p>Add angular-reservation directive in an html page.</p>
-            <pre class="prettyprint">
-                &lt;!-- angular-reservation directive --&gt;
-                &lt;reservation&gt;&lt;/reservation&gt;
-            </pre>
+                <strong>HTML Markup</strong>
+                <p>Add angular-reservation directive in an html page.</p>
+                <pre class="prettyprint">
+                    &lt;!-- angular-reservation directive --&gt;
+                    &lt;reservation&gt;&lt;/reservation&gt;
+                </pre>
 
-            <strong>Setup</strong>
-            <pre class="prettyprint">
-                //Configuration of reservation module
-                angular.module('myApp').config(function (reservationConfigProvider) {
-                    var config = {
-                        getAvailableHoursAPIUrl: "http://API-URL/availableHours", //API url endpoint to load list of available hours
-                        reserveAPIUrl: "http://API-URL/reserve", //API url endpoint to do a reserve
-                    };
+                <strong>Setup</strong>
+                <pre class="prettyprint">
+                    //Configuration of reservation module
+                    angular.module('myApp').config(function (reservationConfigProvider) {
+                        var config = {
+                            getAvailableHoursAPIUrl: "http://API-URL/availableHours", //API url endpoint to load list of available hours
+                            reserveAPIUrl: "http://API-URL/reserve", //API url endpoint to do a reserve
+                        };
 
-                    reservationConfigProvider.set(config);
-                });
-            </pre>
+                        reservationConfigProvider.set(config);
+                    });
+                </pre>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h4>Configuration options</h4>
-            <p>You can configure angular-reservation module during config phase passing configuration options.</p>
-            <ul>
-                <li>
-                    <strong>getAvailableHoursAPIUrl</strong>:
-                    API URL to load list of available hours for selected date.
-                </li><br/>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Configuration options</h4>
+                <p>You can configure angular-reservation module during config phase passing configuration options.</p>
+                <ul>
+                    <li>
+                        <strong>getAvailableHoursAPIUrl</strong>:
+                        API URL to load list of available hours for selected date.
+                    </li><br/>
 
-                <li>
-                    <strong>reserveAPIUrl</strong>:
-                    API URL to reserve selected hour for selected date, passing client data JSON.
-                </li><br/>
+                    <li>
+                        <strong>reserveAPIUrl</strong>:
+                        API URL to reserve selected hour for selected date, passing client data JSON.
+                    </li><br/>
 
-                <li>
-                    <strong>dateFormat</strong>:
-                    Date format to show selected date, can be any valid <a href="https://docs.angularjs.org/api/ng/filter/date" target="_blank">date format</a>. Default value is "yyyy-MM-dd".
-                </li><br/>
+                    <li>
+                        <strong>dateFormat</strong>:
+                        Date format to show selected date, can be any valid <a href="https://docs.angularjs.org/api/ng/filter/date" target="_blank">date format</a>. Default value is "yyyy-MM-dd".
+                    </li><br/>
 
-                <li>
-                    <strong>language</strong>:
-                    Language to be used, valid values are "en" for english and "es" for spanish. Default value is "en".
-                </li><br/>
+                    <li>
+                        <strong>language</strong>:
+                        Language to be used, valid values are "en" for english and "es" for spanish. Default value is "en".
+                    </li><br/>
 
-                <li>
-                    <strong>showConfirmationModal</strong>:
-                    Shows or not confirmation modal on reserve button click, valid values are true or false. Default value is true.
-                </li><br/>
+                    <li>
+                        <strong>showConfirmationModal</strong>:
+                        Shows or not confirmation modal on reserve button click, valid values are true or false. Default value is true.
+                    </li><br/>
 
-                <li>
-                    <strong>clientFormTemplate</strong>:
-                    Form template to override default client form, see examples above. Default value is
-                    <a href="https://github.com/hmartos/angular-reservation/blob/master/src/templates/clientForm.html" target="_blank">clientForm.html</a>.
-                </li><br/>
+                    <li>
+                        <strong>clientFormTemplate</strong>:
+                        Form template to override default client form, see examples above. Default value is
+                        <a href="https://github.com/hmartos/angular-reservation/blob/master/src/templates/clientForm.html" target="_blank">clientForm.html</a>.
+                    </li><br/>
 
-                <li>
-                    <strong>confirmationModalTemplate</strong>:
-                    Modal template to override default confirmation modal, see examples above. Default value is
-                    <a href="https://github.com/hmartos/angular-reservation/blob/master/src/templates/confirmationModal.html" target="_blank">confirmationModal.html</a>.
-                </li><br/>
-            </ul>
+                    <li>
+                        <strong>confirmationModalTemplate</strong>:
+                        Modal template to override default confirmation modal, see examples above. Default value is
+                        <a href="https://github.com/hmartos/angular-reservation/blob/master/src/templates/confirmationModal.html" target="_blank">confirmationModal.html</a>.
+                    </li><br/>
+                </ul>
 
-            <strong>Example</strong>
-            <pre class="prettyprint">
-                //Configuration of reservation module
-                angular.module('myApp').config(function (reservationConfigProvider) {
-                    var config = {
-                        getAvailableHoursAPIUrl: "http://api-url/api/availableHours",
-                        reserveAPIUrl: "http://api-url/api/reserve",
-                        language: "es",
-                        dateFormat: "dd/MM/yyyy",
-                        showConfirmationModal: false,
-                        clientFormTemplate: "partials/clientFormTemplate.html",
-                        confirmationModalTemplate: "partials/confirmModal.html"
-                    };
+                <strong>Example</strong>
+                <pre class="prettyprint">
+                    //Configuration of reservation module
+                    angular.module('myApp').config(function (reservationConfigProvider) {
+                        var config = {
+                            getAvailableHoursAPIUrl: "http://api-url/api/availableHours",
+                            reserveAPIUrl: "http://api-url/api/reserve",
+                            language: "es",
+                            dateFormat: "dd/MM/yyyy",
+                            showConfirmationModal: false,
+                            clientFormTemplate: "partials/clientFormTemplate.html",
+                            confirmationModalTemplate: "partials/confirmModal.html"
+                        };
 
-                    reservationConfigProvider.set(config);
-                });
-            </pre>
+                        reservationConfigProvider.set(config);
+                    });
+                </pre>
 
-            <strong>Overriding client form template</strong>
-            <ul>
-                <li>All client data inputs should have an ng-model pointing to a property in reservationCtrl.userData JSON.</li>
-                <li>The form to do validations is available at reserveForm.</li>
-                <li>There should be one a button with type="submit".</li>
-            </ul>
-            <pre class="prettyprint">
-                &lt;div class="form-group col-md-12"&gt;
-                    &lt;label class="col-md-4 control-label" for="name"&gt;Name&lt;/label&gt;
-                    &lt;div class="col-md-8"&gt;
-                        &lt;input id="name" name="name" class="form-control" placeholder="{{'name' | translate}}" type="text" ng-model="reservationCtrl.userData.name"
-                               autofocus="true" ng-pattern="/^[\w\s\-\x7f-\xff]*$/" ng-minlength="2" ng-maxlength="100" required&gt;
+                <strong>Overriding client form template</strong>
+                <ul>
+                    <li>All client data inputs should have an ng-model pointing to a property in reservationCtrl.userData JSON.</li>
+                    <li>The form to do validations is available at reserveForm.</li>
+                    <li>There should be one a button with type="submit".</li>
+                </ul>
+                <pre class="prettyprint">
+                    &lt;div class="form-group col-md-12"&gt;
+                        &lt;label class="col-md-4 control-label" for="name"&gt;Name&lt;/label&gt;
+                        &lt;div class="col-md-8"&gt;
+                            &lt;input id="name" name="name" class="form-control" placeholder="{{'name' | translate}}" type="text" ng-model="reservationCtrl.userData.name"
+                                   autofocus="true" ng-pattern="/^[\w\s\-\x7f-\xff]*$/" ng-minlength="2" ng-maxlength="100" required&gt;
 
-                        &lt;div class="help-block" ng-messages="reserveForm.name.$error" ng-if="reserveForm.$submitted"&gt;
-                            &lt;p ng-message="minlength" class="text-danger"&gt;{{"minLength" | translate: '{minLength: "2"}'}}&lt;/p&gt;
-                            &lt;p ng-message="maxlength" class="text-danger"&gt;{{"maxLength" | translate: '{maxLength: "100"}'}}&lt;/p&gt;
-                            &lt;p ng-message="pattern" class="text-danger"&gt;{{"invalidCharacters" | translate}}&lt;/p&gt;
-                            &lt;p ng-message="required" class="text-danger"&gt;{{"required" | translate}}&lt;/p&gt;
+                            &lt;div class="help-block" ng-messages="reserveForm.name.$error" ng-if="reserveForm.$submitted"&gt;
+                                &lt;p ng-message="minlength" class="text-danger"&gt;{{"minLength" | translate: '{minLength: "2"}'}}&lt;/p&gt;
+                                &lt;p ng-message="maxlength" class="text-danger"&gt;{{"maxLength" | translate: '{maxLength: "100"}'}}&lt;/p&gt;
+                                &lt;p ng-message="pattern" class="text-danger"&gt;{{"invalidCharacters" | translate}}&lt;/p&gt;
+                                &lt;p ng-message="required" class="text-danger"&gt;{{"required" | translate}}&lt;/p&gt;
+                            &lt;/div&gt;
                         &lt;/div&gt;
                     &lt;/div&gt;
-                &lt;/div&gt;
 
-                &lt;div class="form-group col-md-12"&gt;
-                    &lt;label class="col-md-4 control-label"&gt;Gender&lt;/label&gt;
-                    &lt;div class="col-md-8"&gt;
-                        &lt;div class="radio"&gt;
-                            &lt;label&gt;
-                                &lt;input type="radio" name="gender" id="option1" value="Male" ng-model="reservationCtrl.userData.gender"&gt;
-                                Male
-                            &lt;/label&gt;
-                        &lt;/div&gt;
-                        &lt;div class="radio"&gt;
-                            &lt;label&gt;
-                                &lt;input type="radio" name="gender" id="option2" value="Female" ng-model="reservationCtrl.userData.gender"&gt;
-                                Female
-                            &lt;/label&gt;
-                        &lt;/div&gt;
+                    &lt;div class="form-group col-md-12"&gt;
+                        &lt;label class="col-md-4 control-label"&gt;Gender&lt;/label&gt;
+                        &lt;div class="col-md-8"&gt;
+                            &lt;div class="radio"&gt;
+                                &lt;label&gt;
+                                    &lt;input type="radio" name="gender" id="option1" value="Male" ng-model="reservationCtrl.userData.gender"&gt;
+                                    Male
+                                &lt;/label&gt;
+                            &lt;/div&gt;
+                            &lt;div class="radio"&gt;
+                                &lt;label&gt;
+                                    &lt;input type="radio" name="gender" id="option2" value="Female" ng-model="reservationCtrl.userData.gender"&gt;
+                                    Female
+                                &lt;/label&gt;
+                            &lt;/div&gt;
 
-                        &lt;div class="help-block" ng-messages="reserveForm.gender.$error" ng-if="reserveForm.$submitted"&gt;
-                            &lt;p ng-message="required" class="text-danger"&gt;{{"required" | translate}}&lt;/p&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
-
-                &lt;div class="form-group col-md-12"&gt;
-                    &lt;label class="col-md-4 control-label" for="phone"&gt;Phone&lt;/label&gt;
-                    &lt;div class="col-md-8"&gt;
-                        &lt;input id="phone" name="phone" class="form-control" placeholder="{{'phone' | translate}}" type="tel" ng-model="reservationCtrl.userData.phone"
-                               ng-pattern="/^[0-9]*$/" ng-minlength="5" ng-maxlength="15" required&gt;
-
-                        &lt;div class="help-block" ng-messages="reserveForm.phone.$error" ng-if="reserveForm.$submitted"&gt;
-                            &lt;p ng-message="minlength" class="text-danger"&gt;{{"minLength" | translate: '{minLength: "5"}'}}&lt;/p&gt;
-                            &lt;p ng-message="maxlength" class="text-danger"&gt;{{"maxLength" | translate: '{maxLength: "15"}'}}&lt;/p&gt;
-                            &lt;p ng-message="pattern" class="text-danger"&gt;{{"invalidPhone" | translate}}&lt;/p&gt;
-                            &lt;p ng-message="required" class="text-danger"&gt;{{"required" | translate}}&lt;/p&gt;
+                            &lt;div class="help-block" ng-messages="reserveForm.gender.$error" ng-if="reserveForm.$submitted"&gt;
+                                &lt;p ng-message="required" class="text-danger"&gt;{{"required" | translate}}&lt;/p&gt;
+                            &lt;/div&gt;
                         &lt;/div&gt;
                     &lt;/div&gt;
-                &lt;/div&gt;
 
-                &lt;div class="form-group col-md-12"&gt;
-                    &lt;label class="col-md-4 control-label" for="age"&gt;Age&lt;/label&gt;
-                    &lt;div class="col-md-8"&gt;
-                        &lt;select id="age" name="age" class="form-control" ng-model="reservationCtrl.userData.age" required&gt;
-                            &lt;option value="18-25"&gt;Between 18 and 25&lt;/option&gt;
-                            &lt;option value="25-40"&gt;Between 25 and 40&lt;/option&gt;
-                            &lt;option value="40-65"&gt;Between 40 and 65&lt;/option&gt;
-                            &lt;option value="+65"&gt;&gt;65/option&gt;
-                        &lt;/select&gt;
+                    &lt;div class="form-group col-md-12"&gt;
+                        &lt;label class="col-md-4 control-label" for="phone"&gt;Phone&lt;/label&gt;
+                        &lt;div class="col-md-8"&gt;
+                            &lt;input id="phone" name="phone" class="form-control" placeholder="{{'phone' | translate}}" type="tel" ng-model="reservationCtrl.userData.phone"
+                                   ng-pattern="/^[0-9]*$/" ng-minlength="5" ng-maxlength="15" required&gt;
 
-                        &lt;div class="help-block" ng-messages="reserveForm.age.$error" ng-if="reserveForm.$submitted"&gt;
-                            &lt;p ng-message="required" class="text-danger"&gt;{{"required" | translate}}&lt;/p&gt;
+                            &lt;div class="help-block" ng-messages="reserveForm.phone.$error" ng-if="reserveForm.$submitted"&gt;
+                                &lt;p ng-message="minlength" class="text-danger"&gt;{{"minLength" | translate: '{minLength: "5"}'}}&lt;/p&gt;
+                                &lt;p ng-message="maxlength" class="text-danger"&gt;{{"maxLength" | translate: '{maxLength: "15"}'}}&lt;/p&gt;
+                                &lt;p ng-message="pattern" class="text-danger"&gt;{{"invalidPhone" | translate}}&lt;/p&gt;
+                                &lt;p ng-message="required" class="text-danger"&gt;{{"required" | translate}}&lt;/p&gt;
+                            &lt;/div&gt;
                         &lt;/div&gt;
                     &lt;/div&gt;
-                &lt;/div&gt;
 
-                &lt;div class="form-group"&gt;
-                    &lt;div class="col-md-12"&gt;
-                        &lt;button id="reserve" type="submit" name="reserve" class="btn btn-success"&gt;{{"reserve" | translate}}&lt;/button&gt;
+                    &lt;div class="form-group col-md-12"&gt;
+                        &lt;label class="col-md-4 control-label" for="age"&gt;Age&lt;/label&gt;
+                        &lt;div class="col-md-8"&gt;
+                            &lt;select id="age" name="age" class="form-control" ng-model="reservationCtrl.userData.age" required&gt;
+                                &lt;option value="18-25"&gt;Between 18 and 25&lt;/option&gt;
+                                &lt;option value="25-40"&gt;Between 25 and 40&lt;/option&gt;
+                                &lt;option value="40-65"&gt;Between 40 and 65&lt;/option&gt;
+                                &lt;option value="+65"&gt;&gt;65/option&gt;
+                            &lt;/select&gt;
+
+                            &lt;div class="help-block" ng-messages="reserveForm.age.$error" ng-if="reserveForm.$submitted"&gt;
+                                &lt;p ng-message="required" class="text-danger"&gt;{{"required" | translate}}&lt;/p&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
                     &lt;/div&gt;
-                &lt;/div&gt;
-            </pre>
 
-            <strong>Overriding confirmation modal template</strong>
-            <ul>
-                <li>Template must be like angular-bootstrap modal template. Documentation for modal can be found <a href="https://angular-ui.github.io/bootstrap/#!#modal" target="_blank">here</a>.</li>
-                <li>Cancel button should dismiss the modal.</li>
-                <li>Confirm button should close the modal.</li>
-            </ul>
-            <pre class="prettyprint">
-                &lt;div class="modal-header"&gt;
-                    &lt;h3 class="modal-title"&gt;Confirm amazing stuff&lt;/h3&gt;
-                &lt;/div&gt;
+                    &lt;div class="form-group"&gt;
+                        &lt;div class="col-md-12"&gt;
+                            &lt;button id="reserve" type="submit" name="reserve" class="btn btn-success"&gt;{{"reserve" | translate}}&lt;/button&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                </pre>
 
-                &lt;div class="modal-body"&gt;
-                    &lt;h4&gt;Are you really really sure of what you are doing??&lt;/h4&gt;
-                    &lt;h5&gt;Let's the party started!!!&lt;/h5&gt;
-                &lt;/div&gt;
+                <strong>Overriding confirmation modal template</strong>
+                <ul>
+                    <li>Template must be like angular-bootstrap modal template. Documentation for modal can be found <a href="https://angular-ui.github.io/bootstrap/#!#modal" target="_blank">here</a>.</li>
+                    <li>Cancel button should dismiss the modal.</li>
+                    <li>Confirm button should close the modal.</li>
+                </ul>
+                <pre class="prettyprint">
+                    &lt;div class="modal-header"&gt;
+                        &lt;h3 class="modal-title"&gt;Confirm amazing stuff&lt;/h3&gt;
+                    &lt;/div&gt;
 
-                &lt;div class="modal-footer"&gt;
-                    &lt;button class="btn btn-danger" type="button" ng-click="$dismiss()"&gt;Oh, no!&lt;/button&gt;
-                    &lt;button class="btn btn-success" type="button" ng-click="$close()"&gt;Hell, yes!&lt;/button&gt;
-                &lt;/div&gt;
-            </pre>
+                    &lt;div class="modal-body"&gt;
+                        &lt;h4&gt;Are you really really sure of what you are doing??&lt;/h4&gt;
+                        &lt;h5&gt;Let's the party started!!!&lt;/h5&gt;
+                    &lt;/div&gt;
+
+                    &lt;div class="modal-footer"&gt;
+                        &lt;button class="btn btn-danger" type="button" ng-click="$dismiss()"&gt;Oh, no!&lt;/button&gt;
+                        &lt;button class="btn btn-success" type="button" ng-click="$close()"&gt;Hell, yes!&lt;/button&gt;
+                    &lt;/div&gt;
+                </pre>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h4>Datepicker options</h4>
-            <p>You can pass datepicker options to angular-reservation directive to configure datepicker based on your needs.
-                Datepicker option documentation can be found <a href="https://angular-ui.github.io/bootstrap/#!#datepicker" target="_blank">here</a>.
-            </p>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Datepicker options</h4>
+                <p>You can pass datepicker options to angular-reservation directive to configure datepicker based on your needs.
+                    Datepicker option documentation can be found <a href="https://angular-ui.github.io/bootstrap/#!#datepicker" target="_blank">here</a>.
+                </p>
 
-            <strong>HTML Markup</strong>
-            <pre class="prettyprint">
-                &lt;reservation datepicker-options="myCtrl.datepickerOptions"&gt;&lt;/reservation&gt;
-            </pre>
+                <strong>HTML Markup</strong>
+                <pre class="prettyprint">
+                    &lt;reservation datepicker-options="myCtrl.datepickerOptions"&gt;&lt;/reservation&gt;
+                </pre>
 
-            <strong>Controller</strong>
-            <pre class="prettyprint">
-                //Controller
-                angular.module('myApp').controller('MyCtrl', function () {
-                    var vm = this;
+                <strong>Controller</strong>
+                <pre class="prettyprint">
+                    //Controller
+                    angular.module('myApp').controller('MyCtrl', function () {
+                        var vm = this;
 
-                    //Datepicker options
-                    vm.datepickerOptions = {
-                        minDate: new Date(), //Disabled date selection before today
-                        showWeeks: false, //Don't show weeks
-                        startingDay: 1, //Starting day at Monday
-                        dateDisabled: myDisabledDates //Disabled dates
-                    }
+                        //Datepicker options
+                        vm.datepickerOptions = {
+                            minDate: new Date(), //Disabled date selection before today
+                            showWeeks: false, //Don't show weeks
+                            startingDay: 1, //Starting day at Monday
+                            dateDisabled: myDisabledDates //Disabled dates
+                        }
 
-                    //Disabled dates
-                    function myDisabledDates(dateAndMode) {
-                        var date = dateAndMode.date;
-                        var mode = dateAndMode.mode;
-                        var day = date.getDate();
-                        var dayOfWeek = date.getDay();
-                        var month = date.getMonth();
-                        //Disable dates on Sundays and from 1 to 15 of August
-                        return (mode === 'day' && (dayOfWeek === 0) || (month === 7 && day in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]));
-                    }
-                });
-            </pre>
+                        //Disabled dates
+                        function myDisabledDates(dateAndMode) {
+                            var date = dateAndMode.date;
+                            var mode = dateAndMode.mode;
+                            var day = date.getDate();
+                            var dayOfWeek = date.getDay();
+                            var month = date.getMonth();
+                            //Disable dates on Sundays and from 1 to 15 of August
+                            return (mode === 'day' && (dayOfWeek === 0) || (month === 7 && day in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]));
+                        }
+                    });
+                </pre>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h4>Callbacks</h4>
-            <p>There are some callbacks available at reservationService that can be use to do some business logic. Open browser console to see callback logging for demo.</p>
-            <ul>
-                <li>
-                    <strong>onBeforeGetAvailableHours</strong>:
-                    Callback executed before get available hours request.
-                </li><br/>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h4>Callbacks</h4>
+                <p>There are some callbacks available at reservationService that can be use to do some business logic. Open browser console to see callback logging for demo.</p>
+                <ul>
+                    <li>
+                        <strong>onBeforeGetAvailableHours</strong>:
+                        Callback executed before get available hours request.
+                    </li><br/>
 
-                <li>
-                    <strong>onCompletedGetAvailableHours</strong>:
-                    Callback executed when get available hours request is completed, independently of its status.
-                </li><br/>
+                    <li>
+                        <strong>onCompletedGetAvailableHours</strong>:
+                        Callback executed when get available hours request is completed, independently of its status.
+                    </li><br/>
 
-                <li>
-                    <strong>onSuccessfulGetAvailableHours</strong>:
-                    Callback executed when get available hours request is completed successfully.
-                </li><br/>
+                    <li>
+                        <strong>onSuccessfulGetAvailableHours</strong>:
+                        Callback executed when get available hours request is completed successfully.
+                    </li><br/>
 
-                <li>
-                    <strong>onErrorGetAvailableHours</strong>:
-                    Callback executed when get available hours request is completed with an error response (400 Bad Request, 500 Internal Server Error, etc.).
-                </li><br/>
+                    <li>
+                        <strong>onErrorGetAvailableHours</strong>:
+                        Callback executed when get available hours request is completed with an error response (400 Bad Request, 500 Internal Server Error, etc.).
+                    </li><br/>
 
-                <li>
-                    <strong>onBeforeReserve</strong>:
-                    Callback executed before reserve request.
-                </li><br/>
+                    <li>
+                        <strong>onBeforeReserve</strong>:
+                        Callback executed before reserve request.
+                    </li><br/>
 
-                <li>
-                    <strong>onCompletedReserve</strong>:
-                    Callback executed when reserve request is completed, independently of its status.
-                </li><br/>
+                    <li>
+                        <strong>onCompletedReserve</strong>:
+                        Callback executed when reserve request is completed, independently of its status.
+                    </li><br/>
 
-                <li>
-                    <strong>onSuccessfulReserve</strong>:
-                    Callback executed when reserve request is completed successfully.
-                </li><br/>
+                    <li>
+                        <strong>onSuccessfulReserve</strong>:
+                        Callback executed when reserve request is completed successfully.
+                    </li><br/>
 
-                <li>
-                    <strong>onErrorReserve</strong>:
-                    Callback executed when reserve request is completed with an error response (400 Bad Request, 500 Internal Server Error, etc.).
-                </li><br/>
-            </ul>
+                    <li>
+                        <strong>onErrorReserve</strong>:
+                        Callback executed when reserve request is completed with an error response (400 Bad Request, 500 Internal Server Error, etc.).
+                    </li><br/>
+                </ul>
 
-            <strong>Example</strong>
-            <pre class="prettyprint">
-                angular.module('myApp').controller('MyCtrl', function ($q, reservationService) {
-                    var vm = this;
+                <strong>Example</strong>
+                <pre class="prettyprint">
+                    angular.module('myApp').controller('MyCtrl', function ($q, reservationService) {
+                        var vm = this;
 
-                    //Reservation module callbacks
-                    reservationService.onBeforeGetAvailableHours = function(selectedDate) {
-                        console.log("Before get available hours! Selected date: " + selectedDate);
-                        var deferred = $q.defer();
+                        //Reservation module callbacks
+                        reservationService.onBeforeGetAvailableHours = function(selectedDate) {
+                            console.log("Before get available hours! Selected date: " + selectedDate);
+                            var deferred = $q.defer();
 
-                        deferred.resolve();
+                            deferred.resolve();
 
-                        return deferred.promise;
-                    }
+                            return deferred.promise;
+                        }
 
-                    reservationService.onCompletedGetAvailableHours = function(statusLevel, message, selectedDate) {
-                        console.log("Completed get available hours! Status level: " + statusLevel + ", message: " + message + ", selected date: " + selectedDate);
-                    }
+                        reservationService.onCompletedGetAvailableHours = function(statusLevel, message, selectedDate) {
+                            console.log("Completed get available hours! Status level: " + statusLevel + ", message: " + message + ", selected date: " + selectedDate);
+                        }
 
-                    reservationService.onSuccessfulGetAvailableHours = function(statusLevel, message, selectedDate, availableHours) {
-                        console.log("Successful get available hours! Status level: " + statusLevel + ", message: " + message + ", selected date: " + selectedDate + ", availableHours: " + availableHours);
-                    }
+                        reservationService.onSuccessfulGetAvailableHours = function(statusLevel, message, selectedDate, availableHours) {
+                            console.log("Successful get available hours! Status level: " + statusLevel + ", message: " + message + ", selected date: " + selectedDate + ", availableHours: " + availableHours);
+                        }
 
-                    reservationService.onErrorGetAvailableHours = function(statusLevel, message, selectedDate) {
-                        console.log("Error get available hours! Status level: " + statusLevel + ", message: " + message + ", selected date: " + selectedDate);
-                    }
+                        reservationService.onErrorGetAvailableHours = function(statusLevel, message, selectedDate) {
+                            console.log("Error get available hours! Status level: " + statusLevel + ", message: " + message + ", selected date: " + selectedDate);
+                        }
 
-                    reservationService.onBeforeReserve = function(selectedDate, selectedHour, userData) {
-                        console.log("Before reserve! Selected date: " + selectedDate + ", selected hour: " + selectedHour + ", userData: " + JSON.stringify(userData));
-                        var deferred = $q.defer();
+                        reservationService.onBeforeReserve = function(selectedDate, selectedHour, userData) {
+                            console.log("Before reserve! Selected date: " + selectedDate + ", selected hour: " + selectedHour + ", userData: " + JSON.stringify(userData));
+                            var deferred = $q.defer();
 
-                        deferred.resolve();
+                            deferred.resolve();
 
-                        return deferred.promise;
-                    }
+                            return deferred.promise;
+                        }
 
-                    reservationService.onCompletedReserve = function(statusLevel, message, selectedDate, selectedHour, userData) {
-                        console.log("Completed reserve! Status level: " + statusLevel + ", message: " + message + ", selected date: " + selectedDate + ", selectedHour: " + selectedHour + ", userData: " + JSON.stringify(userData));
-                    }
+                        reservationService.onCompletedReserve = function(statusLevel, message, selectedDate, selectedHour, userData) {
+                            console.log("Completed reserve! Status level: " + statusLevel + ", message: " + message + ", selected date: " + selectedDate + ", selectedHour: " + selectedHour + ", userData: " + JSON.stringify(userData));
+                        }
 
-                    reservationService.onSuccessfulReserve = function(statusLevel, message, reservedDate, reservedHour, userData) {
-                        console.log("Success reserve! Status level: " + statusLevel + ", message: " + message + ", reserved date: " + reservedDate + ", reserved hour: " + reservedHour + ", userData: " + JSON.stringify(userData));
-                    }
+                        reservationService.onSuccessfulReserve = function(statusLevel, message, reservedDate, reservedHour, userData) {
+                            console.log("Success reserve! Status level: " + statusLevel + ", message: " + message + ", reserved date: " + reservedDate + ", reserved hour: " + reservedHour + ", userData: " + JSON.stringify(userData));
+                        }
 
-                    reservationService.onErrorReserve = function(statusLevel, message, selectedDate, selectedHour, userData) {
-                        console.log("Error reserve! Status level: " + statusLevel + ", message: " + message + ", selected date: " + selectedDate + ", selected hour: " + selectedHour + ", userData: " + JSON.stringify(userData));
-                    }
-                });
-            </pre>
+                        reservationService.onErrorReserve = function(statusLevel, message, selectedDate, selectedHour, userData) {
+                            console.log("Error reserve! Status level: " + statusLevel + ", message: " + message + ", selected date: " + selectedDate + ", selected hour: " + selectedHour + ", userData: " + JSON.stringify(userData));
+                        }
+                    });
+                </pre>
+            </div>
         </div>
     </div>
-</div>
+</section>
 
 </body>
 </html>
