@@ -38,7 +38,6 @@
 
         //METHODS
         vm.onSelectDate = function() {
-            vm.selectedDate = $filter('date')(vm.selectedDate, vm.dateFormat);
             vm.secondTabLocked = false;
             vm.selectedTab = 1;
             onBeforeGetAvailableHours();
@@ -74,27 +73,28 @@
          * Get available hours for a selected date
          */
         function getAvailableHours() {
-            var params = {selectedDate: vm.selectedDate};
+            var selectedDateFormatted = $filter('date')(vm.selectedDate, vm.dateFormat);
+            var params = {selectedDate: selectedDateFormatted};
 
             reservationAPIFactory.getAvailableHours(params).then(function () {
                 vm.loader = false;
 
-                var level = reservationAPIFactory.level;
-                var message = reservationAPIFactory.message;
+                var status = vm.availableHoursStatus = reservationAPIFactory.status;
+                var message = vm.availableHoursMessage = reservationAPIFactory.message;
 
                 //Completed get available hours callback
-                reservationService.onCompletedGetAvailableHours(level, message, vm.selectedDate);
+                reservationService.onCompletedGetAvailableHours(status, message, vm.selectedDate);
 
                 //Success
-                if (level == 'SUCCESS') {
+                if (status == 'SUCCESS') {
                     vm.availableHours = reservationAPIFactory.availableHours;
                     //Successful get available hours callback
-                    reservationService.onSuccessfulGetAvailableHours(level, message, vm.selectedDate, vm.availableHours);
+                    reservationService.onSuccessfulGetAvailableHours(status, message, vm.selectedDate, vm.availableHours);
 
                 //Error
                 } else {
                     //Error get available hours callback
-                    reservationService.onErrorGetAvailableHours(level, message, vm.selectedDate);
+                    reservationService.onErrorGetAvailableHours(status, message, vm.selectedDate);
                 }
             });
         }
@@ -117,26 +117,27 @@
         function reserve() {
             vm.loader = true;
 
-            var params = {selectedDate: vm.selectedDate, selectedHour: vm.selectedHour, userData: vm.userData};
+            var selectedDateFormatted = $filter('date')(vm.selectedDate, vm.dateFormat);
+            var params = {selectedDate: selectedDateFormatted, selectedHour: vm.selectedHour, userData: vm.userData};
 
             reservationAPIFactory.reserve(params).then(function () {
                 vm.loader = false;
 
-                var level = vm.reservationState = reservationAPIFactory.level;
+                var status = vm.reservationStatus = reservationAPIFactory.status;
                 var message = vm.reservationMessage = reservationAPIFactory.message;
 
                 //Completed reserve callback
-                reservationService.onCompletedReserve(level, message, vm.selectedDate, vm.selectedHour, vm.userData);
+                reservationService.onCompletedReserve(status, message, vm.selectedDate, vm.selectedHour, vm.userData);
 
                 //Success
-                if (level == 'SUCCESS') {
+                if (status == 'SUCCESS') {
                     //Successful reserve calback
-                    reservationService.onSuccessfulReserve(level, message, vm.selectedDate, vm.selectedHour, vm.userData);
+                    reservationService.onSuccessfulReserve(status, message, vm.selectedDate, vm.selectedHour, vm.userData);
 
                 //Error
                 } else {
                     //Error reserve callback
-                    reservationService.onErrorReserve(level, message, vm.selectedDate, vm.selectedHour, vm.userData);
+                    reservationService.onErrorReserve(status, message, vm.selectedDate, vm.selectedHour, vm.userData);
                 }
             });
         }

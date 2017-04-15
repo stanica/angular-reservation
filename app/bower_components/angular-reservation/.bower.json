@@ -22,14 +22,14 @@
     "bower_components"
   ],
   "homepage": "https://github.com/hmartos/angular-reservation",
-  "version": "0.0.2",
-  "_release": "0.0.2",
+  "version": "0.0.4",
+  "_release": "0.0.4",
   "_resolution": {
     "type": "version",
-    "tag": "0.0.2",
-    "commit": "f517d9c246a9ebd172dca7abde6298e545201f79"
+    "tag": "0.0.4",
+    "commit": "ca32520936320f636ce8f71c2f1115e765d87871"
   },
   "_source": "https://github.com/hmartos/angular-reservation.git",
-  "_target": "~0.0.2",
+  "_target": "~0.0.4",
   "_originalSource": "angular-reservation"
 }
