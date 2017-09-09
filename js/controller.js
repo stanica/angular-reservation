@@ -7,21 +7,21 @@ angular.module('myApp', [
 
 //Configuration of reservation module
 angular.module('myApp').config(function (reservationConfigProvider) {
-    var config = {
-        getAvailableHoursAPIUrl: "https://mean-hector.rhcloud.com/availableHours", //API url endpoint to load list of available hours
-        reserveAPIUrl: "https://mean-hector.rhcloud.com/reserve", //API url endpoint to do a reserve
-        //language: "es",
-        //dateFormat: "dd/MM/yyyy",
-        //showConfirmationModal: true,
-        //clientFormTemplate: "partials/clientFormTemplate.html",
-        //confirmationModalTemplate: "partials/confirmModal.html"
+    /*var config = {
+        getAvailableHoursAPIUrl: "https://localhost:8080/availableHours", //API url endpoint to load list of available hours
+        reserveAPIUrl: "https://localhost:8080/reserve", //API url endpoint to do a reserve
+        language: "es",
+        dateFormat: "dd/MM/yyyy",
+        showConfirmationModal: true,
+        clientFormTemplate: "partials/clientFormTemplate.html",
+        confirmationModalTemplate: "partials/confirmModal.html"
     };
 
-    reservationConfigProvider.set(config);
+    reservationConfigProvider.set(config);*/
 });
 
 //Controller
-angular.module('myApp').controller('MyCtrl', function () {
+angular.module('myApp').controller('MyCtrl', function (reservationService) {
     var vm = this;
 
     //Datepicker options

@@ -4,9 +4,9 @@
  */
 (function () {
     //Controller
-    angular.module('hm.reservation').controller('ReservationCtrl', ['$scope', '$filter', '$translate', 'reservationAPIFactory', 'reservationConfig', 'reservationService', reservationCtrl]);
+    angular.module('hm.reservation').controller('ReservationCtrl', ['$scope', '$filter', '$translate', '$timeout', 'reservationAPIFactory', 'reservationConfig', 'reservationService', reservationCtrl]);
 
-    function reservationCtrl($scope, $filter, $translate, reservationAPIFactory, reservationConfig, reservationService) {
+    function reservationCtrl($scope, $filter, $translate, $timeout, reservationAPIFactory, reservationConfig, reservationService) {
         //Capture the this context of the Controller using vm, standing for viewModel
         var vm = this;
 
@@ -73,7 +73,7 @@
          * Get available hours for a selected date
          */
         function getAvailableHours() {
-            var selectedDateFormatted = $filter('date')(vm.selectedDate, vm.dateFormat);
+            /*var selectedDateFormatted = $filter('date')(vm.selectedDate, vm.dateFormat);
             var params = {selectedDate: selectedDateFormatted};
 
             reservationAPIFactory.getAvailableHours(params).then(function () {
@@ -96,7 +96,17 @@
                     //Error get available hours callback
                     reservationService.onErrorGetAvailableHours(status, message, vm.selectedDate);
                 }
-            });
+            });*/
+
+            // For demo
+            vm.timeout = $timeout(function () {
+                vm.loader = false;
+                var status = "SUCCESS";
+                var message = "Hardcoded available hours for demo!";
+                vm.availableHours = ["10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00"];
+                reservationService.onCompletedGetAvailableHours(status, message, vm.selectedDate);
+                reservationService.onSuccessfulGetAvailableHours(status, message, vm.selectedDate, vm.availableHours);
+            }, 500);
         }
 
         /**
@@ -115,9 +125,7 @@
          * Do reserve POST with selectedDate, selectedHour and userData as parameters of the call
          */
         function reserve() {
-            vm.loader = true;
-
-            var selectedDateFormatted = $filter('date')(vm.selectedDate, vm.dateFormat);
+            /*var selectedDateFormatted = $filter('date')(vm.selectedDate, vm.dateFormat);
             var params = {selectedDate: selectedDateFormatted, selectedHour: vm.selectedHour, userData: vm.userData};
 
             reservationAPIFactory.reserve(params).then(function () {
@@ -139,7 +147,18 @@
                     //Error reserve callback
                     reservationService.onErrorReserve(status, message, vm.selectedDate, vm.selectedHour, vm.userData);
                 }
-            });
+            });*/
+
+            // For demo
+            vm.loader = true;
+
+            vm.timeout = $timeout(function () {
+                vm.loader = false;
+                vm.reservationStatus = status = "SUCCESS";
+                var message = "See you soon!";
+                reservationService.onCompletedReserve(status, message, vm.selectedDate, vm.selectedHour, vm.userData);
+                reservationService.onSuccessfulReserve(status, message, vm.selectedDate, vm.selectedHour, vm.userData);
+            }, 500);
         }
     }
 
