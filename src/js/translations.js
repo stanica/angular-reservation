@@ -26,7 +26,7 @@
             confirmCancel: "No, cancel",
             confirmTitle: "Confirm reservation",
             confirmText: "{{name}}, Are you sure you want to reserve date {{selectedDate}} at {{selectedHour}}?.",
-            noAvailableHours: "There are not available hours for selected date, please select another date"
+            noAvailableHours: "There are no available hours for the selected date. Please select another date"
         });
 
         $translateProvider.translations('es', {

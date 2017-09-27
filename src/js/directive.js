@@ -8,7 +8,11 @@
         return {
             restrict: 'E',
             scope: {
-                datepickerOptions: '='
+                datepickerOptions: '=',
+                apiKey: '@',
+                vendor: '@',
+                id: '@',
+                externalId: '@'
             },
             controller: 'ReservationCtrl',
             controllerAs: 'reservationCtrl',

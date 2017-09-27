@@ -1,12 +1,13 @@
-<div class="angular-reservation-box">
-    <uib-tabset active="reservationCtrl.selectedTab" justified="true">
-        <uib-tab index="0">
+<div class="outlined" ng-init="reservationCtrl.getDetails()">
+    <uib-tabset active="reservationCtrl.selectedTab" justified="true" class="angular-reservation-bump">
+        <uib-tab index="0" style="border-radius:0">
             <uib-tab-heading>
                 <span class="glyphicon glyphicon-calendar" aria-hidden="true" class="angular-reservation-icon-size"></span>
                 <h5 ng-if="reservationCtrl.secondTabLocked">{{"date" | translate}}</h5>
                 <h5 ng-if="!reservationCtrl.secondTabLocked">{{reservationCtrl.selectedDate | date: reservationCtrl.dateFormat}}</h5>
             </uib-tab-heading>
-
+            <div class="spacer" ng-if="reservationCtrl.loader"></div>
+            <div ng-include="'loader.html'" class="text-center" ng-if="reservationCtrl.loader"></div>
             <div ng-include="reservationCtrl.datepickerTemplate"></div>
         </uib-tab>
 
@@ -17,6 +18,7 @@
                 <h5 ng-if="!reservationCtrl.thirdTabLocked">{{reservationCtrl.selectedHour}}</h5>
             </uib-tab-heading>
 
+            <div class="spacer" ng-if="reservationCtrl.loader"></div>
             <div ng-include="'loader.html'" class="text-center" ng-if="reservationCtrl.loader"></div>
 
             <div class="angular-reservation-availableHour" ng-if="!reservationCtrl.loader && reservationCtrl.availableHours.length > 0">

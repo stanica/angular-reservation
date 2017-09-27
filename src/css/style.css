@@ -40,3 +40,17 @@
     margin-top: 2em;
     margin-bottom: 2em;
 }
+
+.angular-reservation-bump {
+    margin-top: -1px;
+}
+
+.nav-tabs > li.active > a {
+    background-color: white !important;
+    border-left: none !important;
+    border-radius: 0;
+}
+
+.angular-reservation-padding {
+    padding: 0 20px 5px 20px;
+}

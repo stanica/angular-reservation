@@ -8,6 +8,7 @@
     function reservationConfigProvider() {
 
         var config = {
+            getDetailsUrl: "http://localhost:8080/getDetails",
             getAvailableHoursAPIUrl: "http://localhost:8080/availableHours", //API url endpoint to load list of available hours
             reserveAPIUrl: "http://localhost:8080/reserve", //API url endpoint to do a reserve
             dateFormat: "yyyy-MM-dd",
@@ -17,7 +18,7 @@
             availableHoursTemplate: "availableHours.html",
             noAvailableHoursTemplate: "noAvailableHours.html",
             clientFormTemplate: "clientForm.html",
-            confirmationModalTemplate: "confirmationModal.html"
+            confirmationModalTemplate: "confirmationModal.html",
         };
 
         //Public API for the provider

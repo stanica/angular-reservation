@@ -19,6 +19,8 @@
         vm.selectedDate = today;
 
         vm.selectedHour = "";
+        vm.details = "";
+        vm.total = 0;
 
         vm.userData = {};
 
@@ -32,6 +34,10 @@
         vm.clientFormTemplate = reservationConfig.clientFormTemplate;
 
         vm.datepickerOptions = $scope.datepickerOptions;
+        vm.apiKey = $scope.apiKey;
+        vm.vendor = $scope.vendor;
+        vm.id = $scope.id;
+        vm.externalId = $scope.externalId;
 
         $translate.use(reservationConfig.language);
 
@@ -42,8 +48,7 @@
             vm.selectedDate = date;
             vm.secondTabLocked = false;
             vm.selectedTab = 1;
-            onBeforeGetAvailableHours(date);
-            vm.loader = true;
+            onBeforeGetAvailableHours({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:date, externalId: vm.externalId});
         }
 
         vm.selectHour = function(hour) {
@@ -57,36 +62,71 @@
         }
 
 
+        vm.getDetails = function(){
+            vm.loader = true;
+            reservationAPIFactory.getDetails({apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId}).then(function(){
+                vm.details = reservationAPIFactory.details;
+                vm.loader = false;
+            });
+        }
+
+        vm.getTotal = function(){
+            var total = 0;
+            for(var x=0; x<vm.details.length; x++){
+                total += vm.details[x].selected * vm.details[x].price.amount;
+            }
+            return total;
+        }
+
+        vm.range = function(min, max, step) {
+            step = step || 1;
+            var input = [];
+            for (var i = min; i <= max; i += step) {
+                input.push(i);
+            }
+            return input;
+        };
+
         //PRIVATE METHODS
 
         /**
          * Function executed before get available hours function.
          */
-        function onBeforeGetAvailableHours(date) {
+        function onBeforeGetAvailableHours(params) {
+            /*
             reservationService.onBeforeGetAvailableHours(date).then(function () {
                 getAvailableHours(date);
 
             }, function() {
                 console.log("onBeforeGetAvailableHours: Rejected promise");
-            });
+            });*/
+            if(vm.vendor === 'bookeo'){
+                var people = {};
+                for(var x=0; x<vm.details.length; x++){
+                    people[vm.details[x].id] = vm.details[x].selected;
+                }
+            }
+            params.people = people;
+            getAvailableHours(params);
         }
 
         /**
          * Get available hours for a selected date
          */
-        function getAvailableHours(date) {
-            var selectedDateFormatted = $filter('date')(date, vm.dateFormat);
-            var params = {selectedDate: selectedDateFormatted};
+        function getAvailableHours(params) {
+            var selectedDateFormatted = $filter('date')(params.date, vm.dateFormat);
+            params.date = selectedDateFormatted;
 
-            reservationAPIFactory.getAvailableHours(params).then(function () {
+            reservationAPIFactory.getVendorAvailableHours(params).then(function (data) {
                 vm.loader = false;
 
-                var status = vm.availableHoursStatus = reservationAPIFactory.status;
-                var message = vm.availableHoursMessage = reservationAPIFactory.message;
+                //var status = vm.availableHoursStatus = reservationAPIFactory.status;
+                //var message = vm.availableHoursMessage = reservationAPIFactory.message;
 
                 //Completed get available hours callback
-                reservationService.onCompletedGetAvailableHours(status, message, date);
+                //reservationService.onCompletedGetAvailableHours(status, message, date);
 
+                vm.availableHours = reservationAPIFactory.availableHours;
                 //Success
                 if (status == 'SUCCESS') {
                     vm.availableHours = reservationAPIFactory.availableHours;
@@ -96,7 +136,7 @@
                 //Error
                 } else {
                     //Error get available hours callback
-                    reservationService.onErrorGetAvailableHours(status, message, date);
+                    //reservationService.onErrorGetAvailableHours(status, message, date);
                 }
             });
         }

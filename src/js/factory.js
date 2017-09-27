@@ -10,11 +10,31 @@
         // Error details
         reservationAPI.status = "";
         reservationAPI.message = "";
-
+        reservationAPI.details = "";
         reservationAPI.availableHours = "";
 
 
         //METHODS
+
+        //Call to get product details
+        reservationAPI.getDetails = function(params){
+            return $http({
+                method: 'POST',
+                data: params,
+                url: reservationConfig.getDetailsUrl,
+                responseType: 'json'
+
+            }).then(function(response) {
+                //Success handler
+                //console.log(response.data);
+
+                reservationAPI.status = response.data.status;
+                reservationAPI.details = response.data;
+
+            }, function(response) {
+                reservationAPI.errorManagement(response.status);
+            });
+        }
 
         //Call to get list of available hours
         reservationAPI.getAvailableHours = function(params) {
@@ -32,6 +52,27 @@
                 reservationAPI.status = response.data.status;
                 reservationAPI.message = response.data.message;
                 reservationAPI.availableHours = response.data.availableHours;
+
+            }, function(response) {
+                reservationAPI.errorManagement(response.status);
+            });
+        }
+
+        reservationAPI.getVendorAvailableHours = function(params) {
+            return $http({
+                method: 'POST',
+                data: params,
+                url: reservationConfig.getAvailableHoursAPIUrl,
+                responseType: 'json'
+
+            }).then(function(response) {
+                //Success handler
+                console.log(response.data.data);
+                //validateAvailableHoursResponseData(response.data);
+
+                //reservationAPI.status = response.data.status;
+                //reservationAPI.message = response.data.message;
+                reservationAPI.availableHours = response.data.data;
 
             }, function(response) {
                 reservationAPI.errorManagement(response.status);
@@ -95,5 +136,11 @@
 
         return reservationAPI;
     }
+    angular.module('hm.reservation').filter('ignoreTimeZone', function(){
+      return function(val){
+          var newDate = new Date(val.replace('T', ' ').slice(0, -6));
+         return newDate;
+      };
+    });
     angular.module('hm.reservation').factory('reservationAPIFactory', ['$http', 'reservationConfig', reservationAPIFactory]);
 })();
