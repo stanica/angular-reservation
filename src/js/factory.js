@@ -46,7 +46,6 @@
 
             }).then(function(response) {
                 //Success handler
-                console.log(response.data);
                 validateAvailableHoursResponseData(response.data);
 
                 reservationAPI.status = response.data.status;

@@ -19,6 +19,7 @@
         vm.selectedDate = today;
 
         vm.selectedHour = "";
+        vm.selectedSlot = '';
         vm.details = "";
         vm.total = 0;
 
@@ -41,6 +42,10 @@
 
         $translate.use(reservationConfig.language);
 
+        vm.userData.name = 'Robert';
+        vm.userData.phone = '4165550000';
+        vm.userData.email = 'robertstanica@gmail.com';
+
 
         //METHODS
         // TODO This function should have all needed parameters in order to test it better
@@ -53,7 +58,9 @@
 
         vm.selectHour = function(hour) {
             vm.thirdTabLocked = false;
-            vm.selectedHour = hour;
+            vm.selectedHour = new Date(hour.startTime.replace('T', ' ').slice(0, -6));
+            vm.selectedHour = $filter('date')(vm.selectedHour,'shortTime');
+            vm.selectedSlot = hour;
             vm.selectedTab = 2;
         }
 
@@ -105,8 +112,10 @@
                 for(var x=0; x<vm.details.length; x++){
                     people[vm.details[x].id] = vm.details[x].selected;
                 }
+                params.people = people;
             }
-            params.people = people;
+            vm.loader = true;
+            vm.availableHours = '';
             getAvailableHours(params);
         }
 
@@ -129,9 +138,9 @@
                 vm.availableHours = reservationAPIFactory.availableHours;
                 //Success
                 if (status == 'SUCCESS') {
-                    vm.availableHours = reservationAPIFactory.availableHours;
+                    //vm.availableHours = reservationAPIFactory.availableHours;
                     //Successful get available hours callback
-                    reservationService.onSuccessfulGetAvailableHours(status, message, date, vm.availableHours);
+                    //reservationService.onSuccessfulGetAvailableHours(status, message, date, vm.availableHours);
 
                 //Error
                 } else {
@@ -157,11 +166,17 @@
          * Do reserve POST with selectedDate, selectedHour and userData as parameters of the call
          */
         // TODO This function should have all needed parameters in order to test it better
-        function reserve(date, hour, userData) {
+        function reserve(date, hour, userData) {console.log(vm.details);
             vm.loader = true;
 
             var selectedDateFormatted = $filter('date')(date, vm.dateFormat);
-            var params = {selectedDate: selectedDateFormatted, selectedHour: hour, userData: userData};
+            var people = {};
+            if(vm.vendor === 'bookeo'){
+                for(var x=0; x<vm.details.length; x++){
+                    people[vm.details[x].id] = vm.details[x].selected;
+                }
+            }
+            var params = {selectedDate: selectedDateFormatted, selectedHour: hour, userData: userData, timeSlot: vm.selectedSlot, apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId, people:people, title: vm.details[0].title};
 
             reservationAPIFactory.reserve(params).then(function () {
                 vm.loader = false;
