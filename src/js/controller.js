@@ -4,9 +4,9 @@
  */
 (function () {
     //Controller
-    angular.module('hm.reservation').controller('ReservationCtrl', ['$scope', '$filter', '$translate', 'reservationAPIFactory', 'reservationConfig', 'reservationService', reservationCtrl]);
+    angular.module('hm.reservation').controller('ReservationCtrl', ['$scope', '$rootScope', '$filter', '$translate', 'reservationAPIFactory', 'reservationConfig', 'reservationService', 'Order', reservationCtrl]);
 
-    function reservationCtrl($scope, $filter, $translate, reservationAPIFactory, reservationConfig, reservationService) {
+    function reservationCtrl($scope, $rootScope, $filter, $translate, reservationAPIFactory, reservationConfig, reservationService, Order) {
         //Capture the this context of the Controller using vm, standing for viewModel
         var vm = this;
 
@@ -21,6 +21,7 @@
         vm.selectedHour = "";
         vm.selectedSlot = '';
         vm.details = "";
+        vm.hold = "";
         vm.total = 0;
 
         vm.userData = {};
@@ -39,10 +40,13 @@
         vm.vendor = $scope.vendor;
         vm.id = $scope.id;
         vm.externalId = $scope.externalId;
+        vm.product = $scope.product;
+        vm.variant = $scope.variant;
 
         $translate.use(reservationConfig.language);
 
-        vm.userData.name = 'Robert';
+        vm.userData.firstName = 'Robert';
+        vm.userData.lastName = 'Stanica';
         vm.userData.phone = '4165550000';
         vm.userData.email = 'robertstanica@gmail.com';
 
@@ -56,12 +60,12 @@
             onBeforeGetAvailableHours({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:date, externalId: vm.externalId});
         }
 
-        vm.selectHour = function(hour) {
+        vm.selectHour = function(time) {
             vm.thirdTabLocked = false;
-            vm.selectedHour = new Date(hour.startTime.replace('T', ' ').slice(0, -6));
+            vm.selectedHour = new Date(time.startTime.replace('T', ' ').slice(0, -6));
             vm.selectedHour = $filter('date')(vm.selectedHour,'shortTime');
-            vm.selectedSlot = hour;
-            vm.selectedTab = 2;
+            vm.selectedSlot = time;
+            onBeforeHoldDate(time);
         }
 
         vm.reserve = function(date, hour, userData) {
@@ -120,6 +124,24 @@
         }
 
         /**
+         * Function executed before get holding time slot.
+         */
+        function onBeforeHoldDate(params){
+            if(vm.vendor === 'bookeo'){
+                var people = {};
+                for(var x=0; x<vm.details.length; x++){
+                    people[vm.details[x].id] = vm.details[x].selected;
+                }
+                params.people = people;
+            }
+            var selectedDateFormatted = $filter('date')(vm.selectedDate, vm.dateFormat);
+            reservationAPIFactory.hodl({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:selectedDateFormatted, externalId: vm.externalId, eventId:params.eventId, people:params.people}).then(function(){
+              vm.selectedTab = 2;
+              vm.hold = reservationAPIFactory.hold;
+            });
+        }
+
+        /**
          * Get available hours for a selected date
          */
         function getAvailableHours(params) {
@@ -154,8 +176,19 @@
          * Function executed before reserve function
          */
         function onBeforeReserve(date, hour, userData) {
-            reservationService.onBeforeReserve(date, hour, userData).then(function () {
-                reserve(date, hour, userData);
+            var v = vm.variant, product=vm.product;
+            userData.finalPrice = vm.hold.totalPayable.amount;
+            reservationService.onBeforeReserve(date, hour, userData).then(function () {console.log('b');
+                $rootScope.cart.addItem({sku:v.experienceSku, businessId:product.businessId, name:v.name, slug:product.slug, mrp:v.mrp, price:v.price, quantity:1, image:v.image,category:product.category, currency:vm.hold.totalPayable.currency, partner:product},true, false);
+                  var shipping = $rootScope.cart.getTotalPriceAfterShipping();
+                  var data = {tax:$rootScope.cart.taxes[product.address.region], businessId:product.businessId, currency:$scope.currency, phone:user.phone, name:user.name, payment:'Stripe', items:$rootScope.cart.items, shipping:shipping};
+                  console.log('about to save order', Order);
+                  Order.save(data, function(data){console.log('r');
+                    reserve(date, hour, userData);
+                  }, function(err){
+                    $scope.err = "There was an error confirming your purchase. Try refreshing the page or send us an email. Sorry about that!";
+                  });
+                
 
             }, function() {
                 console.log("onBeforeReserve: Rejected promise");
@@ -176,7 +209,7 @@
                     people[vm.details[x].id] = vm.details[x].selected;
                 }
             }
-            var params = {selectedDate: selectedDateFormatted, selectedHour: hour, userData: userData, timeSlot: vm.selectedSlot, apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId, people:people, title: vm.details[0].title};
+            var params = {selectedDate: selectedDateFormatted, selectedHour: hour, userData: userData, holdId: vm.hold.id, timeSlot: vm.selectedSlot, apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId, people:people, title: vm.details[0].title};
 
             reservationAPIFactory.reserve(params).then(function () {
                 vm.loader = false;

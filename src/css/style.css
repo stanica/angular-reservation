@@ -47,7 +47,6 @@
 
 .nav-tabs > li.active > a {
     background-color: white !important;
-    
     border-radius: 0;
 }
 
@@ -57,4 +56,8 @@ li:first-child a{
 
 .angular-reservation-padding {
     padding: 0 20px 5px 20px;
+}
+
+.angular-reservation-h5 {
+    margin-top: -5px;
 }

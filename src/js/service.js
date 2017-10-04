@@ -106,7 +106,7 @@
             vm.userData = userData;
 
             vm.translationParams = {
-                name: userData.name,
+                name: userData.firstName + ' ' + userData.lastName,
                 selectedDate: selectedDate,
                 selectedHour: selectedHour
             }

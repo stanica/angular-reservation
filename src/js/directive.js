@@ -12,7 +12,10 @@
                 apiKey: '@',
                 vendor: '@',
                 id: '@',
-                externalId: '@'
+                externalId: '@',
+                product: '@',
+                variant: '@'
+
             },
             controller: 'ReservationCtrl',
             controllerAs: 'reservationCtrl',

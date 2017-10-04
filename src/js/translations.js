@@ -9,7 +9,9 @@
             date: "Date",
             time: "Time",
             client: "Client",
-            name: "Name",
+            firstName: "First Name",
+            lastName: "Last Name",
+            finalPrice: "Final Price",
             save: "Save",
             cancel: "Cancel",
             select: "Select",
@@ -25,7 +27,7 @@
             confirmOK: "Yes, reserve",
             confirmCancel: "No, cancel",
             confirmTitle: "Confirm reservation",
-            confirmText: "{{name}}, Are you sure you want to reserve date {{selectedDate}} at {{selectedHour}}?.",
+            confirmText: "{{name}}, are you sure you want to reserve date {{selectedDate | date : 'shortDate'}} at {{selectedHour}}?",
             noAvailableHours: "There are no available hours for the selected date. Please select another date"
         });
 

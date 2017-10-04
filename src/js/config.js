@@ -10,6 +10,7 @@
         var config = {
             getDetailsUrl: "http://localhost:8080/getDetails",
             getAvailableHoursAPIUrl: "http://localhost:8080/availableHours", //API url endpoint to load list of available hours
+            holdSlotAPIUrl: "http://localhost:8080/hold", //API url endpoint to do a hold
             reserveAPIUrl: "http://localhost:8080/reserve", //API url endpoint to do a reserve
             dateFormat: "yyyy-MM-dd",
             language: "en",

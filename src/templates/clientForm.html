@@ -1,17 +1,38 @@
 <div class="col-md-12 angular-reservation-clientForm">
     <div class="form-group col-md-12">
-        <label class="col-md-3 control-label" for="name">{{"name" | translate}}</label>
+        <label class="col-md-3 control-label" for="firstName">First Name</label>
         <div class="col-md-9">
             <div class="input-group">
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-user" aria-hidden="true" style="font-size: 14px"></span>
             </span>
 
-                <input id="name" name="name" class="form-control" placeholder="{{'name' | translate}}" type="text" ng-model="reservationCtrl.userData.name"
+                <input id="firstName" name="firstName" class="form-control" placeholder="First Name" type="text" ng-model="reservationCtrl.userData.firstName"
                        autofocus="true" ng-pattern="/^[\w\s\-\x7f-\xff]*$/" ng-minlength="2" ng-maxlength="100" required>
             </div>
 
-            <div class="help-block" ng-messages="reserveForm.name.$error" ng-if="reserveForm.$submitted">
+            <div class="help-block" ng-messages="reserveForm.firstName.$error" ng-if="reserveForm.$submitted">
+                <p ng-message="minlength" class="text-danger">{{"minLength" | translate: '{minLength: "2"}'}}</p>
+                <p ng-message="maxlength" class="text-danger">{{"maxLength" | translate: '{maxLength: "100"}'}}</p>
+                <p ng-message="pattern" class="text-danger">{{"invalidCharacters" | translate}}</p>
+                <p ng-message="required" class="text-danger">{{"required" | translate}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group col-md-12">
+        <label class="col-md-3 control-label" for="lastName">Last Name</label>
+        <div class="col-md-9">
+            <div class="input-group">
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-user" aria-hidden="true" style="font-size: 14px"></span>
+            </span>
+
+                <input id="lastName" name="lastName" class="form-control" placeholder="Last Name" type="text" ng-model="reservationCtrl.userData.lastName"
+                       autofocus="true" ng-pattern="/^[\w\s\-\x7f-\xff]*$/" ng-minlength="2" ng-maxlength="100" required>
+            </div>
+
+            <div class="help-block" ng-messages="reserveForm.lastName.$error" ng-if="reserveForm.$submitted">
                 <p ng-message="minlength" class="text-danger">{{"minLength" | translate: '{minLength: "2"}'}}</p>
                 <p ng-message="maxlength" class="text-danger">{{"maxLength" | translate: '{maxLength: "100"}'}}</p>
                 <p ng-message="pattern" class="text-danger">{{"invalidCharacters" | translate}}</p>
