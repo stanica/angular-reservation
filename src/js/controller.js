@@ -4,9 +4,9 @@
  */
 (function () {
     //Controller
-    angular.module('hm.reservation').controller('ReservationCtrl', ['$scope', '$rootScope', '$filter', '$translate', 'reservationAPIFactory', 'reservationConfig', 'reservationService', 'Order', reservationCtrl]);
+    angular.module('hm.reservation').controller('ReservationCtrl', ['$scope', '$rootScope', '$filter', '$translate', 'reservationAPIFactory', 'reservationConfig', 'reservationService', 'Order', 'PaymentMethod', reservationCtrl]);
 
-    function reservationCtrl($scope, $rootScope, $filter, $translate, reservationAPIFactory, reservationConfig, reservationService, Order) {
+    function reservationCtrl($scope, $rootScope, $filter, $translate, reservationAPIFactory, reservationConfig, reservationService, Order, PaymentMethod) {
         //Capture the this context of the Controller using vm, standing for viewModel
         var vm = this;
 
@@ -176,18 +176,43 @@
          * Function executed before reserve function
          */
         function onBeforeReserve(date, hour, userData) {
-            var v = vm.variant, product=vm.product;
+            var v = JSON.parse(vm.variant), product=JSON.parse(vm.product);
             userData.finalPrice = vm.hold.totalPayable.amount;
-            reservationService.onBeforeReserve(date, hour, userData).then(function () {console.log('b');
+            reservationService.onBeforeReserve(date, hour, userData).then(function () {console.log('finished on before reserve');
                 $rootScope.cart.addItem({sku:v.experienceSku, businessId:product.businessId, name:v.name, slug:product.slug, mrp:v.mrp, price:v.price, quantity:1, image:v.image,category:product.category, currency:vm.hold.totalPayable.currency, partner:product},true, false);
-                  var shipping = $rootScope.cart.getTotalPriceAfterShipping();
-                  var data = {tax:$rootScope.cart.taxes[product.address.region], businessId:product.businessId, currency:$scope.currency, phone:user.phone, name:user.name, payment:'Stripe', items:$rootScope.cart.items, shipping:shipping};
-                  console.log('about to save order', Order);
-                  Order.save(data, function(data){console.log('r');
-                    reserve(date, hour, userData);
-                  }, function(err){
+                var shipping = {
+                    afterTax: vm.hold.totalPayable.amount,
+                    charge: 0,
+                    couponAmount: 0,
+                    more: 999999,
+                    tax: (vm.hold.price.totalTaxes.amount / vm.hold.price.totalNet.amount).toFixed(2),
+                    total: vm.hold.price.totalNet.amount
+                };
+                var data = {tax:$rootScope.cart.taxes[product.address.region], businessId:product.businessId, currency:vm.hold.totalPayable.currency, phone:userData.phone, name:userData.firstName + ' ' + userData.lastName, payment:'Stripe', items:$rootScope.cart.items, shipping:shipping};
+                Order.save(data, function(data){
+                    console.log('saved order');
+                    var obj = {};
+                    obj.status = {};
+                    obj.status.name = 'Bookeo Stripe Modal Incomplete';
+                    obj.status.val = 150;
+                    obj.phone = userData.phone;
+                    Order.customer.updateStatus.update({id:data.transactionId}, obj);
+                    console.log('checking out');
+                    var paymentMethod = {};
+                    PaymentMethod.active.query().$promise.then(function(res){console.log('<<',res);
+                        for(var x=0; x<res.length; x++){
+                            if(res[x].name === 'Stripe'){
+                                paymentMethod = res[x];
+                            }
+                        }
+                        $rootScope.cart.checkout({paymentMethod:paymentMethod, transactionId:data.transactionId, email:userData.email, currency:$rootScope.cart.items[0].currency, options: shipping},true, function(status){
+                            console.log('>>',status);
+                            reserve(date, hour, userData);
+                        });
+                    });
+                }, function(err){
                     $scope.err = "There was an error confirming your purchase. Try refreshing the page or send us an email. Sorry about that!";
-                  });
+                });
                 
 
             }, function() {
