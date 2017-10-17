@@ -7,7 +7,7 @@
 
         //Before get available hours callback
         this.onBeforeGetAvailableHours = function(selectedDate) {
-            console.log("Executing before get available hours callback");
+            //console.log("Executing before get available hours callback");
             var deferred = $q.defer();
 
             deferred.resolve();
@@ -18,22 +18,22 @@
 
         //Completed get available hours callback
         this.onCompletedGetAvailableHours = function(status, message, selectedDate) {
-            console.log("Executing completed get available hours callback");
+            //console.log("Executing completed get available hours callback");
         }
 
         //Success get available hours callback
         this.onSuccessfulGetAvailableHours = function(status, message, selectedDate, availableHours) {
-            console.log("Executing successful get available hours callback");
+            //console.log("Executing successful get available hours callback");
         }
 
         //Error get available hours callback
         this.onErrorGetAvailableHours = function(status, message, selectedDate) {
-            console.log("Executing error get available hours callback");
+            //console.log("Executing error get available hours callback");
         }
 
         //Before reserve callback
         this.onBeforeReserve = function(selectedDate, selectedHour, userData) {
-            console.log("Executing before reserve callback");
+            //console.log("Executing before reserve callback");
             var deferred = $q.defer();
 
             if(reservationConfig.showConfirmationModal) {
@@ -50,17 +50,17 @@
 
         //Completed reserve callback
         this.onCompletedReserve = function(status, message, selectedDate, selectedHour, userData) {
-            console.log("Executing completed reserve callback");
+            //console.log("Executing completed reserve callback");
         }
 
         //Success reserve callback
         this.onSuccessfulReserve = function(status, message, reservedDate, reservedHour, userData) {
-            console.log("Executing successful reserve callback");
+            //console.log("Executing successful reserve callback");
         }
 
         //Error reserve callback
         this.onErrorReserve = function(status, message, selectedDate, selectedHour, userData) {
-            console.log("Executing error reserve callback");
+            //console.log("Executing error reserve callback");
         }
 
         /**
@@ -86,11 +86,11 @@
             });
 
             modalInstance.result.then(function () {
-                console.log("Accepted");
+                //console.log("Accepted");
                 deferred.resolve();
 
             }, function () {
-                console.log("Cancelled");
+                //console.log("Cancelled");
                 deferred.reject();
             })
         }

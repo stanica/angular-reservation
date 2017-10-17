@@ -86,14 +86,14 @@
     </div>
 
     <div class="col-md-12">
-        <div uib-alert class="alert-success text-center" ng-if="reservationCtrl.reservationStatus == 'SUCCESS'" style="margin-top: 1em">
+        <div uib-alert class="alert-success text-center" ng-if="reservationCtrl.reservationStatus == 'Success'" style="margin-top: 1em">
             <span>Success!</span>
-            <p ng-if="reservationCtrl.reservationMessage">{{reservationCtrl.reservationMessage}}</p>
+            <div ng-if="reservationCtrl.reservationMessage">{{reservationCtrl.reservationMessage}}</div>
         </div>
 
-        <div uib-alert class="alertt-danger text-center" ng-if="reservationCtrl.reservationStatus == 'ERROR'" style="margin-top: 1em">
-            <span>Error!</span>
-            <p ng-if="reservationCtrl.reservationMessage">{{reservationCtrl.reservationMessage}}</p>
+        <div uib-alert class="alert-danger text-center" ng-if="reservationCtrl.reservationStatus == 'Error'" style="margin-top: 1em">
+            <div ng-if="reservationCtrl.reservationMessage">{{reservationCtrl.reservationMessage}}</div>
+            <span>Please contact your financial institution for support.</span>
         </div>
     </div>
 </div>

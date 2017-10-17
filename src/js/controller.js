@@ -61,6 +61,7 @@
         }
 
         vm.selectHour = function(time) {
+            vm.loader = true;
             vm.thirdTabLocked = false;
             vm.selectedHour = new Date(time.startTime.replace('T', ' ').slice(0, -6));
             vm.selectedHour = $filter('date')(vm.selectedHour,'shortTime');
@@ -138,6 +139,7 @@
             reservationAPIFactory.hodl({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:selectedDateFormatted, externalId: vm.externalId, eventId:params.eventId, people:params.people}).then(function(){
               vm.selectedTab = 2;
               vm.hold = reservationAPIFactory.hold;
+              vm.loader = false;
             });
         }
 
@@ -181,33 +183,44 @@
             reservationService.onBeforeReserve(date, hour, userData).then(function () {console.log('finished on before reserve');
                 $rootScope.cart.addItem({sku:v.experienceSku, businessId:product.businessId, name:v.name, slug:product.slug, mrp:v.mrp, price:v.price, quantity:1, image:v.image,category:product.category, currency:vm.hold.totalPayable.currency, partner:product},true, false);
                 var shipping = {
-                    afterTax: vm.hold.totalPayable.amount,
+                    afterTax: parseFloat(vm.hold.totalPayable.amount),
                     charge: 0,
                     couponAmount: 0,
                     more: 999999,
                     tax: (vm.hold.price.totalTaxes.amount / vm.hold.price.totalNet.amount).toFixed(2),
-                    total: vm.hold.price.totalNet.amount
+                    total: parseFloat(vm.hold.price.totalNet.amount),
+                    holdId: vm.hold.id
                 };
                 var data = {tax:$rootScope.cart.taxes[product.address.region], businessId:product.businessId, currency:vm.hold.totalPayable.currency, phone:userData.phone, name:userData.firstName + ' ' + userData.lastName, payment:'Stripe', items:$rootScope.cart.items, shipping:shipping};
                 Order.save(data, function(data){
-                    console.log('saved order');
                     var obj = {};
                     obj.status = {};
                     obj.status.name = 'Bookeo Stripe Modal Incomplete';
                     obj.status.val = 150;
                     obj.phone = userData.phone;
                     Order.customer.updateStatus.update({id:data.transactionId}, obj);
-                    console.log('checking out');
                     var paymentMethod = {};
-                    PaymentMethod.active.query().$promise.then(function(res){console.log('<<',res);
+                    userData.transactionId = data.transactionId
+                    PaymentMethod.active.query().$promise.then(function(res){
                         for(var x=0; x<res.length; x++){
                             if(res[x].name === 'Stripe'){
                                 paymentMethod = res[x];
                             }
                         }
-                        $rootScope.cart.checkout({paymentMethod:paymentMethod, transactionId:data.transactionId, email:userData.email, currency:$rootScope.cart.items[0].currency, options: shipping},true, function(status){
-                            console.log('>>',status);
-                            reserve(date, hour, userData);
+                        $rootScope.cart.checkout({paymentMethod:paymentMethod, transactionId:data.transactionId, email:userData.email, currency:$rootScope.cart.items[0].currency, options: shipping},true, function(data){
+                            if(data.status === 'Error'){
+                                var status = vm.reservationStatus = data.status;
+                                var message = vm.reservationMessage = data.message;
+                            }
+                            else {
+                                if(data.status === 'succeeded'){
+                                    reserve(date, hour, userData);
+                                }
+                                else {
+                                    var status = vm.reservationStatus = data.status;
+                                    var message = vm.reservationMessage = data.message;
+                                }
+                            }
                         });
                     });
                 }, function(err){
@@ -224,7 +237,7 @@
          * Do reserve POST with selectedDate, selectedHour and userData as parameters of the call
          */
         // TODO This function should have all needed parameters in order to test it better
-        function reserve(date, hour, userData) {console.log(vm.details);
+        function reserve(date, hour, userData) {console.log(userData);
             vm.loader = true;
 
             var selectedDateFormatted = $filter('date')(date, vm.dateFormat);
