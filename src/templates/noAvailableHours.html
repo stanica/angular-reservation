@@ -1,1 +1,6 @@
 <span class="angular-reservation-noAvailableHours">{{"noAvailableHours" | translate}}</span>
+{{reservationCtrl.availableHoursMessage}}
+<div uib-alert class="alert-danger text-center" ng-if="reservationCtrl.reservationStatus == 'Error'" style="margin-top: 1em">
+  <div ng-if="reservationCtrl.reservationMessage">{{reservationCtrl.reservationMessage}}</div>
+  <span>Please contact your financial institution for support.</span>
+</div>

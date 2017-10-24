@@ -25,7 +25,7 @@
                 <div ng-include="reservationCtrl.availableHoursTemplate"></div>
             </div>
 
-            <div ng-if="!reservationCtrl.loader && reservationCtrl.availableHours.length == 0">
+            <div ng-if="!reservationCtrl.loader && (reservationCtrl.availableHours.length == 0 || !reservationCtrl.availableHours.length)">
                 <div ng-include="reservationCtrl.noAvailableHoursTemplate"></div>
             </div>
         </uib-tab>

@@ -70,8 +70,8 @@
                 
                 //validateAvailableHoursResponseData(response.data);
 
-                //reservationAPI.status = response.data.status;
-                //reservationAPI.message = response.data.message;
+                reservationAPI.status = response.data.status || '';
+                reservationAPI.message = response.data.message || '';
                 reservationAPI.availableHours = response.data.data;
 
             }, function(response) {
@@ -89,11 +89,26 @@
 
             }).then(function(response) {
                 //Success handler
-                console.log(response.data);
+                //console.log(response.data);
                 reservationAPI.hold = response.data;
                 //validateReserveResponseData(response.data);
                 //reservationAPI.status = response.data.status;
                 //reservationAPI.message = response.data.message;
+
+            }, function(response) {
+                reservationAPI.errorManagement(response.status);
+            });
+        }
+
+        //Call to create temporary hold before finalizing booking
+        reservationAPI.cancelHold = function(params){
+           return $http({
+                method: 'PUT',
+                data: params,
+                url: reservationConfig.holdSlotAPIUrl,
+                responseType: 'json'
+
+            }).then(function(response) {
 
             }, function(response) {
                 reservationAPI.errorManagement(response.status);
@@ -110,7 +125,7 @@
 
             }).then(function(response) {
                 //Success handler
-                console.log(response.data);
+                //console.log(response.data);
                 validateReserveResponseData(response.data);
                 reservationAPI.status = response.data.status;
                 reservationAPI.message = response.data.message;

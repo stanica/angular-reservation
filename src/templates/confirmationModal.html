@@ -5,7 +5,7 @@
 <div class="modal-body">
     <h5>{{"confirmText" | translate : confirmationModalCtrl.translationParams}}</h5>
 
-    <div ng-repeat="(key, value) in confirmationModalCtrl.userData track by $index">
+    <div ng-repeat="(key, value) in confirmationModalCtrl.userData track by $index" ng-if="key !== 'transactionId'">
         <label class="control-label text-muted">{{key | translate}}:</label>
 		
         <h5 ng-if="key!=='finalPrice'" class="angular-reservation-h5">{{value}}</h5>
