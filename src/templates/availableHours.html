@@ -1,4 +1,5 @@
-<a class="list-group-item" href="" ng-repeat="item in reservationCtrl.availableHours" ng-click="reservationCtrl.selectHour(item)"
+<a class="list-group-item" ng-repeat="item in reservationCtrl.availableHours" ng-click="reservationCtrl.selectHour(item)"
    ng-class="{'angular-reservation-selected': reservationCtrl.selectedHour == item}">
-    <span>{{item.startTime | ignoreTimeZone | date  : 'shortTime'}}</span>
+    <div style="display:inline-block"><span>{{item.startTime | ignoreTimeZone | date  : 'shortTime'}}</span></div>
+    <div style="display:inline-block;float:right"><span>{{item.numSeatsAvailable}} slots</span></div>
 </a>

@@ -22,7 +22,8 @@
         vm.selectedSlot = '';
         vm.details = "";
         vm.hold = "";
-        vm.total = 0;
+        vm.total = 0; //Price total
+        vm.totalSelectedPeople = 0; //Number of people
 
         vm.userData = {};
 
@@ -115,8 +116,10 @@
             });*/
             if(vm.vendor === 'bookeo'){
                 var people = {};
+                vm.totalSelectedPeople = 0;
                 for(var x=0; x<vm.details.length; x++){
                     people[vm.details[x].id] = vm.details[x].selected;
+                    vm.totalSelectedPeople += vm.details[x].selected
                 }
                 params.people = people;
             }
@@ -160,7 +163,9 @@
                 //Completed get available hours callback
                 //reservationService.onCompletedGetAvailableHours(status, message, date);
 
-                vm.availableHours = reservationAPIFactory.availableHours;
+                vm.availableHours = reservationAPIFactory.availableHours.filter(function(item){
+                    return item.numSeatsAvailable >= vm.totalSelectedPeople;
+                });
                 //Success
                 if (status.toUpperCase() == 'SUCCESS') {
                     //vm.availableHours = reservationAPIFactory.availableHours;
@@ -181,8 +186,8 @@
         function onBeforeReserve(date, hour, userData) {
             var v = JSON.parse(vm.variant), product=JSON.parse(vm.product);
             userData.finalPrice = vm.hold.totalPayable.amount;
-            reservationService.onBeforeReserve(date, hour, userData).then(function () {
-                $rootScope.cart.addItem({sku:v.experienceSku, businessId:product.businessId, name:v.name, slug:product.slug, mrp:v.mrp, price:v.price, quantity:1, image:v.image,category:product.category, currency:vm.hold.totalPayable.currency, partner:product},true, false);
+            reservationService.onBeforeReserve(date, hour, userData).then(function () 
+{                $rootScope.cart.addItem({sku:v.experienceSku, businessId:product.businessId, name:v.name, slug:product.slug, mrp:v.mrp, price:v.price, quantity:1, image:v.image,category:product.category, currency:vm.hold.totalPayable.currency, partner:product},true, false);
                 var shipping = {
                     afterTax: parseFloat(vm.hold.totalPayable.amount),
                     charge: 0,

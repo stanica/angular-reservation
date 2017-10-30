@@ -61,3 +61,10 @@ li:first-child a{
 .angular-reservation-h5 {
     margin-top: -5px;
 }
+
+.angular-reservation-live {
+    margin:2em auto;
+    width:256px; color:green;
+    font-weight:bold;
+    text-align:right;
+}

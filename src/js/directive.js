@@ -14,7 +14,8 @@
                 id: '@',
                 externalId: '@',
                 product: '@',
-                variant: '@'
+                variant: '@',
+                customMonth: '&'
 
             },
             controller: 'ReservationCtrl',
