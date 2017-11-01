@@ -13,6 +13,7 @@
         vm.selectedTab = 0;
         vm.secondTabLocked = true;
         vm.thirdTabLocked = true;
+        vm.showSummary = false;
 
         var today = new Date();
         today.setHours(0,0,0,0); //Date at start of today
@@ -64,7 +65,6 @@
         vm.selectHour = function(time) {
             removeHold();
             vm.loader = true;
-            vm.thirdTabLocked = false;
             vm.selectedHour = new Date(time.startTime.replace('T', ' ').slice(0, -6));
             vm.selectedHour = $filter('date')(vm.selectedHour,'shortTime');
             vm.selectedSlot = time;
@@ -72,7 +72,15 @@
         }
 
         vm.reserve = function(date, hour, userData) {
+            //vm.showSummary = true;
             onBeforeReserve(date, hour, userData);
+        }
+
+        vm.setSummary = function(state){
+            vm.showSummary = state;
+            if(!state){
+                vm.selectedTab = 0;
+            }
         }
 
 
@@ -140,10 +148,12 @@
                 params.people = people;
             }
             var selectedDateFormatted = $filter('date')(vm.selectedDate, vm.dateFormat);
-            reservationAPIFactory.hodl({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:selectedDateFormatted, externalId: vm.externalId, eventId:params.eventId, people:params.people}).then(function(){
-              vm.selectedTab = 2;
-              vm.hold = reservationAPIFactory.hold;
-              vm.loader = false;
+            reservationAPIFactory.hodl({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:selectedDateFormatted, externalId: vm.externalId, eventId:params.eventId, people:params.people}).then(function(data){
+                vm.selectedTab = 2;
+                vm.hold = reservationAPIFactory.hold;
+                //vm.userData.finalPrice = vm.hold.totalPayable.amount;
+                vm.loader = false;
+                vm.thirdTabLocked = false;
             });
         }
 
@@ -185,9 +195,9 @@
          */
         function onBeforeReserve(date, hour, userData) {
             var v = JSON.parse(vm.variant), product=JSON.parse(vm.product);
-            userData.finalPrice = vm.hold.totalPayable.amount;
-            reservationService.onBeforeReserve(date, hour, userData).then(function () 
-{                $rootScope.cart.addItem({sku:v.experienceSku, businessId:product.businessId, name:v.name, slug:product.slug, mrp:v.mrp, price:v.price, quantity:1, image:v.image,category:product.category, currency:vm.hold.totalPayable.currency, partner:product},true, false);
+            //userData.finalPrice = vm.hold.totalPayable.amount;
+            reservationService.onBeforeReserve(date, hour, userData).then(function (){
+                $rootScope.cart.addItem({sku:v.experienceSku, businessId:product.businessId, name:v.name, slug:product.slug, mrp:v.mrp, price:v.price, quantity:1, image:v.image,category:product.category, currency:vm.hold.totalPayable.currency, partner:product},true, false);
                 var shipping = {
                     afterTax: parseFloat(vm.hold.totalPayable.amount),
                     charge: 0,

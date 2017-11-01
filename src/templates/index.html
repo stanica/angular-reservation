@@ -35,16 +35,67 @@
                 <span class="glyphicon glyphicon-user" aria-hidden="true" class="angular-reservation-icon-size"></span>
                 <h5>{{"client" | translate}}</h5>
             </uib-tab-heading>
+    
+            <div ng-if="!reservationCtrl.showSummary">
+                <form class="form-horizontal" name="reserveForm" novalidate
+                      ng-submit="reserveForm.$valid && reservationCtrl.setSummary(true)">
+                    <div class="spacer" ng-if="reservationCtrl.loader"></div>
+                    <div ng-include="'loader.html'" class="text-center" ng-if="reservationCtrl.loader"></div>
 
-            <form class="form-horizontal" name="reserveForm" novalidate
-                  ng-submit="reserveForm.$valid && reservationCtrl.reserve(reservationCtrl.selectedDate, reservationCtrl.selectedHour, reservationCtrl.userData)">
-                <div class="spacer" ng-if="reservationCtrl.loader"></div>
-                <div ng-include="'loader.html'" class="text-center" ng-if="reservationCtrl.loader"></div>
+                    <fieldset ng-if="!reservationCtrl.loader">
+                        <div ng-include="reservationCtrl.clientFormTemplate"></div>
+                    </fieldset>
+                </form>
+            </div>
 
-                <fieldset ng-if="!reservationCtrl.loader">
-                    <div ng-include="reservationCtrl.clientFormTemplate"></div>
-                </fieldset>
-            </form>
+            <div ng-if="reservationCtrl.showSummary">
+                <table class="angular-reservation-table">
+                    <tr class="angular-reservation-tr">
+                        <td><span class="text-muted">Experience:</span></td>
+                        <td class="angular-reservation-td"><span>{{reservationCtrl.details[0].title}}</span></td>
+                    </tr>
+                    <tr class="angular-reservation-tr">
+                        <td><span class="text-muted">Date:</span></td>
+                        <td class="angular-reservation-td"><span>{{reservationCtrl.selectedDate | date}}</span></td>
+                    </tr>
+                    <tr class="angular-reservation-tr">
+                        <td><span class="text-muted">Time:</span></td>
+                        <td class="angular-reservation-td"><span>{{reservationCtrl.selectedHour}}</span></td>
+                    </tr>
+                    <tr class="angular-reservation-tr" ng-repeat="(key, value) in reservationCtrl.userData track by $index">
+                        <td><span class="text-muted">{{key | translate}}:</span></td>
+                        <td class="angular-reservation-td">
+                            <span ng-if="key!=='finalPrice'">{{value}}</span>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="modal-footer" style="text-align:left">
+                    <div style="padding: 0px 0 40px 10px;">
+                        <div ng-repeat="person in reservationCtrl.details">
+                            <span ng-if="reservationCtrl.details[$index].selected > 0">{{person.name}} x {{reservationCtrl.details[$index].selected}}</span>
+                            <span class="pull-right text-muted" ng-if="reservationCtrl.details[$index].selected > 0">{{(person.price.amount * reservationCtrl.details[$index].selected) | currency}}</span>
+                        </div>
+                        <hr/>
+                        <div class="text-right">
+                            <span>Subtotal </span>
+                            <span class="text-muted">{{reservationCtrl.hold.price.totalNet.amount | currency}}</span>
+                        </div>
+                        <div class="text-right" style="padding-bottom:10px">
+                            <span>Tax</span>
+                            <span class="text-muted">{{reservationCtrl.hold.price.totalTaxes.amount | currency}}</span>
+                        </div>
+                        <div class="text-right" style="font-size:20px">
+                            <span>Total </span>
+                            <span class="hijinks-orange">{{reservationCtrl.hold.price.totalGross.amount | currency}}</span>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-purchase btn-lg" type="button" ng-click="reservationCtrl.reserve(reservationCtrl.selectedDate, reservationCtrl.selectedHour, reservationCtrl.userData)">{{"confirmOK" | translate}}</button>
+                        <div style="padding-top:5px"><a class="clickable" ng-click="reservationCtrl.setSummary(false);">« Edit booking details</a></div>
+                    </div>
+                </div>
+            </div>
         </uib-tab>
     </uib-tabset>
 </div>

@@ -64,7 +64,21 @@ li:first-child a{
 
 .angular-reservation-live {
     margin:2em auto;
+    margin-bottom: -20px;
     width:256px; color:green;
     font-weight:bold;
     text-align:right;
+}
+
+.angular-reservation-td {
+    padding-left: 15px;
+}
+
+.angular-reservation-tr {
+    padding-bottom: 10px;
+}
+
+.angular-reservation-table {
+    border-collapse: initial;
+    border-spacing: 30px 15px;
 }

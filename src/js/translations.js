@@ -24,7 +24,7 @@
             invalidPhone: "Invalid phone number",
             invalidEmail: "Invalid email address",
             reserve: "Reserve",
-            confirmOK: "Yes, reserve",
+            confirmOK: "Confirm & Pay",
             confirmCancel: "No, cancel",
             confirmTitle: "Confirm reservation",
             confirmText: "{{name}}, are you sure you want to reserve date {{selectedDate | date : 'shortDate'}} at {{selectedHour}}?",

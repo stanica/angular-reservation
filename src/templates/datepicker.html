@@ -1,10 +1,15 @@
 <div class="row">
 	<div class="col-md-12">
+		<div class="angular-reservation-live"><i class="fa fa-check"></i> Live Availability</div>
+		<div uib-datepicker class="angular-reservation-datepicker" ng-model="reservationCtrl.selectedDate" datepicker-options="reservationCtrl.datepickerOptions"></div>
+	</div>
+
+	<div class="col-md-12">
 		<div class="spacer"></div>
 		<div ng-repeat="person in reservationCtrl.details">
 			<div class="row angular-reservation-padding">
 				<div class="col-md-8">
-					{{person.name}} - <span class="text-muted ">{{person.price.amount | currency}}</span>
+					{{person.name}} <span class="text-muted ">{{person.price.amount | currency}}</span>
 				</div>
 				<div class="col-md-4 text-right">
 				 	<div class="btn-group text-left" style="background:none" uib-dropdown>
@@ -19,12 +24,8 @@
 				</div>
 			</div>
 		</div>
-		<h3 style="margin-bottom:0" class="text-center">Total: {{reservationCtrl.getTotal() | currency}}</h3>
-	</div>
-
-	<div class="col-md-12">
-		<div uib-datepicker class="angular-reservation-datepicker" ng-model="reservationCtrl.selectedDate" datepicker-options="reservationCtrl.datepickerOptions"
-	     ng-change="reservationCtrl.onSelectDate(reservationCtrl.selectedDate)"></div>
-	  <div class="angular-reservation-live"><i class="fa fa-check"></i> Live Availbility</div>
+		<div class="text-center" style="padding:20px">
+			<a ng-click="reservationCtrl.onSelectDate(reservationCtrl.selectedDate)" class="btn btn-purchase text-center">Book Online</a>
+		</div>
 	</div>
 </div>
