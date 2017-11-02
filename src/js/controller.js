@@ -4,9 +4,9 @@
  */
 (function () {
     //Controller
-    angular.module('hm.reservation').controller('ReservationCtrl', ['$scope', '$rootScope', '$filter', '$translate', 'reservationAPIFactory', 'reservationConfig', 'reservationService', 'Order', 'PaymentMethod', reservationCtrl]);
+    angular.module('hm.reservation').controller('ReservationCtrl', ['$scope', '$rootScope', '$filter', '$window', '$translate', 'reservationAPIFactory', 'reservationConfig', 'reservationService', 'Order', 'PaymentMethod', reservationCtrl]);
 
-    function reservationCtrl($scope, $rootScope, $filter, $translate, reservationAPIFactory, reservationConfig, reservationService, Order, PaymentMethod) {
+    function reservationCtrl($scope, $rootScope, $filter, $window, $translate, reservationAPIFactory, reservationConfig, reservationService, Order, PaymentMethod) {
         //Capture the this context of the Controller using vm, standing for viewModel
         var vm = this;
 
@@ -292,7 +292,7 @@
 
                 //Completed reserve callback
                 reservationService.onCompletedReserve(status, message, date, hour, userData);
-
+                $window.location ='/purchase-complete';
                 //Success
                 if (status == 'SUCCESS') {
                     //Successful reserve calback
