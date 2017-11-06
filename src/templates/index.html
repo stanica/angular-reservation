@@ -65,7 +65,7 @@
                     <tr class="angular-reservation-tr" ng-repeat="(key, value) in reservationCtrl.userData track by $index">
                         <td><span class="text-muted">{{key | translate}}:</span></td>
                         <td class="angular-reservation-td">
-                            <span ng-if="key!=='finalPrice'">{{value}}</span>
+                            <span>{{value}}</span>
                         </td>
                     </tr>
                 </table>

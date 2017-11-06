@@ -207,6 +207,15 @@
                     total: parseFloat(vm.hold.price.totalNet.amount),
                     holdId: vm.hold.id
                 };
+                var people = [];
+                for (var x=0; x<vm.details.length; x++){
+                    if(vm.details[x].selected > 0){
+                        people.push({
+                            name: vm.details[x].name,
+                            quantity: vm.details[x].selected
+                        });
+                    }
+                }
                 var data = {
                     tax:$rootScope.cart.taxes[product.address.region],
                     businessId:product.businessId,
@@ -216,7 +225,8 @@
                     payment:'Stripe',
                     items:$rootScope.cart.items,
                     shipping:shipping,
-                    email: userData.email
+                    email: userData.email,
+                    people: people
                 };
                 Order.widget.save(data, function(data){
                     var obj = {};
@@ -226,25 +236,24 @@
                     obj.phone = userData.phone;
                     Order.widget.updateStatus.update({id:data.transactionId}, obj);
                     var paymentMethod = {};
-                    userData.transactionId = data.transactionId
                     PaymentMethod.active.query().$promise.then(function(res){
                         for(var x=0; x<res.length; x++){
                             if(res[x].name === 'Stripe'){
                                 paymentMethod = res[x];
                             }
                         }
-                        $rootScope.cart.checkout({paymentMethod:paymentMethod, transactionId:data.transactionId, email:userData.email, currency:$rootScope.cart.items[0].currency, options: shipping},true, function(data){
-                            if(data.status === 'Error'){
-                                var status = vm.reservationStatus = data.status;
-                                var message = vm.reservationMessage = data.message;
+                        $rootScope.cart.checkout({paymentMethod:paymentMethod, transactionId:data.transactionId, email:userData.email, currency:$rootScope.cart.items[0].currency, options: shipping},true, function(checkout){
+                            if(checkout.status === 'Error'){
+                                var status = vm.reservationStatus = checkout.status;
+                                var message = vm.reservationMessage = checkout.message;
                             }
                             else {
-                                if(data.status === 'succeeded'){
-                                    reserve(date, hour, userData);
+                                if(checkout.status === 'succeeded'){
+                                    reserve(date, hour, userData, data.transactionId);
                                 }
                                 else {
-                                    var status = vm.reservationStatus = data.status;
-                                    var message = vm.reservationMessage = data.message;
+                                    var status = vm.reservationStatus = checkout.status;
+                                    var message = vm.reservationMessage = checkout.message;
                                 }
                             }
                         });
@@ -272,7 +281,7 @@
          * Do reserve POST with selectedDate, selectedHour and userData as parameters of the call
          */
         // TODO This function should have all needed parameters in order to test it better
-        function reserve(date, hour, userData) {
+        function reserve(date, hour, userData, transactionId) {
             vm.loader = true;
 
             var selectedDateFormatted = $filter('date')(date, vm.dateFormat);
@@ -282,7 +291,7 @@
                     people[vm.details[x].id] = vm.details[x].selected;
                 }
             }
-            var params = {selectedDate: selectedDateFormatted, selectedHour: hour, userData: userData, holdId: vm.hold.id, timeSlot: vm.selectedSlot, apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId, people:people, title: vm.details[0].title};
+            var params = {transactionId: transactionId, selectedDate: selectedDateFormatted, selectedHour: hour, userData: userData, holdId: vm.hold.id, timeSlot: vm.selectedSlot, apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId, people:people, title: vm.details[0].title};
 
             reservationAPIFactory.reserve(params).then(function () {
                 vm.loader = false;
