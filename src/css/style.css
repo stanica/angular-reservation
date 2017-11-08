@@ -82,3 +82,39 @@ li:first-child a{
     border-collapse: initial;
     border-spacing: 30px 15px;
 }
+
+.angular-reservation-dynamic-padding {
+    
+}
+
+@media(max-width: 395px){
+    .angular-reservation-dynamic-padding {
+        padding-bottom: 15px;
+    }  
+}
+@media(min-width: 320px ) and (max-width:399px){
+    .angular-reservation-dynamic-padding2 {
+        padding-bottom: 15px;
+    }  
+}
+
+@media(min-width: 365px ) and (max-width:395px){
+    .angular-reservation-dynamic-padding3 {
+        padding-bottom: 15px;
+    }  
+}
+@media(min-width: 320px ) and (max-width:400px){
+    .angular-reservation-dynamic-padding4 {
+        padding-bottom: 15px;
+    }  
+}
+@media(min-width: 365px ) and (max-width:399px){
+    .angular-reservation-dynamic-padding5 {
+        padding-bottom: 15px;
+    }  
+}
+@media(min-width: 320px ) and (max-width:395px){
+    .angular-reservation-dynamic-padding6 {
+        padding-bottom: 15px;
+    }  
+}
