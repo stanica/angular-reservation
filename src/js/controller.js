@@ -212,7 +212,8 @@
                     if(vm.details[x].selected > 0){
                         people.push({
                             name: vm.details[x].name,
-                            quantity: vm.details[x].selected
+                            quantity: vm.details[x].selected,
+                            price: vm.details[x].price.amount
                         });
                     }
                 }
@@ -288,9 +289,12 @@
             var people = {};
             if(vm.vendor === 'bookeo'){
                 for(var x=0; x<vm.details.length; x++){
-                    people[vm.details[x].id] = vm.details[x].selected;
+                    people[vm.details[x].id] = {
+                        selected: vm.details[x].selected,
+                        price: vm.details[x].price.amount
+                    };
                 }
-            }
+            }console.log(people);
             var params = {transactionId: transactionId, selectedDate: selectedDateFormatted, selectedHour: hour, userData: userData, holdId: vm.hold.id, timeSlot: vm.selectedSlot, apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId, people:people, title: vm.details[0].title};
 
             reservationAPIFactory.reserve(params).then(function () {
@@ -300,12 +304,13 @@
                 var message = vm.reservationMessage = reservationAPIFactory.message;
 
                 //Completed reserve callback
-                reservationService.onCompletedReserve(status, message, date, hour, userData);
-                $window.location ='/purchase-complete';
+                
+                
                 //Success
-                if (status == 'SUCCESS') {
+                if (status === 'Success') {
                     //Successful reserve calback
-                    reservationService.onSuccessfulReserve(status, message, date, hour, userData);
+                    reservationService.onCompletedReserve(status, message, date, hour, userData);
+                    $window.location ='/purchase-complete';
 
                 //Error
                 } else {
