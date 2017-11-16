@@ -8,7 +8,7 @@
         $translateProvider.translations('en', {
             date: "Date",
             time: "Time",
-            client: "Customer",
+            client: "Details",
             firstName: "First Name",
             lastName: "Last Name",
             finalPrice: "Final Price",

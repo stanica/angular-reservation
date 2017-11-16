@@ -63,7 +63,7 @@ li:first-child a{
 }
 
 .angular-reservation-live {
-    margin:2em auto;
+    margin:1em auto;
     margin-bottom: -20px;
     width:256px; color:green;
     font-weight:bold;

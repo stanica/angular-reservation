@@ -5,14 +5,13 @@
 	</div>
 
 	<div class="col-md-12">
-		<div class="spacer"></div>
 		<div ng-repeat="person in reservationCtrl.details">
 			<div class="row angular-reservation-padding">
-				<div class="col-md-8">
+				<div class="col-xs-12" style="line-height:30px">
 					{{person.name}} <span class="text-muted ">{{person.price.amount | currency}}</span>
-				</div>
-				<div class="col-md-4 text-right">
-				 	<div class="btn-group text-left" style="background:none" uib-dropdown>
+				
+				
+				 	<div class="btn-group pull-right" style="background:none" uib-dropdown>
 						<button id="split-button" type="button" class="btn btn-sm btn-default">{{reservationCtrl.details[$index].selected}}</button>
 			      <button type="button" class="btn btn-sm btn-default" uib-dropdown-toggle>
 			        <span class="caret"></span>

@@ -59,6 +59,7 @@
             vm.selectedDate = date;
             vm.secondTabLocked = false;
             vm.selectedTab = 1;
+            $rootScope.scrollToAnchor('calendar-top');
             onBeforeGetAvailableHours({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:date, externalId: vm.externalId});
         }
 
@@ -81,6 +82,7 @@
             if(!state){
                 vm.selectedTab = 0;
             }
+            $rootScope.scrollToAnchor('calendar-top');
         }
 
 

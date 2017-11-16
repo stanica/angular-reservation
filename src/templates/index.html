@@ -3,8 +3,8 @@
         <uib-tab index="0" style="border-radius:0;">
             <uib-tab-heading>
                 <span class="glyphicon glyphicon-calendar" aria-hidden="true" class="angular-reservation-icon-size"></span>
-                <h5 ng-if="reservationCtrl.secondTabLocked">{{"date" | translate}}</h5>
-                <h5 ng-if="!reservationCtrl.secondTabLocked">{{reservationCtrl.selectedDate | date: reservationCtrl.dateFormat}}</h5>
+                <h5>{{"date" | translate}}</h5>
+                <!--<h5 ng-if="!reservationCtrl.secondTabLocked">{{reservationCtrl.selectedDate | date: reservationCtrl.dateFormat}}</h5>-->
             </uib-tab-heading>
             <div class="spacer" ng-if="reservationCtrl.loader"></div>
             <div ng-include="'loader.html'" class="text-center" ng-if="reservationCtrl.loader"></div>
@@ -14,13 +14,8 @@
         <uib-tab index="1" disable="reservationCtrl.secondTabLocked">
             <uib-tab-heading>
                 <span class="glyphicon glyphicon-time" aria-hidden="true" class="angular-reservation-icon-size"></span>
-                <h5 ng-if="reservationCtrl.thirdTabLocked">{{"time" | translate}}</h5>
-                <h5 ng-if="!reservationCtrl.thirdTabLocked">{{reservationCtrl.selectedHour}}</h5>
-                <div ng-if="reservationCtrl.thirdTabLocked" class="visible-md" style="padding-bottom:15px"></div>
-                <div ng-if="!reservationCtrl.secondTabLocked && reservationCtrl.thirdTabLocked && reservationCtrl.selectedHour" class="visible-xs angular-reservation-dynamic-padding"></div>
-                <div ng-if="!reservationCtrl.secondTabLocked && !reservationCtrl.thirdTabLocked && !reservationCtrl.selectedHour" class="visible-xs angular-reservation-dynamic-padding2"></div>
-                <div ng-if="!reservationCtrl.secondTabLocked && !reservationCtrl.selectedHour" class="visible-xs angular-reservation-dynamic-padding2"></div>
-                <div ng-if="!reservationCtrl.secondTabLocked && reservationCtrl.selectedHour" class="visible-xs angular-reservation-dynamic-padding5"></div>
+                <h5>{{"time" | translate}}</h5>
+                <!--<h5 ng-if="!reservationCtrl.thirdTabLocked">{{reservationCtrl.selectedHour}}</h5>-->
             </uib-tab-heading>
 
             <div class="spacer" ng-if="reservationCtrl.loader"></div>
@@ -39,10 +34,6 @@
             <uib-tab-heading>
                 <span class="glyphicon glyphicon-user" aria-hidden="true" class="angular-reservation-icon-size"></span>
                 <h5>{{"client" | translate}}</h5>
-                <div ng-if="!reservationCtrl.secondTabLocked" class="visible-md" style="padding-bottom:15px"></div>
-                <div ng-if="!reservationCtrl.secondTabLocked && !reservationCtrl" class="visible-xs angular-reservation-dynamic-padding"></div>
-                <div ng-if="!reservationCtrl.secondTabLocked && !reservationCtrl.thirdTabLocked" class="visible-xs angular-reservation-dynamic-padding2"></div>
-                <div ng-if="!reservationCtrl.secondTabLocked && reservationCtrl.thirdTabLocked" class="visible-xs angular-reservation-dynamic-padding6"></div>
             </uib-tab-heading>
     
             <div ng-if="!reservationCtrl.showSummary">
