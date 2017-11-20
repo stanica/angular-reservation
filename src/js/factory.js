@@ -108,10 +108,6 @@
                 url: reservationConfig.holdSlotAPIUrl,
                 responseType: 'json'
 
-            }).then(function(response) {
-
-            }, function(response) {
-                reservationAPI.errorManagement(response.status);
             });
         }
 

@@ -23,6 +23,8 @@
         vm.selectedSlot = '';
         vm.details = "";
         vm.hold = "";
+        vm.holdStatus = '';
+        vm.holdStatusMessage = '';
         vm.total = 0; //Price total
         vm.totalSelectedPeople = 0; //Number of people
 
@@ -56,20 +58,25 @@
         //METHODS
         // TODO This function should have all needed parameters in order to test it better
         vm.onSelectDate = function(date) {
-            vm.selectedDate = date;
-            vm.secondTabLocked = false;
-            vm.selectedTab = 1;
-            $rootScope.scrollToAnchor('calendar-top');
-            onBeforeGetAvailableHours({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:date, externalId: vm.externalId});
+            removeHold().then(function(result){
+                vm.hold = '';
+                vm.selectedDate = date;
+                vm.secondTabLocked = false;
+                vm.selectedTab = 1;
+                $rootScope.scrollToAnchor('calendar-top');
+                onBeforeGetAvailableHours({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:date, externalId: vm.externalId});
+            })
         }
 
         vm.selectHour = function(time) {
-            removeHold();
-            vm.loader = true;
-            vm.selectedHour = new Date(time.startTime.replace('T', ' ').slice(0, -6));
-            vm.selectedHour = $filter('date')(vm.selectedHour,'shortTime');
-            vm.selectedSlot = time;
-            onBeforeHoldDate(time);
+            removeHold().then(function(result){
+                vm.hold = '';
+                vm.loader = true;
+                vm.selectedHour = new Date(time.startTime.replace('T', ' ').slice(0, -6));
+                vm.selectedHour = $filter('date')(vm.selectedHour,'shortTime');
+                vm.selectedSlot = time;
+                onBeforeHoldDate(time);
+            });
         }
 
         vm.reserve = function(date, hour, userData) {
@@ -151,11 +158,18 @@
             }
             var selectedDateFormatted = $filter('date')(vm.selectedDate, vm.dateFormat);
             reservationAPIFactory.hodl({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:selectedDateFormatted, externalId: vm.externalId, eventId:params.eventId, people:params.people}).then(function(data){
-                vm.selectedTab = 2;
-                vm.hold = reservationAPIFactory.hold;
-                //vm.userData.finalPrice = vm.hold.totalPayable.amount;
-                vm.loader = false;
-                vm.thirdTabLocked = false;
+                if(reservationAPIFactory.hold.status === 'Error'){
+                    vm.holdStatus = 'Error';
+                    vm.holdStatusMessage = reservationAPIFactory.hold.message;
+                    vm.loader = false;
+                }
+                else {
+                    vm.selectedTab = 2;
+                    vm.hold = reservationAPIFactory.hold;
+                    //vm.userData.finalPrice = vm.hold.totalPayable.amount;
+                    vm.loader = false;
+                    vm.thirdTabLocked = false;
+                }
             });
         }
 
@@ -205,7 +219,9 @@
                     charge: 0,
                     couponAmount: 0,
                     more: 999999,
-                    tax: (vm.hold.price.totalTaxes.amount / vm.hold.price.totalNet.amount).toFixed(2),
+                    tax: (vm.hold.price.totalTaxes.amount / vm.hold.price.totalNet.amount).toFixed(2) !== 1 ? 
+                        (vm.hold.price.totalTaxes.amount / vm.hold.price.totalNet.amount).toFixed(2) :
+                        0,
                     total: parseFloat(vm.hold.price.totalNet.amount),
                     holdId: vm.hold.id
                 };
@@ -220,7 +236,7 @@
                     }
                 }
                 var data = {
-                    tax:$rootScope.cart.taxes[product.address.region],
+                    tax: parseFloat(shipping.tax) !== 0 ? (parseFloat(shipping.tax) + 1) : 0,
                     businessId:product.businessId,
                     currency:vm.hold.totalPayable.currency,
                     phone:userData.phone,
@@ -228,7 +244,7 @@
                     payment:'Stripe',
                     items:$rootScope.cart.items,
                     shipping:shipping,
-                    email: userData.email,
+                    email: userData.email.toLowerCase(),
                     people: people
                 };
                 Order.widget.save(data, function(data){
@@ -272,12 +288,7 @@
         }
 
         function removeHold(){
-            if(vm.hold.id){
-                reservationAPIFactory.cancelHold({apiKey: vm.apiKey, id: vm.hold.id, vendor: vm.vendor}).then(function(){
-                    
-                });
-                vm.hold = '';
-            }
+            return reservationAPIFactory.cancelHold({apiKey: vm.apiKey, id: vm.hold.id, vendor: vm.vendor});
         }
 
         /**
@@ -296,7 +307,7 @@
                         price: vm.details[x].price.amount
                     };
                 }
-            }console.log(people);
+            }
             var params = {transactionId: transactionId, selectedDate: selectedDateFormatted, selectedHour: hour, userData: userData, holdId: vm.hold.id, timeSlot: vm.selectedSlot, apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId, people:people, title: vm.details[0].title};
 
             reservationAPIFactory.reserve(params).then(function () {

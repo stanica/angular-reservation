@@ -1,5 +1,10 @@
-<a class="list-group-item" ng-repeat="item in reservationCtrl.availableHours" ng-click="reservationCtrl.selectHour(item)"
-   ng-class="{'angular-reservation-selected': reservationCtrl.selectedHour == item}">
-    <div style="display:inline-block"><span>{{item.startTime | ignoreTimeZone | date  : 'shortTime'}}</span></div>
-    <div style="display:inline-block;float:right"><span>{{item.numSeatsAvailable}} available</span></div>
-</a>
+<div class="row">
+	<a class="list-group-item" ng-repeat="item in reservationCtrl.availableHours" ng-click="reservationCtrl.selectHour(item)"
+	   ng-class="{'angular-reservation-selected': reservationCtrl.selectedHour == item}">
+	    <div style="display:inline-block"><span>{{item.startTime | ignoreTimeZone | date  : 'shortTime'}}</span></div>
+	    <div style="display:inline-block;float:right"><span>{{item.numSeatsAvailable}} available</span></div>
+	</a>
+  <div uib-alert class="alert-danger text-center" ng-if="reservationCtrl.holdStatus == 'Error'" style="margin-top: 1em">
+      <div ng-if="reservationCtrl.holdStatusMessage">{{reservationCtrl.holdStatusMessage}}</div>
+  </div>
+</div>
