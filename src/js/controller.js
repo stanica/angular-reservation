@@ -245,7 +245,12 @@
                     items:$rootScope.cart.items,
                     shipping:shipping,
                     email: userData.email.toLowerCase(),
-                    people: people
+                    people: people,
+                    entered: {
+                        status: true,
+                        date: Date.now(),
+                        bookingDate: vm.selectedDate
+                    }
                 };
                 Order.widget.save(data, function(data){
                     var obj = {};
