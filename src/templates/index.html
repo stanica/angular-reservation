@@ -11,7 +11,7 @@
             <div ng-include="reservationCtrl.datepickerTemplate"></div>
         </uib-tab>
 
-        <uib-tab index="1" disable="reservationCtrl.secondTabLocked">
+        <uib-tab ng-click="!reservationCtrl.secondTabLocked && reservationCtrl.onSelectDate(reservationCtrl.selectedDate)" index="1" disable="reservationCtrl.secondTabLocked">
             <uib-tab-heading>
                 <span class="glyphicon glyphicon-time" aria-hidden="true" class="angular-reservation-icon-size"></span>
                 <h5>{{"time" | translate}}</h5>
