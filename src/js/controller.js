@@ -249,7 +249,8 @@
                     entered: {
                         status: true,
                         date: Date.now(),
-                        bookingDate: vm.selectedDate
+                        bookingDate: vm.selectedDate,
+                        bookingTime: vm.selectedHour
                     }
                 };
                 Order.widget.save(data, function(data){
