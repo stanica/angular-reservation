@@ -46,14 +46,9 @@
         vm.externalId = $scope.externalId;
         vm.product = $scope.product;
         vm.variant = $scope.variant;
+        vm.user = $scope.user;
 
         $translate.use(reservationConfig.language);
-
-        vm.userData.firstName = 'Stop Your';
-        vm.userData.lastName = 'Sniffles';
-        vm.userData.phone = '4165550000';
-        vm.userData.email = 'robertstanica@gmail.com';
-
 
         //METHODS
         // TODO This function should have all needed parameters in order to test it better
@@ -63,7 +58,7 @@
                 vm.selectedDate = date;
                 vm.secondTabLocked = false;
                 vm.selectedTab = 1;
-                $rootScope.scrollToAnchor('calendar-top');
+                $rootScope.scrollToAnchorMobile('calendar-top');
                 onBeforeGetAvailableHours({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:date, externalId: vm.externalId});
             })
         }
@@ -72,7 +67,7 @@
             removeHold().then(function(result){
                 vm.hold = '';
                 vm.loader = true;
-                vm.selectedHour = new Date(time.startTime.replace('T', ' ').slice(0, -6));
+                vm.selectedHour = new Date(time.startTime.replace('T', ' ').replace(/-/g,'/').slice(0, -6));
                 vm.selectedHour = $filter('date')(vm.selectedHour,'shortTime');
                 vm.selectedSlot = time;
                 onBeforeHoldDate(time);
@@ -89,7 +84,7 @@
             if(!state){
                 vm.selectedTab = 0;
             }
-            $rootScope.scrollToAnchor('calendar-top');
+            $rootScope.scrollToAnchorMobile('calendar-top');
         }
 
 
@@ -219,8 +214,8 @@
                     charge: 0,
                     couponAmount: 0,
                     more: 999999,
-                    tax: (vm.hold.price.totalTaxes.amount / vm.hold.price.totalNet.amount).toFixed(2) !== 1 ? 
-                        (vm.hold.price.totalTaxes.amount / vm.hold.price.totalNet.amount).toFixed(2) :
+                    tax: (vm.hold.price.totalTaxes.amount / vm.hold.price.totalNet.amount).toFixed(3) !== 1 ? 
+                        (vm.hold.price.totalTaxes.amount / vm.hold.price.totalNet.amount).toFixed(3) :
                         0,
                     total: parseFloat(vm.hold.price.totalNet.amount),
                     holdId: vm.hold.id
@@ -241,6 +236,8 @@
                     currency:vm.hold.totalPayable.currency,
                     phone:userData.phone,
                     name:userData.firstName + ' ' + userData.lastName,
+                    firstName: userData.firstName,
+                    lastName: userData.lastName,
                     payment:'Stripe',
                     items:$rootScope.cart.items,
                     shipping:shipping,

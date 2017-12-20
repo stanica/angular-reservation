@@ -170,8 +170,8 @@
     }
     angular.module('hm.reservation').filter('ignoreTimeZone', function(){
       return function(val){
-          var newDate = new Date(val.replace('T', ' ').slice(0, -6));
-         return newDate;
+        var newDate = new Date(val.replace('T', ' ').replace(/-/g,'/').slice(0, -6));
+        return newDate;
       };
     });
     angular.module('hm.reservation').factory('reservationAPIFactory', ['$http', 'reservationConfig', reservationAPIFactory]);
