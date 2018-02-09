@@ -27,6 +27,7 @@
         vm.holdStatusMessage = '';
         vm.total = 0; //Price total
         vm.totalSelectedPeople = 0; //Number of people
+        vm.selectedPeople = false;
 
         vm.userData = {};
 

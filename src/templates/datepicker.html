@@ -17,14 +17,14 @@
 			        <span class="caret"></span>
 			      </button>
 			      <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="split-button">
-			       <li ng-class="{active : o === person.selected}" ng-repeat="o in reservationCtrl.range(reservationCtrl.details[$index].min, reservationCtrl.details[$index].max)" role="menuitem"><a ng-click="reservationCtrl.details[$parent.$index].selected = o">{{o}}</a></li>
+			       <li ng-class="{active : o === person.selected}" ng-repeat="o in reservationCtrl.range(reservationCtrl.details[$index].min, reservationCtrl.details[$index].max)" role="menuitem"><a ng-click="reservationCtrl.details[$parent.$index].selected = o; reservationCtrl.selectedPeople=true">{{o}}</a></li>
 		     		</ul>
 			    </div>
 				</div>
 			</div>
 		</div>
 		<div class="text-center" style="padding:20px">
-			<a ng-click="reservationCtrl.onSelectDate(reservationCtrl.selectedDate)" class="btn btn-purchase text-center">Check Availability</a>
+			<a ng-disabled="!reservationCtrl.selectedPeople" ng-click="reservationCtrl.onSelectDate(reservationCtrl.selectedDate)" class="btn btn-success btn-block text-center">Next ›</a>
 		</div>
 	</div>
 </div>

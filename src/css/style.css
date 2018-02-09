@@ -20,7 +20,7 @@
 }
 
 .angular-reservation-datepicker {
-    width: 252px;
+    width: 95%;
     margin: auto;
     margin-top: 2em;
     margin-bottom: 2em;
@@ -65,7 +65,7 @@ li:first-child a{
 .angular-reservation-live {
     margin:1em auto;
     margin-bottom: -20px;
-    width:256px;
+    width:95%;
     color:#068906;
     font-weight:bold;
     text-align:right;
@@ -107,4 +107,21 @@ li:first-child a{
 
 .angular-reservation-underline {
     border-bottom: 1px solid #e87528;
+}
+
+.uib-daypicker table {
+  width: 100%;
+}
+
+.uib-right, .uib-left, .uib-title {
+  background-color: #5a6c7d;
+  color: white;
+}
+.uib-right:hover, .uib-left:hover, .uib-title:hover {
+  background-color: #39434e !important;
+  color: white;
+}
+.uib-right:focus, .uib-left:focus, .uib-title:focus {
+  background-color: #39434e !important;
+  color: white;
 }
