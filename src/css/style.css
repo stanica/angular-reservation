@@ -125,3 +125,7 @@ li:first-child a{
   background-color: #39434e !important;
   color: white;
 }
+
+.angular-reservation-dropdown {
+    padding: 2px;
+}
