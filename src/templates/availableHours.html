@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row clickable">
 	<a class="list-group-item" ng-repeat="item in reservationCtrl.availableHours" ng-click="reservationCtrl.selectHour(item)"
 	   ng-class="{'angular-reservation-selected': reservationCtrl.selectedHour == item}">
 	    <div style="display:inline-block"><span>{{item.startTime | ignoreTimeZone | date  : 'shortTime'}}</span></div>
