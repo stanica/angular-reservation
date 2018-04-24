@@ -50,7 +50,7 @@
             </span>
 
                 <input id="phone" name="phone" class="form-control" placeholder="{{'phone' | translate}}" type="tel" ng-model="reservationCtrl.userData.phone"
-                       ng-pattern="/^[0-9]*$/" ng-minlength="5" ng-maxlength="15" required>
+                       ng-pattern="/^[0-9]*$/" ng-minlength="5" ng-maxlength="15" required phone-input>
             </div>
 
             <div class="help-block" ng-messages="reserveForm.phone.$error" ng-if="reserveForm.$submitted">
