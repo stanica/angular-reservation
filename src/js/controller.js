@@ -55,17 +55,19 @@
         // TODO This function should have all needed parameters in order to test it better
         vm.onSelectDate = function(date) {
             removeHold().then(function(result){
+                ga('send', 'event', 'calendar-widget', 'next');
                 vm.hold = '';
                 vm.selectedDate = date;
                 vm.secondTabLocked = false;
                 vm.selectedTab = 1;
                 $rootScope.scrollToAnchorMobile('calendar-top');
                 onBeforeGetAvailableHours({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:date, externalId: vm.externalId});
-            })
+            });
         }
 
         vm.selectHour = function(time) {
             removeHold().then(function(result){
+                ga('send', 'event', 'calendar-widget', 'select-hour');
                 vm.hold = '';
                 vm.loader = true;
                 vm.selectedHour = new Date(time.startTime.replace('T', ' ').replace(/-/g,'/').slice(0, -6));
