@@ -8,7 +8,7 @@
 		<div ng-repeat="person in reservationCtrl.details">
 			<div class="row angular-reservation-padding">
 				<div class="col-xs-12" style="line-height:30px">
-					{{person.name}} <span class="text-muted ">{{person.price.amount | currency}}</span>
+					{{person.name}} <span ng-if="person.price.amount" class="text-muted ">{{person.price.amount | currency}}</span>
 			    <select class="pull-right angular-reservation-dropdown" ng-model="reservationCtrl.details[$index].selected" ng-change="reservationCtrl.details[$parent.$index].selected = o; reservationCtrl.selectedPeople=true">
 	     			<option ng-value="o" ng-repeat="o in reservationCtrl.range(reservationCtrl.details[$index].min, reservationCtrl.details[$index].max)">{{o}}</option>
 	     		</select>

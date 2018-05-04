@@ -10,6 +10,8 @@
         //Capture the this context of the Controller using vm, standing for viewModel
         var vm = this;
 
+        var blackList = ['Detective story', 'Outer space', 'John Doe', 'The Experiment'];
+
         vm.selectedTab = 0;
         vm.secondTabLocked = true;
         vm.thirdTabLocked = true;
@@ -95,6 +97,10 @@
             vm.loader = true;
             reservationAPIFactory.getDetails({apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId}).then(function(){
                 vm.details = reservationAPIFactory.details;
+                console.log(vm.details[0].title);
+                if(blackList.indexOf(vm.details[0].title) > -1){
+                    vm.details[0].price.amount = '';
+                }
                 vm.loader = false;
             });
         }
