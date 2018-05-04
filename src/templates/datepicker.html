@@ -7,7 +7,7 @@
 	<div class="col-md-12">
 		<div ng-repeat="person in reservationCtrl.details">
 			<div class="row angular-reservation-padding">
-				<div class="col-xs-12" style="line-height:30px">
+				<div class="col-xs-12" style="margin-bottom:10px">
 					{{person.name}} <span ng-if="person.price.amount" class="text-muted ">{{person.price.amount | currency}}</span>
 			    <select class="pull-right angular-reservation-dropdown" ng-model="reservationCtrl.details[$index].selected" ng-change="reservationCtrl.details[$parent.$index].selected = o; reservationCtrl.selectedPeople=true">
 			    	<option value=" ">Select</option>

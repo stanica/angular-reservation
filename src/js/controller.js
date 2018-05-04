@@ -79,6 +79,14 @@
             });
         }
 
+        vm.getParticipants = function() {
+            var total = 0;
+            for(var x=0; x<vm.details.length; x++){
+                total += vm.details[x].selected;
+            }
+            return total;
+        }
+
         vm.reserve = function(date, hour, userData) {
             //vm.showSummary = true;
             onBeforeReserve(date, hour, userData);
