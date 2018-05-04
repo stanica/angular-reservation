@@ -64,7 +64,7 @@
                     <div>
                         <div ng-repeat="person in reservationCtrl.details">
                             <span ng-if="reservationCtrl.details[$index].selected > 0" style="font-size:16px">{{person.name}} x {{reservationCtrl.details[$index].selected}}</span>
-                            <span class="pull-right text-muted" style="font-size:16px" ng-if="reservationCtrl.details[$index].selected > 0">{{(person.price.amount * reservationCtrl.details[$index].selected) | currency}}</span>
+                            <span class="pull-right text-muted" style="font-size:16px" ng-if="reservationCtrl.details[$index].selected > 0 && person.price.amount">{{(person.price.amount * reservationCtrl.details[$index].selected) | currency}}</span>
                         </div>
                         <hr/>
                         <div class="text-right">
@@ -114,7 +114,7 @@
                     <div style="padding: 0px 0 40px 10px;">
                         <div ng-repeat="person in reservationCtrl.details">
                             <span ng-if="reservationCtrl.details[$index].selected > 0">{{person.name}} x {{reservationCtrl.details[$index].selected}}</span>
-                            <span class="pull-right text-muted" ng-if="reservationCtrl.details[$index].selected > 0">{{(person.price.amount * reservationCtrl.details[$index].selected) | currency}}</span>
+                            <span class="pull-right text-muted" ng-if="reservationCtrl.details[$index].selected > 0  && person.price.amount">{{(person.price.amount * reservationCtrl.details[$index].selected) | currency}}</span>
                         </div>
                         <hr/>
                         <div class="text-right">

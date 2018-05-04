@@ -97,7 +97,6 @@
             vm.loader = true;
             reservationAPIFactory.getDetails({apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId}).then(function(){
                 vm.details = reservationAPIFactory.details;
-                console.log(vm.details[0].title);
                 if(blackList.indexOf(vm.details[0].title) > -1){
                     vm.details[0].price.amount = '';
                 }
