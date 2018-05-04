@@ -92,6 +92,10 @@
             $rootScope.scrollToAnchorMobile('calendar-top');
         }
 
+        vm.toTitleCase = function(str)
+        {
+            return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+        }
 
         vm.getDetails = function(){
             vm.loader = true;
@@ -155,7 +159,7 @@
             if(vm.vendor === 'bookeo'){
                 var people = {};
                 for(var x=0; x<vm.details.length; x++){
-                    people[vm.details[x].id] = vm.details[x].selected;
+                people[vm.details[x].id] = vm.details[x].selected;
                 }
                 params.people = people;
             }

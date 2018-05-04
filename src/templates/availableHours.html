@@ -1,4 +1,4 @@
-<div class="buffer-bottom text-center"><span>{{reservationCtrl.selectedDate | date}}:</span></div>
+<div class="buffer-bottom text-center" style="height:20px"><span class="pull-left"><i class="fa fa-calendar accent"></i> {{reservationCtrl.selectedDate | date}}</span><span class="pull-right"><i class="fa fa-user accent"></i> {{reservationCtrl.details[0].selected}} {{reservationCtrl.details[0].name}}</span></div>
 <div class="row clickable">
 	<a class="list-group-item" ng-repeat="item in reservationCtrl.availableHours" ng-click="reservationCtrl.selectHour(item)"
 	   ng-class="{'angular-reservation-selected': reservationCtrl.selectedHour == item}">
