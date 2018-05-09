@@ -34,6 +34,7 @@
         vm.userData = {};
 
         vm.loader = false;
+        vm.loaderFareharbor = false;
 
         vm.dateFormat = reservationConfig.dateFormat;
 
@@ -69,6 +70,7 @@
 
         vm.update = function(date){
             if(vm.vendor === 'fareharbor api'){
+                vm.details = [];
                 onBeforeGetAvailableHours({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:date, externalId: vm.externalId});
             }
         }
@@ -112,8 +114,8 @@
         }
 
         vm.getDetails = function(){
-            vm.loader = true;
             if(vm.vendor !== 'fareharbor api'){
+                vm.loader = true;
                 reservationAPIFactory.getDetails({apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId}).then(function(){
                     vm.details = reservationAPIFactory.details;
                     if(blackList.indexOf(vm.details[0].title) > -1){
@@ -123,7 +125,7 @@
                 });
             }
             else {
-                vm.loader = false;
+                vm.loaderFareharbor = false;
             }
         }
 
@@ -165,8 +167,11 @@
                     vm.totalSelectedPeople += vm.details[x].selected
                 }
                 params.people = people;
+                vm.loader = true;
             }
-            vm.loader = true;
+            else if(vm.vendor === 'fareharbor api'){
+                vm.loaderFareharbor = true;
+            }
             vm.availableHours = '';
             getAvailableHours(params);
         }
@@ -208,7 +213,7 @@
 
             reservationAPIFactory.getVendorAvailableHours(params).then(function (data) {
                 vm.loader = false;
-
+                vm.loaderFareharbor = false;
                 var status = vm.availableHoursStatus = reservationAPIFactory.status || '';
                 var message = vm.availableHoursMessage = reservationAPIFactory.message || '';
 

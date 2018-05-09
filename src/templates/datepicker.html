@@ -5,6 +5,7 @@
 	</div>
 
 	<div class="col-md-12">
+		<div ng-include="'loader.html'" class="text-center buffer-bottom" ng-if="reservationCtrl.loaderFareharbor"></div>
 		<div ng-repeat="person in reservationCtrl.details">
 			<div class="row angular-reservation-padding">
 				<div class="col-xs-12" style="margin-bottom:10px">
