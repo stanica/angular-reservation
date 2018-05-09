@@ -67,6 +67,12 @@
             });
         }
 
+        vm.update = function(date){
+            if(vm.vendor === 'fareharbor api'){
+                onBeforeGetAvailableHours({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:date, externalId: vm.externalId});
+            }
+        }
+
         vm.selectHour = function(time) {
             removeHold().then(function(result){
                 ga('send', 'event', 'calendar-widget', 'select-hour');
@@ -107,13 +113,18 @@
 
         vm.getDetails = function(){
             vm.loader = true;
-            reservationAPIFactory.getDetails({apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId}).then(function(){
-                vm.details = reservationAPIFactory.details;
-                if(blackList.indexOf(vm.details[0].title) > -1){
-                    vm.details[0].price.amount = '';
-                }
+            if(vm.vendor !== 'fareharbor api'){
+                reservationAPIFactory.getDetails({apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId}).then(function(){
+                    vm.details = reservationAPIFactory.details;
+                    if(blackList.indexOf(vm.details[0].title) > -1){
+                        vm.details[0].price.amount = '';
+                    }
+                    vm.loader = false;
+                });
+            }
+            else {
                 vm.loader = false;
-            });
+            }
         }
 
         vm.getTotal = function(){
@@ -203,6 +214,10 @@
 
                 //Completed get available hours callback
                 //reservationService.onCompletedGetAvailableHours(status, message, date);
+
+                if(params.vendor === 'fareharbor api'){
+                    vm.details = reservationAPIFactory.details;
+                }
 
                 vm.availableHours = reservationAPIFactory.availableHours.filter(function(item){
                     return item.numSeatsAvailable >= vm.totalSelectedPeople;
@@ -311,7 +326,14 @@
         }
 
         function removeHold(){
-            return reservationAPIFactory.cancelHold({apiKey: vm.apiKey, id: vm.hold.id, vendor: vm.vendor});
+            if(vm.vendor === 'bookeo'){
+                return reservationAPIFactory.cancelHold({apiKey: vm.apiKey, id: vm.hold.id, vendor: vm.vendor});
+            }
+            else {
+                return new Promise(function(resolve, reject){
+                    resolve('true');
+                });
+            }
         }
 
         /**

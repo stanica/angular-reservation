@@ -112,14 +112,30 @@ li:first-child a{
 .uib-daypicker table {
   width: 100%;
 }
-
+.uib-monthpicker table{
+  width: 100%;
+}
+.uib-daypicker table thead tr:nth-child(2){
+    background-color: #5a6c7d;
+    color: white;
+}
 .uib-right, .uib-left, .uib-title {
-  background-color: #5a6c7d;
-  color: white;
+  background-color: #5a6c7d !important;
+  color: white !important;
+  border-radius: 0 !important;
+  border-color: #5a6c7d !important;
+  opacity: 1 !important;
+}
+.uib-right, .uib-left {
+    line-height: inherit !important;
+}
+.uib-title {
+    height: 29px;
 }
 .uib-right:hover, .uib-left:hover, .uib-title:hover {
   background-color: #39434e !important;
   color: white;
+  border-color: #5a6c7d;
 }
 .uib-right:focus, .uib-left:focus, .uib-title:focus {
   background-color: #39434e !important;
@@ -128,4 +144,13 @@ li:first-child a{
 
 .angular-reservation-dropdown {
     padding: 2px;
+}
+
+.person-note {
+  display:inline-block;
+  width:70%;
+  font-size:12px;
+  color: chocolate;
+  position: relative;
+  top: -3px;
 }

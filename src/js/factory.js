@@ -66,13 +66,15 @@
                 responseType: 'json'
 
             }).then(function(response) {
-                //Success handler
-                
-                //validateAvailableHoursResponseData(response.data);
-
                 reservationAPI.status = response.data.status || '';
                 reservationAPI.message = response.data.message || '';
-                reservationAPI.availableHours = response.data.data;
+                if(params.vendor === 'fareharbor api'){
+                    reservationAPI.details = response.data.people;
+                    reservationAPI.availableHours = response.data.times;
+                }
+                else if(params.vendor === 'bookeo'){
+                    reservationAPI.availableHours = response.data.data;
+                }
 
             }, function(response) {
                 reservationAPI.errorManagement(response.status);
@@ -107,7 +109,6 @@
                 data: params,
                 url: reservationConfig.holdSlotAPIUrl,
                 responseType: 'json'
-
             });
         }
 
