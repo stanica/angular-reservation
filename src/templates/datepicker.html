@@ -18,8 +18,11 @@
 				</div>
 			</div>
 		</div>
+		<div uib-alert class="alert-danger text-center" ng-if="reservationCtrl.detailsError" style="margin-top: 1em">
+            <div>Oh no! There's a glitch in the system.</div>
+        </div>
 		<div class="text-center" style="padding:20px">
-			<a  ng-click="reservationCtrl.onSelectDate(reservationCtrl.selectedDate)" class="btn btn-success btn-block text-center">Next ›</a>
+			<a ng-disabled="!reservationCtrl.selectedPeople" ng-click="reservationCtrl.onSelectDate(reservationCtrl.selectedDate)" class="btn btn-success btn-block text-center">Next ›</a>
 		</div>
 	</div>
 </div>

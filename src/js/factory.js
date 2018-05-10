@@ -82,7 +82,7 @@
         }
 
         //Call to create temporary hold before finalizing booking
-        reservationAPI.hodl = function(params){
+        reservationAPI.hodl = function(params){console.log('hodl', params);
            return $http({
                 method: 'POST',
                 data: params,
@@ -90,6 +90,7 @@
                 responseType: 'json'
 
             }).then(function(response) {
+                console.log(response);
                 //Success handler
                 //console.log(response.data);
                 reservationAPI.hold = response.data;

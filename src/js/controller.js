@@ -24,6 +24,7 @@
         vm.selectedHour = "";
         vm.selectedSlot = '';
         vm.details = "";
+        vm.detailsError = false;
         vm.hold = "";
         vm.holdStatus = '';
         vm.holdStatusMessage = '';
@@ -76,6 +77,7 @@
         }
 
         vm.selectHour = function(time) {
+            console.log(time);
             removeHold().then(function(result){
                 ga('send', 'event', 'calendar-widget', 'select-hour');
                 vm.hold = '';
@@ -85,14 +87,6 @@
                 vm.selectedSlot = time;
                 onBeforeHoldDate(time);
             });
-        }
-
-        vm.getParticipants = function() {
-            var total = 0;
-            for(var x=0; x<vm.details.length; x++){
-                total += vm.details[x].selected;
-            }
-            return total;
         }
 
         vm.reserve = function(date, hour, userData) {
@@ -116,11 +110,20 @@
         vm.getDetails = function(){
             if(vm.vendor !== 'fareharbor api'){
                 vm.loader = true;
-                reservationAPIFactory.getDetails({apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId}).then(function(){
-                    vm.details = reservationAPIFactory.details;
-                    if(blackList.indexOf(vm.details[0].title) > -1){
-                        vm.details[0].price.amount = '';
+                reservationAPIFactory.getDetails({apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId}).then(function(data){
+                    if(reservationAPIFactory.status === 'SERVER_ERROR'){
+                        vm.loader = false;
+                        vm.detailsError = true;
                     }
+                    else {
+                        vm.details = reservationAPIFactory.details;
+                        if(blackList.indexOf(vm.details[0].title) > -1){
+                            vm.details[0].price.amount = '';
+                        }
+                    }
+                    vm.loader = false;
+                }, function(err){
+                    console.log(err);
                     vm.loader = false;
                 });
             }
@@ -159,14 +162,16 @@
             }, function() {
                 console.log("onBeforeGetAvailableHours: Rejected promise");
             });*/
-            if(vm.vendor === 'bookeo'){
-                var people = {};
-                vm.totalSelectedPeople = 0;
-                for(var x=0; x<vm.details.length; x++){
+            var people = {};
+            vm.totalSelectedPeople = 0;
+            for(var x=0; x<vm.details.length; x++){
+                if(typeof vm.details[x].selected === 'number'){
                     people[vm.details[x].id] = vm.details[x].selected;
-                    vm.totalSelectedPeople += vm.details[x].selected
+                    vm.totalSelectedPeople += vm.details[x].selected;
                 }
-                params.people = people;
+            }
+            params.people = people;
+            if(vm.vendor === 'bookeo'){
                 vm.loader = true;
             }
             else if(vm.vendor === 'fareharbor api'){
@@ -180,10 +185,10 @@
          * Function executed before get holding time slot.
          */
         function onBeforeHoldDate(params){
-            if(vm.vendor === 'bookeo'){
+            if(vm.vendor === 'bookeo' || vm.vendor === 'fareharbor api'){
                 var people = {};
                 for(var x=0; x<vm.details.length; x++){
-                people[vm.details[x].id] = vm.details[x].selected;
+                    people[vm.details[x].id] = vm.details[x].selected;
                 }
                 params.people = people;
             }
@@ -221,7 +226,9 @@
                 //reservationService.onCompletedGetAvailableHours(status, message, date);
 
                 if(params.vendor === 'fareharbor api'){
-                    vm.details = reservationAPIFactory.details;
+                    if(vm.details.length === 0){
+                        vm.details = reservationAPIFactory.details;
+                    }
                 }
 
                 vm.availableHours = reservationAPIFactory.availableHours.filter(function(item){
