@@ -77,7 +77,6 @@
         }
 
         vm.selectHour = function(time) {
-            console.log(time);
             removeHold().then(function(result){
                 ga('send', 'event', 'calendar-widget', 'select-hour');
                 vm.hold = '';

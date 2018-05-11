@@ -122,7 +122,6 @@
         }
 
         vm.selectHour = function(time) {
-            console.log(time);
             removeHold().then(function(result){
                 ga('send', 'event', 'calendar-widget', 'select-hour');
                 vm.hold = '';
@@ -586,7 +585,7 @@
         }
 
         //Call to create temporary hold before finalizing booking
-        reservationAPI.hodl = function(params){console.log('hodl', params);
+        reservationAPI.hodl = function(params){
            return $http({
                 method: 'POST',
                 data: params,
@@ -594,7 +593,6 @@
                 responseType: 'json'
 
             }).then(function(response) {
-                console.log(response);
                 //Success handler
                 //console.log(response.data);
                 reservationAPI.hold = response.data;
