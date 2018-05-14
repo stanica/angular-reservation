@@ -82,7 +82,7 @@
 
     <div class="col-md-12 text-center buffer-bottom">
         <div class="buffer-bottom text-left"><span style="font-size:11px" class="text-muted">You will get a chance to review your order on the next screen.</span></div>
-        <button id="reserve" type="submit" name="reserve" class="btn btn-purchase">{{"reserve" | translate}}</button>
+        <button id="reserve" type="submit" name="reserve" ng-disabled="!(reservationCtrl.userData.firstName && reservationCtrl.userData.lastName && reservationCtrl.userData.phone && reservationCtrl.userData.email)" class="btn btn-purchase">{{"reserve" | translate}}</button>
     </div>
 
     <div class="col-md-12">
