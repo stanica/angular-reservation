@@ -281,7 +281,7 @@
                 var data = {
                     tax: parseFloat(shipping.tax) !== 0 ? (parseFloat(shipping.tax) + 1) : 0,
                     businessId:product.businessId,
-                    currency:vm.hold.totalPayable.currency,
+                    currency:vm.hold.totalPayable.currency || product.integration.fields.currency,
                     phone:userData.phone,
                     name:userData.firstName + ' ' + userData.lastName,
                     firstName: userData.firstName,
@@ -312,7 +312,7 @@
                                 paymentMethod = res[x];
                             }
                         }
-                        $rootScope.cart.checkout({paymentMethod:paymentMethod, transactionId:data.transactionId, email:userData.email, currency:$rootScope.cart.items[0].currency, options: shipping},true, function(checkout){
+                        $rootScope.cart.checkout({paymentMethod:paymentMethod, transactionId:data.transactionId, email:userData.email, currency:$rootScope.cart.items[0].currency || product.integration.fields.currency, options: shipping, integration: data.items[0].partner.integration.name.toLowerCase()},true, function(checkout){
                             if(checkout.status === 'Error'){
                                 var status = vm.reservationStatus = checkout.status;
                                 var message = vm.reservationMessage = checkout.message;
