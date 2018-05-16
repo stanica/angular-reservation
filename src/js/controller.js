@@ -188,13 +188,14 @@
          * Function executed before get holding time slot.
          */
         function onBeforeHoldDate(params){
+            var product=JSON.parse(vm.product);
             var people = {};
             for(var x=0; x<vm.details.length; x++){
                 people[vm.details[x].id] = vm.details[x].selected;
             }
             params.people = people;
             var selectedDateFormatted = $filter('date')(vm.selectedDate, vm.dateFormat);
-            reservationAPIFactory.hodl({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:selectedDateFormatted, externalId: vm.externalId, eventId:params.eventId, people:params.people}).then(function(data){
+            reservationAPIFactory.hodl({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:selectedDateFormatted, externalId: vm.externalId, eventId:params.eventId, people:params.people, currency: product.integration.fields.currency}).then(function(data){
                 if(reservationAPIFactory.hold.status === 'Error'){
                     vm.holdStatus = 'Error';
                     vm.holdStatusMessage = reservationAPIFactory.hold.message;
