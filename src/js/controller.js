@@ -267,7 +267,7 @@
                         (vm.hold.price.totalTaxes.amount / vm.hold.price.totalNet.amount).toFixed(3) :
                         0,
                     total: parseFloat(vm.hold.price.totalNet.amount),
-                    holdId: vm.hold.id
+                    holdId: vm.hold.id || vm.hold._id
                 };
                 var people = [];
                 for (var x=0; x<vm.details.length; x++){
@@ -302,7 +302,7 @@
                 Order.widget.save(data, function(data){
                     var obj = {};
                     obj.status = {};
-                    obj.status.name = 'Bookeo Stripe Modal Incomplete';
+                    obj.status.name = vm.toTitleCase(data.items[0].partner.integration.name) + ' Stripe Modal Incomplete';
                     obj.status.val = 150;
                     obj.phone = userData.phone;
                     Order.widget.updateStatus.update({id:data.transactionId}, obj);
