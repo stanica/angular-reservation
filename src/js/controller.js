@@ -368,7 +368,6 @@
                 }
             }
             var params = {transactionId: transactionId, selectedDate: selectedDateFormatted, selectedHour: hour, userData: userData, holdId: vm.hold.id, timeSlot: vm.selectedSlot, apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId, people:people, title: vm.details[0].title};
-            console.log(params);
             reservationAPIFactory.reserve(params).then(function () {
                 vm.loader = false;
 

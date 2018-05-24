@@ -150,7 +150,7 @@ li:first-child a{
   display:inline-block;
   width:70%;
   font-size:12px;
-  color: chocolate;
   position: relative;
   top: -3px;
+  font-style: italic;
 }
