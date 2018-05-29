@@ -263,8 +263,8 @@
                     charge: 0,
                     couponAmount: 0,
                     more: 999999,
-                    tax: (vm.hold.price.totalTaxes.amount / vm.hold.price.totalNet.amount).toFixed(3) !== 1 ? 
-                        (vm.hold.price.totalTaxes.amount / vm.hold.price.totalNet.amount).toFixed(3) :
+                    tax: (vm.hold.price.totalTaxes.amount / vm.hold.price.totalNet.amount).toFixed(4) !== 1 ? 
+                        (vm.hold.price.totalTaxes.amount / vm.hold.price.totalNet.amount).toFixed(4) :
                         0,
                     total: parseFloat(vm.hold.price.totalNet.amount),
                     holdId: vm.hold.id || vm.hold._id
