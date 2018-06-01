@@ -9,7 +9,7 @@
 		<div ng-repeat="person in reservationCtrl.details">
 			<div class="row angular-reservation-padding">
 				<div class="col-xs-12" style="margin-bottom:10px">
-					<div style="display:inline-block;width:60%">{{person.name}} <span ng-if="person.price.amount" class="text-muted ">{{person.price.amount  | currency}}</span><span ng-if="!person.price.amount" class="text-muted ">Free</span>
+					<div style="display:inline-block;width:60%">{{person.name}} <span ng-if="person.price.amount" class="text-muted ">{{person.price.amount  | currency}}</span><span ng-if="!person.price.amount" class="text-muted ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
 						<span class="person-note text-muted" ng-if="person.note">{{person.note}}</span>
 					</div>
 			    <select class="pull-right angular-reservation-dropdown" ng-model="reservationCtrl.details[$index].selected" ng-change="reservationCtrl.details[$parent.$index].selected = o; reservationCtrl.selectedPeople=true">

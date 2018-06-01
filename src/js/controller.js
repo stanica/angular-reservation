@@ -234,7 +234,12 @@
                 }
 
                 vm.availableHours = reservationAPIFactory.availableHours.filter(function(item){
-                    return item.numSeatsAvailable >= vm.totalSelectedPeople;
+                    if(params.vendor === 'fareharbor api'){
+                        return item.numSeatsAvailable >= vm.totalSelectedPeople && vm.totalSelectedPeople >= item.min;
+                    }
+                    else {
+                        return item.numSeatsAvailable >= vm.totalSelectedPeople;
+                    }
                 });
                 //Success
                 if (status.toUpperCase() == 'SUCCESS') {
