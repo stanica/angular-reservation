@@ -154,3 +154,16 @@ li:first-child a{
   top: -3px;
   font-style: italic;
 }
+
+a.list-group-item {
+  color: #444;
+}
+
+a.list-group-item:hover {
+  background-color: white;
+}
+
+.list-group-item {
+  background-color: #f8f8f8;
+  margin-bottom: 5px;
+}
