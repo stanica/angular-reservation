@@ -23,7 +23,7 @@
             invalidCharacters: "Not allowed characters",
             invalidPhone: "Invalid phone number",
             invalidEmail: "Invalid email address",
-            reserve: "Continue",
+            reserve: "Review my purchase »",
             confirmOK: "Confirm & Pay",
             confirmCancel: "No, cancel",
             confirmTitle: "Confirm reservation",

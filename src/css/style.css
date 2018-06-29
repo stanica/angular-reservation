@@ -81,7 +81,7 @@ li:first-child a{
 
 .angular-reservation-table {
     border-collapse: initial;
-    border-spacing: 30px 15px;
+    border-spacing: 15px 12px;
 }
 
 @media screen and (max-width:500px){
