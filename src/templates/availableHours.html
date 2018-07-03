@@ -2,17 +2,19 @@
 <div class="row clickable">
 	<a class="list-group-item" style="position:relative" ng-repeat="item in reservationCtrl.availableHours" ng-click="reservationCtrl.selectHour(item)"
 	   ng-class="{'angular-reservation-selected': reservationCtrl.selectedHour == item}">
-	    <div style="display:inline-block"><span>{{item.startTime | ignoreTimeZone | date  : 'shortTime'}}</span><div class="hijinks-orange bold" ng-if="item.numSeatsAvailable < 5" style="font-size:10px">Only {{item.numSeatsAvailable}} slots left!</div></div>
+	    <div style="display:inline-block"><span>{{item.startTime | ignoreTimeZone | date  : 'shortTime'}}</span><div class="hijinks-orange bold" ng-if="item.numSeatsAvailable < 5">Only {{item.numSeatsAvailable}} slots left!</div></div>
 	    <!--<div style="display:inline-block;float:right"><span></span></div>-->
-	    <span style="display:inline-block;float:right"><span style="position:absolute; right:15px; top:50%; margin-top:-10px" class="btn btn-success btn-xs">BOOK</span></span>
+	    <span style="display:inline-block;float:right"><span style="position:absolute; right:15px; top:50%; margin-top:-15px" class="btn btn-success btn-sm">BOOK</span></span>
 	</a>
   <div uib-alert class="alert-danger text-center" ng-if="reservationCtrl.holdStatus == 'Error'" style="margin-top: 1em">
       <div ng-if="reservationCtrl.holdStatusMessage">{{reservationCtrl.holdStatusMessage}}</div>
   </div>
 </div>
-<div class="buffer-top row">
-	<h6 class="text-muted">YOU'RE BOOKING</h6>
-	<h4>{{reservationCtrl.experienceTitle}}</h4>
-	<span class="pull-left"><i class="fa fa-calendar accent"></i> {{reservationCtrl.selectedDate | date}}</span>
-	<span class="pull-right"><i class="fa fa-user accent"></i> {{reservationCtrl.totalSelectedPeople}} tickets</span>
+<div class="row" style="margin-top:40px;border-top: 1px solid #f6f6f6;margin-left:-30px;margin-right:-30px">
+	<div class="col-md-12">
+		<h6 class="text-muted">YOU'RE BOOKING</h6>
+		<h4>{{reservationCtrl.experienceTitle}}</h4>
+		<span class="pull-left"><i class="fa fa-calendar accent"></i> {{reservationCtrl.selectedDate | date}}</span>
+		<span class="pull-right"><i class="fa fa-user accent"></i> {{reservationCtrl.totalSelectedPeople}} tickets</span>
+	</div>
 </div>
