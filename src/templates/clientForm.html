@@ -100,7 +100,12 @@
     <div class="col-md-12 buffer-bottom" style="margin-top:20px;border-top: 1px solid #f6f6f6;">
         <h6 class="text-muted">YOU'RE BOOKING</h6>
         <h4>{{reservationCtrl.experienceTitle}}</h4>
-        <span class="pull-left"><i class="fa fa-calendar accent"></i> {{reservationCtrl.selectedDate | date}}, at {{reservationCtrl.selectedHour}}</span>
-        <span class="pull-right"><i class="fa fa-user accent"></i> {{reservationCtrl.totalSelectedPeople}} tickets</span>
+        <div style="height:20px">
+            <span class="pull-left"><i class="fa fa-calendar accent"></i> {{reservationCtrl.selectedDate | date}}</span>
+            <span class="pull-right"><i class="fa fa-user accent"></i> {{reservationCtrl.totalSelectedPeople}} tickets</span>
+        </div>
+        <div style="margin-top:5px">
+            <span class="pull-left"><i class="fa fa-clock-o accent"></i> {{reservationCtrl.selectedHour}}</span>
+        </div>
     </div>
 </div>
