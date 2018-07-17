@@ -29,6 +29,7 @@
         vm.holdStatus = '';
         vm.holdStatusMessage = '';
         vm.total = 0; //Price total
+        vm.totalAmount = 0; //Price total
         vm.totalSelectedPeople = 0; //Number of people
         vm.selectedPeople = false;
 
@@ -68,6 +69,11 @@
                 $rootScope.scrollToAnchorMobile('calendar-top');
                 onBeforeGetAvailableHours({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:date, externalId: vm.externalId});
             });
+        }
+
+        vm.selectAnotherDate = function() {
+            vm.holdStatus = ''
+            vm.selectedTab = 0;
         }
 
         vm.update = function(date){
@@ -167,10 +173,12 @@
             });*/
             var people = {};
             vm.totalSelectedPeople = 0;
+            vm.totalAmount = 0;
             for(var x=0; x<vm.details.length; x++){
                 if(typeof vm.details[x].selected === 'number'){
                     people[vm.details[x].id] = vm.details[x].selected;
                     vm.totalSelectedPeople += vm.details[x].selected;
+                    vm.totalAmount += vm.details[x].price.amount * vm.details[x].selected;
                 }
             }
             params.people = people;

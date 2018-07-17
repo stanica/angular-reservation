@@ -9,12 +9,21 @@
   <div uib-alert class="alert-danger text-center" ng-if="reservationCtrl.holdStatus == 'Error'" style="margin-top: 1em">
       <div ng-if="reservationCtrl.holdStatusMessage">{{reservationCtrl.holdStatusMessage}}</div>
   </div>
+  <div>
+		<a class="text-muted" ng-if="reservationCtrl.holdStatus !== 'Error'" ng-click="reservationCtrl.selectAnotherDate()">« Select another date</a>
+		<a class="btn btn-purchase" ng-if="reservationCtrl.holdStatus === 'Error'" ng-click="reservationCtrl.selectAnotherDate()">« Select another date</a>
+  </div>
 </div>
-<div class="row" style="margin-top:40px;border-top: 1px solid #f6f6f6;margin-left:-30px;margin-right:-30px">
+<div class="row" style="margin-top:20px;border-top: 1px solid #f6f6f6;margin-left:-30px;margin-right:-30px; margin-bottom:-20px">
 	<div class="col-md-12">
 		<h6 class="text-muted">YOU'RE BOOKING</h6>
 		<h4>{{reservationCtrl.experienceTitle}}</h4>
-		<span class="pull-left"><i class="fa fa-calendar accent"></i> {{reservationCtrl.selectedDate | date}}</span>
-		<span class="pull-right"><i class="fa fa-user accent"></i> {{reservationCtrl.totalSelectedPeople}} tickets</span>
+		<div style="height:20px">
+			<span class="pull-left"><i class="fa fa-user accent"></i> {{reservationCtrl.totalSelectedPeople}} tickets</span>
+			<span class="pull-right"><i class="fa fa-calendar accent"></i> {{reservationCtrl.selectedDate | date}}</span>
+		</div>
+		<div style="margin-top:5px">
+			<span class="pull-left"><i class="fa fa-money accent"></i> ${{reservationCtrl.totalAmount}}</span>
+		</div>
 	</div>
 </div>
