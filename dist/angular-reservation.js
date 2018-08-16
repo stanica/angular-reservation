@@ -108,7 +108,7 @@
             removeHold().then(function(result){
                 ga('send', 'event', 'calendar-widget', 'next');
                 vm.hold = '';
-                vm.selectedDate = date;
+                vm.selectedDate = date.toDateString();
                 vm.secondTabLocked = false;
                 vm.selectedTab = 1;
                 $rootScope.scrollToAnchorMobile('calendar-top');
