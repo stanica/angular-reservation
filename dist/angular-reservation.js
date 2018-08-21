@@ -108,7 +108,12 @@
             removeHold().then(function(result){
                 ga('send', 'event', 'calendar-widget', 'next');
                 vm.hold = '';
-                vm.selectedDate = date.toDateString();
+                try {
+                    vm.selectedDate = date.toDateString();
+                }
+                catch(e){
+                    vm.selectedDate = new Date(date).toDateString();
+                }
                 vm.secondTabLocked = false;
                 vm.selectedTab = 1;
                 $rootScope.scrollToAnchorMobile('calendar-top');
@@ -119,6 +124,7 @@
         vm.selectAnotherDate = function() {
             vm.holdStatus = ''
             vm.selectedTab = 0;
+            vm.secondTabLocked = true;
         }
 
         vm.update = function(date){
@@ -268,9 +274,8 @@
          * Get available hours for a selected date
          */
         function getAvailableHours(params) {
-            var selectedDateFormatted = $filter('date')(params.date, vm.dateFormat);
+            var selectedDateFormatted = $filter('date')(new Date(params.date), vm.dateFormat);
             params.date = selectedDateFormatted;
-
             reservationAPIFactory.getVendorAvailableHours(params).then(function (data) {
                 vm.loader = false;
                 vm.loaderFareharbor = false;
