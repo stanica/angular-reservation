@@ -46,6 +46,7 @@
         vm.clientFormTemplate = reservationConfig.clientFormTemplate;
 
         vm.datepickerOptions = $scope.datepickerOptions;
+        vm.dateDisabled = vm.datepickerOptions.dateDisabled({date: new Date(vm.selectedDate)});
         vm.apiKey = $scope.apiKey;
         vm.vendor = $scope.vendor;
         vm.id = $scope.id;
@@ -83,6 +84,7 @@
         }
 
         vm.update = function(date){
+            vm.dateDisabled = vm.datepickerOptions.dateDisabled({date: new Date(date)});
             if(vm.vendor === 'fareharbor api'){
                 vm.details = [];
                 onBeforeGetAvailableHours({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:date, externalId: vm.externalId});
