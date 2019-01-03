@@ -10,7 +10,7 @@
         //Capture the this context of the Controller using vm, standing for viewModel
         var vm = this;
 
-        var blackList = ['Detective story', 'Outer space', 'John Doe', 'The Experiment'];
+        var blackList = ['Detective Story', 'Outer Space', 'John Doe', 'The Experiment'];
 
         vm.selectedTab = 0;
         vm.secondTabLocked = true;
