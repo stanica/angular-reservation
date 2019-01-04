@@ -24,7 +24,7 @@
             <div>Oh no! There's a glitch in the system. Contact us for help at info@hijinkslife.com</div>
         </div>
 		<div class="text-center" style="padding:20px">
-			<span ng-if="reservationCtrl.minimumPeople > 1" style="display:block;margin-bottom: 10px; color:firebrick">A minimum of {{reservationCtrl.minimumPeople}} is required to make this booking</span>
+			<span ng-if="reservationCtrl.minimumPeople > 1 && reservationCtrl.getTotalPeople() < reservationCtrl.minimumPeople" style="display:block;margin-bottom: 10px; color:firebrick">A minimum of {{reservationCtrl.minimumPeople}} is required to make this booking</span>
 			<a ng-disabled="!reservationCtrl.selectedPeople || reservationCtrl.dateDisabled || (reservationCtrl.minimumPeople > 1 && reservationCtrl.getTotalPeople() < reservationCtrl.minimumPeople)" ng-click="reservationCtrl.onSelectDate(reservationCtrl.selectedDate)" class="btn btn-success btn-block text-center">Next »</a>
 		</div>
 	</div>

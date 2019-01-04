@@ -205,7 +205,7 @@
             else if(vm.vendor === 'fareharbor api'){
                 vm.loaderFareharbor = true;
             }
-            vm.availableHours = '';
+            vm.availableHours = null;
             getAvailableHours(params);
         }
 
