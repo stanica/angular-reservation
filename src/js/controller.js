@@ -32,6 +32,7 @@
         vm.totalAmount = 0; //Price total
         vm.totalSelectedPeople = 0; //Number of people
         vm.selectedPeople = false;
+        vm.minimumPeople = 0;
 
         vm.userData = {};
 
@@ -157,6 +158,14 @@
             return total;
         }
 
+        vm.getTotalPeople = function() {
+            var total = 0;
+            for(var x=0; x<vm.details.length; x++){
+                total += vm.details[x].selected === ' ' ? 0 : vm.details[x].selected;
+            }
+            return total;
+        }
+
         vm.range = function(min, max, step) {
             step = step || 1;
             var input = [];
@@ -231,6 +240,7 @@
          * Get available hours for a selected date
          */
         function getAvailableHours(params) {
+            vm.minimumPeople = 0;
             var selectedDateFormatted = $filter('date')(new Date(params.date), vm.dateFormat);
             params.date = selectedDateFormatted;
             reservationAPIFactory.getVendorAvailableHours(params).then(function (data) {
@@ -241,7 +251,7 @@
 
                 //Completed get available hours callback
                 //reservationService.onCompletedGetAvailableHours(status, message, date);
-
+                vm.minimumPeople = reservationAPIFactory.availableHours && reservationAPIFactory.availableHours[0].min;
                 if(params.vendor === 'fareharbor api'){
                     if(vm.details.length === 0){
                         vm.details = reservationAPIFactory.details;
