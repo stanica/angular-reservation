@@ -16,7 +16,8 @@
                 product: '@',
                 variant: '@',
                 customMonth: '&',
-                user: '@'
+                user: '@',
+                fetchingAvailability: '='
 
             },
             controller: 'ReservationCtrl',
