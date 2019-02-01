@@ -1,19 +1,19 @@
 <div class="modal-header">
-    <h3 class="modal-title">{{"confirmTitle" | translate}}</h3>
+    <h3 class="modal-title">{{::"confirmTitle" | translate}}</h3>
 </div>
 
 <div class="modal-body">
-    <h5>{{"confirmText" | translate : confirmationModalCtrl.translationParams}}</h5>
+    <h5>{{::"confirmText" | translate : confirmationModalCtrl.translationParams}}</h5>
 
     <div ng-repeat="(key, value) in confirmationModalCtrl.userData track by $index" ng-if="key !== 'transactionId'">
-        <label class="control-label text-muted">{{key | translate}}:</label>
+        <label class="control-label text-muted">{{::key | translate}}:</label>
 		
-        <h5 ng-if="key!=='finalPrice'" class="angular-reservation-h5">{{value}}</h5>
-        <h5 ng-if="key==='finalPrice'" class="angular-reservation-h5">{{value | currency}}</h5>
+        <h5 ng-if="key!=='finalPrice'" class="angular-reservation-h5">{{::value}}</h5>
+        <h5 ng-if="key==='finalPrice'" class="angular-reservation-h5">{{::value | currency}}</h5>
     </div>
 </div>
 
 <div class="modal-footer">
-    <button class="btn btn-danger" type="button" ng-click="$dismiss()">{{"confirmCancel" | translate}}</button>
-    <button class="btn btn-success" type="button" ng-click="$close()">{{"confirmOK" | translate}}</button>
+    <button class="btn btn-danger" type="button" ng-click="$dismiss()">{{::"confirmCancel" | translate}}</button>
+    <button class="btn btn-success" type="button" ng-click="$close()">{{::"confirmOK" | translate}}</button>
 </div>

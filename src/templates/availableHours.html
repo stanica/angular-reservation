@@ -2,12 +2,12 @@
 <div class="row clickable">
 	<a class="list-group-item" style="position:relative" ng-repeat="item in reservationCtrl.availableHours" ng-click="reservationCtrl.selectHour(item)"
 	   ng-class="{'angular-reservation-selected': reservationCtrl.selectedHour == item}">
-	    <div style="display:inline-block"><span>{{item.startTime | ignoreTimeZone | date  : 'shortTime'}}</span><div class="hijinks-orange bold" ng-if="item.numSeatsAvailable < 5">Only {{item.numSeatsAvailable}} left!</div></div>
+	    <div style="display:inline-block"><span>{{::item.startTime | ignoreTimeZone | date  : 'shortTime'}}</span><div class="hijinks-orange bold" ng-if="item.numSeatsAvailable < 5">Only {{::item.numSeatsAvailable}} left!</div></div>
 	    <!--<div style="display:inline-block;float:right"><span></span></div>-->
 	    <span style="display:inline-block;float:right"><span style="position:absolute; right:15px; top:50%; margin-top:-15px" class="btn btn-success btn-sm">BOOK</span></span>
 	</a>
   <div uib-alert class="alert-danger text-center" ng-if="reservationCtrl.holdStatus == 'Error'" style="margin-top: 1em">
-      <div ng-if="reservationCtrl.holdStatusMessage">{{reservationCtrl.holdStatusMessage}}</div>
+      <div ng-if="reservationCtrl.holdStatusMessage">{{::reservationCtrl.holdStatusMessage}}</div>
   </div>
   <div>
 		<a class="text-muted" ng-if="reservationCtrl.holdStatus !== 'Error'" ng-click="reservationCtrl.selectAnotherDate()">« Select another date</a>
@@ -17,16 +17,16 @@
 <div class="row" style="margin-top:20px;border-top: 1px solid #f6f6f6;margin-left:-30px;margin-right:-30px; margin-bottom:-20px">
 	<div class="col-md-12">
 		<h6 class="text-muted">YOU'RE BOOKING</h6>
-		<h4>{{reservationCtrl.experienceTitle}}</h4>
+		<h4>{{::reservationCtrl.experienceTitle}}</h4>
 		<div style="height:20px">
-			<span class="pull-left"><i class="fa fa-user accent"></i> {{reservationCtrl.totalSelectedPeople}} tickets</span>
-			<span class="pull-right"><i class="fa fa-calendar accent"></i> {{reservationCtrl.selectedDate | date}}</span>
+			<span class="pull-left"><i class="fa fa-user accent"></i> {{::reservationCtrl.totalSelectedPeople}} tickets</span>
+			<span class="pull-right"><i class="fa fa-calendar accent"></i> {{::reservationCtrl.selectedDate | date}}</span>
 		</div>
 		<div style="margin-top:5px" ng-if="reservationCtrl.totalAmount && reservationCtrl.details[0].flatFee !== true">
-			<span class="pull-left"><i class="fa fa-money accent"></i> {{reservationCtrl.totalAmount | currency}}</span>
+			<span class="pull-left"><i class="fa fa-money accent"></i> {{::reservationCtrl.totalAmount | currency}}</span>
 		</div>
 		<div style="margin-top:5px" ng-if="reservationCtrl.totalAmount && reservationCtrl.details[0].flatFee === true">
-			<span class="pull-left"><i class="fa fa-money accent"></i> {{reservationCtrl.details[0].price.amount | currency}}</span>
+			<span class="pull-left"><i class="fa fa-money accent"></i> {{::reservationCtrl.details[0].price.amount | currency}}</span>
 		</div>
 	</div>
 </div>
