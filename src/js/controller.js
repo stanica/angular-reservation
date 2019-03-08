@@ -64,6 +64,12 @@
         vm.onSelectDate = function(date) {
             removeHold().then(function(result){
                 ga('send', 'event', 'calendar-widget', 'next');
+                var product = JSON.parse(vm.product);
+                var variant = JSON.parse(vm.variant);
+                fbq('track', 'AddToCart', {
+                    content_name: product.name + ' - ' + variant.name,
+                    content_category: product.category.name
+                  });
                 vm.hold = '';
                 try {
                     vm.selectedDate = date.toDateString();
