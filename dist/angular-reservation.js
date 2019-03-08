@@ -111,9 +111,17 @@
                 ga('send', 'event', 'calendar-widget', 'next');
                 var product = JSON.parse(vm.product);
                 var variant = JSON.parse(vm.variant);
+                var market = '';
+                for(var x=0; x<product.features.length; x++){
+                    if(product.features[x].key === 'Market'){
+                        market = product.features[x].val;
+                        break;
+                    }
+                }
                 fbq('track', 'AddToCart', {
                     content_name: product.name + ' - ' + variant.name,
-                    content_category: product.category.name
+                    content_category: product.category.name,
+                    content_type: market 
                   });
                 vm.hold = '';
                 try {
