@@ -2,7 +2,7 @@
 <div class="row clickable">
 	<a class="list-group-item" style="position:relative" ng-repeat="item in reservationCtrl.availableHours" ng-click="reservationCtrl.selectHour(item)"
 	   ng-class="{'angular-reservation-selected': reservationCtrl.selectedHour == item}">
-	    <div style="display:inline-block"><span>{{::item.startTime | ignoreTimeZone | date  : 'shortTime'}}</span><div class="hijinks-orange bold" ng-if="item.numSeatsAvailable < 5">Only {{::item.numSeatsAvailable}} left!</div></div>
+	    <div style="display:inline-block"><span>{{::item.startTime | ignoreTimeZone | date  : 'shortTime'}}{{::item.endTime ? ' - ' : ''}}{{::item.endTime | ignoreTimeZone | date  : 'shortTime'}}</span><div class="hijinks-orange bold" ng-if="item.numSeatsAvailable < 5">Only {{::item.numSeatsAvailable}} left!</div></div>
 	    <!--<div style="display:inline-block;float:right"><span></span></div>-->
 	    <span style="display:inline-block;float:right"><span style="position:absolute; right:15px; top:50%; margin-top:-15px" class="btn btn-success btn-sm">BOOK</span></span>
 	</a>
