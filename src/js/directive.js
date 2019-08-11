@@ -17,6 +17,7 @@
                 variant: '@',
                 customMonth: '&',
                 user: '@',
+                stripe: '=',
                 fetchingAvailability: '='
 
             },

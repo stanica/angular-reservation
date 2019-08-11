@@ -4,9 +4,9 @@
  */
 (function () {
     //Controller
-    angular.module('hm.reservation').controller('ReservationCtrl', ['$scope', '$rootScope', '$filter', '$window', '$translate', 'reservationAPIFactory', 'reservationConfig', 'reservationService', 'Order', 'PaymentMethod', reservationCtrl]);
+    angular.module('hm.reservation').controller('ReservationCtrl', ['$scope', '$rootScope', '$filter', '$window', '$translate', 'reservationAPIFactory', 'reservationConfig', 'reservationService', 'Order', 'PaymentMethod', 'Stripe', reservationCtrl]);
 
-    function reservationCtrl($scope, $rootScope, $filter, $window, $translate, reservationAPIFactory, reservationConfig, reservationService, Order, PaymentMethod) {
+    function reservationCtrl($scope, $rootScope, $filter, $window, $translate, reservationAPIFactory, reservationConfig, reservationService, Order, PaymentMethod, Stripe) {
         //Capture the this context of the Controller using vm, standing for viewModel
         var vm = this;
 
@@ -56,6 +56,7 @@
         vm.variant = $scope.variant;
         vm.user = $scope.user;
         vm.experienceTitle = '';
+        vm.stripe = $scope.stripe;
 
         $translate.use(reservationConfig.language);
 
@@ -351,28 +352,50 @@
                     obj.phone = userData.phone;
                     Order.widget.updateStatus.update({id:data.transactionId}, obj);
                     var paymentMethod = {};
-                    PaymentMethod.active.query().$promise.then(function(res){
-                        for(var x=0; x<res.length; x++){
-                            if(res[x].name === 'Stripe'){
-                                paymentMethod = res[x];
-                            }
-                        }
-                        $rootScope.cart.checkout({paymentMethod:paymentMethod, transactionId:data.transactionId, email:userData.email, currency:$rootScope.cart.items[0].currency || product.integration.fields.currency, options: shipping, integration: data.items[0].partner.integration.name.toLowerCase()},true, function(checkout){
-                            if(checkout.status === 'Error'){
-                                var status = vm.reservationStatus = checkout.status;
-                                var message = vm.reservationMessage = checkout.message;
-                            }
-                            else {
-                                if(checkout.status === 'succeeded'){
-                                    reserve(date, hour, userData, data.transactionId);
-                                }
-                                else {
-                                    var status = vm.reservationStatus = checkout.status;
-                                    var message = vm.reservationMessage = checkout.message;
+                    Stripe.session.save({experienceSku:$rootScope.cart.items[0].sku, transactionId: data.transactionId, holdId: vm.hold.id}, function(session){
+                        PaymentMethod.active.query().$promise.then(function(res){
+                            for(var x=0; x<res.length; x++){
+                                if(res[x].name === 'Stripe'){
+                                    paymentMethod = res[x];
                                 }
                             }
+                            _stripe = vm.stripe(paymentMethod.email);
+                            _stripe.redirectToCheckout({
+                            // Make the id field from the Checkout Session creation API response
+                            // available to this file, so you can provide it as parameter here
+                            // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
+                            sessionId: session.session.id
+                            }).then(function (result) {
+                            // If `redirectToCheckout` fails due to a browser or network
+                            // error, display the localized error message to your customer
+                            // using `result.error.message`.
+                            console.log('reserving');
+                            reserve(date, hour, userData, data.transactionId);
+                            });
                         });
-                    });
+                      })
+                    // PaymentMethod.active.query().$promise.then(function(res){
+                    //     for(var x=0; x<res.length; x++){
+                    //         if(res[x].name === 'Stripe'){
+                    //             paymentMethod = res[x];
+                    //         }
+                    //     }
+                    //     $rootScope.cart.checkout({paymentMethod:paymentMethod, transactionId:data.transactionId, email:userData.email, currency:$rootScope.cart.items[0].currency || product.integration.fields.currency, options: shipping, integration: data.items[0].partner.integration.name.toLowerCase()},true, function(checkout){
+                    //         if(checkout.status === 'Error'){
+                    //             var status = vm.reservationStatus = checkout.status;
+                    //             var message = vm.reservationMessage = checkout.message;
+                    //         }
+                    //         else {
+                    //             if(checkout.status === 'succeeded'){
+                    //                 reserve(date, hour, userData, data.transactionId);
+                    //             }
+                    //             else {
+                    //                 var status = vm.reservationStatus = checkout.status;
+                    //                 var message = vm.reservationMessage = checkout.message;
+                    //             }
+                    //         }
+                    //     });
+                    // });
                 }, function(err){
                     $scope.err = "There was an error confirming your purchase. Try refreshing the page or send us an email. Sorry about that!";
                 });
