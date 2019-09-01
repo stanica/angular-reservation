@@ -234,7 +234,7 @@
             }
             params.people = people;
             var selectedDateFormatted = $filter('date')(vm.selectedDate, vm.dateFormat);
-            reservationAPIFactory.hodl({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:selectedDateFormatted, externalId: vm.externalId, eventId:params.eventId, people:params.people, currency: product.integration.fields.currency}).then(function(data){
+            reservationAPIFactory.hodl({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:selectedDateFormatted, externalId: vm.externalId, eventId:params.eventId, people:params.people, currency: product.integration.fields.currency, country: product.address.country}).then(function(data){
                 if(reservationAPIFactory.hold.status === 'Error'){
                     vm.holdStatus = 'Error';
                     vm.holdStatusMessage = reservationAPIFactory.hold.message;
@@ -257,6 +257,7 @@
             vm.minimumPeople = 0;
             var selectedDateFormatted = $filter('date')(new Date(params.date), vm.dateFormat);
             params.date = selectedDateFormatted;
+            params.country = JSON.parse(vm.product).address.country;
             reservationAPIFactory.getVendorAvailableHours(params).then(function (data) {
                 vm.loader = false;
                 vm.loaderFareharbor = false;
@@ -411,7 +412,7 @@
                     };
                 }
             }
-            var params = {transactionId: transactionId, selectedDate: selectedDateFormatted, selectedHour: hour, userData: userData, holdId: vm.hold.id, timeSlot: vm.selectedSlot, apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId, people:people, title: vm.details[0].title};
+            var params = {transactionId: transactionId, selectedDate: selectedDateFormatted, selectedHour: hour, userData: userData, holdId: vm.hold.id, timeSlot: vm.selectedSlot, apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId, people:people, title: vm.details[0].title, country: JSON.parse(vm.product).address.country};
             reservationAPIFactory.reserve(params).then(function () {
                 vm.loader = false;
 
