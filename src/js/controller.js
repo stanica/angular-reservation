@@ -344,6 +344,18 @@
                         bookingTime: vm.selectedHour
                     }
                 };
+                var selectedDateFormatted = $filter('date')(date, vm.dateFormat);
+                var people2 = {};
+                if(vm.vendor === 'bookeo'){
+                    for(var x=0; x<vm.details.length; x++){
+                        people2[vm.details[x].id] = {
+                            selected: vm.details[x].selected,
+                            price: vm.details[x].price.amount
+                        };
+                    }
+                }
+                var params = {selectedDate: selectedDateFormatted, selectedHour: vm.selectedHour, holdId: vm.hold.id, timeSlot: vm.selectedSlot, apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId, people:people2, title: vm.details[0].title};
+                data.widgetParams = params;
                 Order.widget.save(data, function(data){
                     var obj = {};
                     obj.status = {};
@@ -369,8 +381,8 @@
                             // If `redirectToCheckout` fails due to a browser or network
                             // error, display the localized error message to your customer
                             // using `result.error.message`.
-                            console.log('reserving');
-                            reserve(date, hour, userData, data.transactionId);
+                            // console.log('reserving');
+                            // reserve(date, hour, userData, data.transactionId);
                             });
                         });
                       })
