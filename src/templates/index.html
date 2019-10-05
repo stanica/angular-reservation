@@ -127,7 +127,9 @@
                         </div>
                     </div>
                     <div class="text-center">
-                        <button class="btn btn-success btn-lg" type="button" ng-click="reservationCtrl.reserve(reservationCtrl.selectedDate, reservationCtrl.selectedHour, reservationCtrl.userData)">{{::"confirmOK" | translate}}</button>
+                        <div id="payment-request-button"></div>
+                        <h4 ng-if="reservationCtrl.showOr" class="line text-muted" style="margin:30px 0 30px 0"><span class="line-text">Or</span></h4>
+                        <button class="btn btn-danger btn-lg" style="font-size: 16px; width:100%; border: none;" type="button" ng-click="reservationCtrl.reserve(reservationCtrl.selectedDate, reservationCtrl.selectedHour, reservationCtrl.userData)">{{::"confirmOK" | translate}}</button>
                         <div style="padding-top:5px"><a class="clickable text-muted" ng-click="reservationCtrl.setSummary(false);">« Edit booking details</a></div>
                     </div>
                 </div>

@@ -4,9 +4,9 @@
  */
 (function () {
     //Controller
-    angular.module('hm.reservation').controller('ReservationCtrl', ['$scope', '$rootScope', '$filter', '$window', '$translate', 'reservationAPIFactory', 'reservationConfig', 'reservationService', 'Order', 'PaymentMethod', reservationCtrl]);
+    angular.module('hm.reservation').controller('ReservationCtrl', ['$scope', '$rootScope', '$filter', '$window', '$translate', 'reservationAPIFactory', 'reservationConfig', 'reservationService', 'Order', 'PaymentMethod', 'Stripe', reservationCtrl]);
 
-    function reservationCtrl($scope, $rootScope, $filter, $window, $translate, reservationAPIFactory, reservationConfig, reservationService, Order, PaymentMethod) {
+    function reservationCtrl($scope, $rootScope, $filter, $window, $translate, reservationAPIFactory, reservationConfig, reservationService, Order, PaymentMethod, _Stripe) {
         //Capture the this context of the Controller using vm, standing for viewModel
         var vm = this;
 
@@ -38,6 +38,7 @@
 
         vm.loader = false;
         vm.loaderFareharbor = false;
+        vm.showOr = false;
 
         vm.dateFormat = reservationConfig.dateFormat;
 
@@ -120,7 +121,7 @@
 
         vm.reserve = function(date, hour, userData) {
             //vm.showSummary = true;
-            onBeforeReserve(date, hour, userData);
+            onBeforeReserve(date, hour, userData, null);
         }
 
         vm.setSummary = function(state){
@@ -129,6 +130,45 @@
                 vm.selectedTab = 0;
             }
             $rootScope.scrollToAnchorMobile('calendar-top');
+            PaymentMethod.active.query().$promise.then(function(res){
+                var stripeId = '';
+                for(var x=0; x<res.length; x++){
+                    if(res[x].name === 'Stripe'){
+                        stripeId= res[x].email;
+                        break;
+                    }
+                }
+                var stripe = Stripe(stripeId);
+                var product = JSON.parse(vm.product);
+                var v = JSON.parse(vm.variant);
+                var paymentRequest = stripe.paymentRequest({
+                    country: product.address.country === 'Canada' ? 'CA' : 'US',
+                    currency: vm.hold.totalPayable.currency.toLowerCase() || product.integration.fields.currency.toLowerCase(),
+                    total: {
+                      label: v.name,
+                      amount: vm.hold.totalPayable.amount * 100,
+                    },
+                    requestPayerName: true,
+                    requestPayerEmail: true,
+                  });
+                var elements = stripe.elements();
+                var prButton = elements.create('paymentRequestButton', {
+                paymentRequest: paymentRequest,
+                });
+                // Check the availability of the Payment Request API first.
+                paymentRequest.canMakePayment().then(function(result) {
+                if (result) {
+                    vm.showOr = true;
+                    prButton.mount('#payment-request-button');
+                } else {
+                    vm.showOr = false;
+                    document.getElementById('payment-request-button').style.display = 'none';
+                }
+                });
+                paymentRequest.on('token', function(ev) {
+                    onBeforeReserve(vm.selectedDate, vm.selectedHour, vm.userData, ev);
+                });
+            });
         }
 
         vm.toTitleCase = function(str)
@@ -298,7 +338,7 @@
         /**
          * Function executed before reserve function
          */
-        function onBeforeReserve(date, hour, userData) {
+        function onBeforeReserve(date, hour, userData, ev) {
             var v = JSON.parse(vm.variant), product=JSON.parse(vm.product);
             //userData.finalPrice = vm.hold.totalPayable.amount;
             reservationService.onBeforeReserve(date, hour, userData).then(function (){
@@ -351,29 +391,86 @@
                     obj.status.val = 150;
                     obj.phone = userData.phone;
                     Order.widget.updateStatus.update({id:data.transactionId}, obj);
-                    var paymentMethod = {};
-                    PaymentMethod.active.query().$promise.then(function(res){
-                        for(var x=0; x<res.length; x++){
-                            if(res[x].name === 'Stripe'){
-                                paymentMethod = res[x];
-                            }
+                    if(ev) {
+                        var order = {
+                            token: ev.token.id,
+                            amount: vm.hold.totalPayable.amount,
+                            currency: vm.hold.totalPayable.currency || product.integration.fields.currency,
+                            description: v.name,
+                            items: [{sku: v.experienceSku}],
+                            transactionId: data.transactionId,
+                            businessId : product.businessId,
+                            customerEmail: vm.userData.email,
+                            integration: true,
+                            holdId: vm.hold.id,
+                            total: vm.hold.totalPayable.amount,
+                            integrationName: product.integration.name
                         }
-                        $rootScope.cart.checkout({paymentMethod:paymentMethod, transactionId:data.transactionId, email:userData.email, currency:$rootScope.cart.items[0].currency || product.integration.fields.currency, options: shipping, integration: data.items[0].partner.integration.name.toLowerCase()},true, function(checkout){
-                            if(checkout.status === 'Error'){
-                                var status = vm.reservationStatus = checkout.status;
-                                var message = vm.reservationMessage = checkout.message;
+                        _Stripe.save(order, function(data){
+                            ev.complete('success');
+                            try {
+                            ga('send', 'event', 'Stripe Purchase', 'purchase');
+                            ga('require', 'ecommerce');
+                            ga('ecommerce:addTransaction', {
+                                'id': data.metadata.transactionId,
+                                'affiliation': 'Hijinks',
+                                'revenue': data.amount / 100,
+                                'shipping': '0',
+                                'tax': (data.amount/100) - order.amount,
+                                'currency': order.currency
+                            });
+                            ga('ecommerce:addItem', {
+                                'id': data.metadata.transactionId,
+                                'name': order.description,
+                                'sku': order.items[0].sku,
+                                'category': product.category.name,
+                                'price': vm.hold.totalPayable.amount,
+                                'quantity': vm.totalSelectedPeople,
+                                'currency': order.currency
+                            });
+                            ga('ecommerce:send');
+                            fbq('track', 'Purchase', {
+                                content_name: data.description,
+                                content_category: product.category.name,
+                                content_ids: [order._id, order.items[0].sku],
+                                value: data.amount / 100,
+                                currency: order.currency
+                            });} catch(err){console.log(err)}
+                            if (localStorage !== null) {
+                                localStorage['transactionId'] = data.metadata.transactionId;
+                                localStorage['tempTransactionId'] = '';
                             }
-                            else {
-                                if(checkout.status === 'succeeded'){
-                                    reserve(date, hour, userData, data.transactionId);
+                            $rootScope.transactionId = data.metadata.transactionId;
+                            $window.location ='/purchase-complete';
+                        }, function(error){
+                            ev.complete('fail');
+                        });
+                    }
+                    else {
+                        var paymentMethod = {};
+                        PaymentMethod.active.query().$promise.then(function(res){
+                            for(var x=0; x<res.length; x++){
+                                if(res[x].name === 'Stripe'){
+                                    paymentMethod = res[x];
                                 }
-                                else {
+                            }
+                            $rootScope.cart.checkout({paymentMethod:paymentMethod, transactionId:data.transactionId, email:userData.email, currency:$rootScope.cart.items[0].currency || product.integration.fields.currency, options: shipping, integration: data.items[0].partner.integration.name.toLowerCase()},true, function(checkout){
+                                if(checkout.status === 'Error'){
                                     var status = vm.reservationStatus = checkout.status;
                                     var message = vm.reservationMessage = checkout.message;
                                 }
-                            }
+                                else {
+                                    if(checkout.status === 'succeeded'){
+                                        reserve(date, hour, userData, data.transactionId);
+                                    }
+                                    else {
+                                        var status = vm.reservationStatus = checkout.status;
+                                        var message = vm.reservationMessage = checkout.message;
+                                    }
+                                }
+                            });
                         });
-                    });
+                    }
                 }, function(err){
                     $scope.err = "There was an error confirming your purchase. Try refreshing the page or send us an email. Sorry about that!";
                 });

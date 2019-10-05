@@ -24,7 +24,7 @@
             invalidPhone: "Invalid phone number",
             invalidEmail: "Invalid email address",
             reserve: "Review my purchase »",
-            confirmOK: "Confirm & Pay",
+            confirmOK: "Checkout with Stripe",
             confirmCancel: "No, cancel",
             confirmTitle: "Confirm reservation",
             confirmText: "{{name}}, are you sure you want to reserve date {{selectedDate | date : 'shortDate'}} at {{selectedHour}}?",
