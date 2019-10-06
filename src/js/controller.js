@@ -159,6 +159,7 @@
                 paymentRequest.canMakePayment().then(function(result) {
                 if (result) {
                     vm.showOr = true;
+                    $rootScope.$apply();
                     prButton.mount('#payment-request-button');
                 } else {
                     vm.showOr = false;
@@ -406,21 +407,20 @@
                             total: vm.hold.totalPayable.amount,
                             integrationName: product.integration.name
                         }
-                        _Stripe.save(order, function(data){
+                        _Stripe.save(order, function(checkout){
                             ev.complete('success');
-                            try {
                             ga('send', 'event', 'Stripe Purchase', 'purchase');
                             ga('require', 'ecommerce');
                             ga('ecommerce:addTransaction', {
-                                'id': data.metadata.transactionId,
+                                'id': checkout.metadata.transactionId,
                                 'affiliation': 'Hijinks',
-                                'revenue': data.amount / 100,
+                                'revenue': checkout.amount / 100,
                                 'shipping': '0',
-                                'tax': (data.amount/100) - order.amount,
+                                'tax': (checkout.amount/100) - order.amount,
                                 'currency': order.currency
                             });
                             ga('ecommerce:addItem', {
-                                'id': data.metadata.transactionId,
+                                'id': checkout.metadata.transactionId,
                                 'name': order.description,
                                 'sku': order.items[0].sku,
                                 'category': product.category.name,
@@ -430,18 +430,30 @@
                             });
                             ga('ecommerce:send');
                             fbq('track', 'Purchase', {
-                                content_name: data.description,
+                                content_name: checkout.description,
                                 content_category: product.category.name,
                                 content_ids: [order._id, order.items[0].sku],
-                                value: data.amount / 100,
+                                value: checkout.amount / 100,
                                 currency: order.currency
-                            });} catch(err){console.log(err)}
+                            });
                             if (localStorage !== null) {
-                                localStorage['transactionId'] = data.metadata.transactionId;
+                                localStorage['transactionId'] = checkout.metadata.transactionId;
                                 localStorage['tempTransactionId'] = '';
                             }
-                            $rootScope.transactionId = data.metadata.transactionId;
-                            $window.location ='/purchase-complete';
+                            $rootScope.transactionId = checkout.metadata.transactionId;
+                            if(checkout.status === 'Error'){
+                                var status = vm.reservationStatus = checkout.status;
+                                var message = vm.reservationMessage = checkout.message;
+                            }
+                            else {
+                                if(checkout.status === 'succeeded'){
+                                    reserve(date, hour, userData, data.transactionId);
+                                }
+                                else {
+                                    var status = vm.reservationStatus = checkout.status;
+                                    var message = vm.reservationMessage = checkout.message;
+                                }
+                            }
                         }, function(error){
                             ev.complete('fail');
                         });
