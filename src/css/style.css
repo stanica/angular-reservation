@@ -37,8 +37,13 @@
 }
 
 .angular-reservation-clientForm {
-    margin-top: 2em;
-    margin-bottom: 2em;
+    margin-bottom: 10px;
+}
+
+.angular-reservation-breakdown {
+    border-left: 2px solid #43abc9;
+    margin-bottom: 10px;
+    background-color: #f6f6f6;
 }
 
 .angular-reservation-bump {

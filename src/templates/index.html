@@ -33,13 +33,13 @@
 
         <uib-tab index="2" disable="reservationCtrl.thirdTabLocked">
             <uib-tab-heading>
-                <span class="fa fa-user" aria-hidden="true" class="angular-reservation-icon-size"></span>
-                <h5>{{::"client" | translate}}</h5>
+                <span class="fa fa-credit-card" aria-hidden="true" class="angular-reservation-icon-size"></span>
+                <h5>{{::"payment" | translate}}</h5>
             </uib-tab-heading>
     
-            <div ng-if="!reservationCtrl.showSummary">
+            <div >
                 <form class="form-horizontal" name="reserveForm" novalidate
-                      ng-submit="reserveForm.$valid && reservationCtrl.setSummary(true)">
+                      >
                     <div class="spacer" ng-if="reservationCtrl.loader"></div>
                     <div ng-include="'loader.html'" class="text-center" ng-if="reservationCtrl.loader"></div>
 
@@ -49,7 +49,7 @@
                 </form>
             </div>
 
-            <div ng-if="reservationCtrl.showSummary" class="angular-reservation-show-500">
+            <!-- <div ng-if="reservationCtrl.showSummary" class="angular-reservation-show-500">
                 <div class="spacer"/>
                 <div class="col-md-12 text-muted angular-reservation-detail-title">Experience</div>
                 <div class="col-md-12 angular-reservation-detail"><span class="angular-reservation-underline">{{::reservationCtrl.experienceTitle}}</span></div>
@@ -133,7 +133,7 @@
                         <div style="padding-top:5px"><a class="clickable text-muted" ng-click="reservationCtrl.setSummary(false);">« Edit booking details</a></div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </uib-tab>
     </uib-tabset>
 </div>

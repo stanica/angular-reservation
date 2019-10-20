@@ -39,6 +39,7 @@
         vm.loader = false;
         vm.loaderFareharbor = false;
         vm.showOr = false;
+        vm.showBreakdown = false;
 
         vm.dateFormat = reservationConfig.dateFormat;
 
@@ -125,51 +126,12 @@
         }
 
         vm.setSummary = function(state){
-            vm.showSummary = state;
-            if(!state){
-                vm.selectedTab = 0;
-            }
-            $rootScope.scrollToAnchorMobile('calendar-top');
-            PaymentMethod.active.query().$promise.then(function(res){
-                var stripeId = '';
-                for(var x=0; x<res.length; x++){
-                    if(res[x].name === 'Stripe'){
-                        stripeId= res[x].email;
-                        break;
-                    }
-                }
-                var stripe = Stripe(stripeId);
-                var product = JSON.parse(vm.product);
-                var v = JSON.parse(vm.variant);
-                var paymentRequest = stripe.paymentRequest({
-                    country: product.address.country === 'Canada' ? 'CA' : 'US',
-                    currency: vm.hold.totalPayable.currency.toLowerCase() || product.integration.fields.currency.toLowerCase(),
-                    total: {
-                      label: v.name,
-                      amount: vm.hold.totalPayable.amount * 100,
-                    },
-                    requestPayerName: true,
-                    requestPayerEmail: true,
-                  });
-                var elements = stripe.elements();
-                var prButton = elements.create('paymentRequestButton', {
-                paymentRequest: paymentRequest,
-                });
-                // Check the availability of the Payment Request API first.
-                paymentRequest.canMakePayment().then(function(result) {
-                if (result) {
-                    vm.showOr = true;
-                    $rootScope.$apply();
-                    prButton.mount('#payment-request-button');
-                } else {
-                    vm.showOr = false;
-                    document.getElementById('payment-request-button').style.display = 'none';
-                }
-                });
-                paymentRequest.on('token', function(ev) {
-                    onBeforeReserve(vm.selectedDate, vm.selectedHour, vm.userData, ev);
-                });
-            });
+            vm.selectedTab = 0;
+            // vm.showSummary = state;
+            // if(!state){
+            //     vm.selectedTab = 0;
+            // }
+            // $rootScope.scrollToAnchorMobile('calendar-top');
         }
 
         vm.toTitleCase = function(str)
@@ -282,11 +244,57 @@
                     vm.loader = false;
                 }
                 else {
-                    vm.selectedTab = 2;
                     vm.hold = reservationAPIFactory.hold;
-                    //vm.userData.finalPrice = vm.hold.totalPayable.amount;
-                    vm.loader = false;
-                    vm.thirdTabLocked = false;
+                    PaymentMethod.active.query().$promise.then(function(res){
+                        var stripeId = '';
+                        for(var x=0; x<res.length; x++){
+                            if(res[x].name === 'Stripe'){
+                                stripeId= res[x].email;
+                                break;
+                            }
+                        }
+                        var stripe = Stripe(stripeId);
+                        var product = JSON.parse(vm.product);
+                        var v = JSON.parse(vm.variant);
+                        var paymentRequest = stripe.paymentRequest({
+                            country: product.address.country === 'Canada' ? 'CA' : 'US',
+                            currency: vm.hold.totalPayable.currency.toLowerCase() || product.integration.fields.currency.toLowerCase(),
+                            total: {
+                              label: v.name,
+                              amount: vm.hold.totalPayable.amount * 100,
+                            },
+                            requestPayerName: true,
+                            requestPayerEmail: true,
+                            requestPayerPhone: true
+                          });
+                        var elements = stripe.elements();
+                        var prButton = elements.create('paymentRequestButton', {
+                        paymentRequest: paymentRequest,
+                        });
+                        // Check the availability of the Payment Request API first.
+                        paymentRequest.canMakePayment().then(function(result) {
+                        if (result) {
+                            vm.showOr = true;
+                            $rootScope.$apply();
+                            prButton.mount('#payment-request-button');
+                        } else {
+                            vm.showOr = false;
+                            document.getElementById('payment-request-button').style.display = 'none';
+                        }
+                        });
+                        paymentRequest.on('token', function(ev) {
+                            onBeforeReserve(vm.selectedDate, vm.selectedHour, {
+                                firstName: ev.payerName.split(' ')[0],
+                                lastName: ev.payerName.split(' ')[1] || '',
+                                phone: ev.payerPhone || "",
+                                email: ev.payerEmail,
+                            }, ev);
+                        });
+                        vm.selectedTab = 2;
+                        //vm.userData.finalPrice = vm.hold.totalPayable.amount;
+                        vm.loader = false;
+                        vm.thirdTabLocked = false;
+                    });
                 }
             });
         }
@@ -373,7 +381,7 @@
                     name:userData.firstName + ' ' + userData.lastName,
                     firstName: userData.firstName,
                     lastName: userData.lastName,
-                    payment:'Stripe',
+                    payment:ev && ev.methodName || 'Stripe',
                     items:$rootScope.cart.items,
                     shipping:shipping,
                     email: userData.email.toLowerCase(),
@@ -393,6 +401,7 @@
                     obj.phone = userData.phone;
                     Order.widget.updateStatus.update({id:data.transactionId}, obj);
                     if(ev) {
+                        console.log(ev);
                         var order = {
                             token: ev.token.id,
                             amount: vm.hold.totalPayable.amount,
@@ -409,6 +418,17 @@
                         }
                         _Stripe.save(order, function(checkout){
                             ev.complete('success');
+                            $.blockUI({
+                                message: 'Processing order...',
+                                css: {
+                                  border: 'none',
+                                  padding: '15px',
+                                  backgroundColor: 'rgba(0,0,0,0.65)',
+                                  '-webkit-border-radius': '10px',
+                                  '-moz-border-radius': '10px',
+                                  color: '#fff'
+                                }
+                            });
                             ga('send', 'event', 'Stripe Purchase', 'purchase');
                             ga('require', 'ecommerce');
                             ga('ecommerce:addTransaction', {
@@ -509,7 +529,7 @@
          */
         // TODO This function should have all needed parameters in order to test it better
         function reserve(date, hour, userData, transactionId) {
-            vm.loader = true;
+            // vm.loader = true;
 
             var selectedDateFormatted = $filter('date')(date, vm.dateFormat);
             var people = {};

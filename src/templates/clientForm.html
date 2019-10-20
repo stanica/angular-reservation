@@ -1,88 +1,128 @@
 <div class="angular-reservation-clientForm">
-    <div class="form-group col-md-12">
-        <label class="col-md-3 control-label" for="firstName">First Name</label>
-        <div class="col-md-9">
-            <div class="input-group">
-            <span class="input-group-addon">
-                <span class="fa fa-user" aria-hidden="true" style="font-size: 14px"></span>
-            </span>
-
-                <input id="firstName" name="firstName" class="form-control" placeholder="First Name" type="text" ng-model="reservationCtrl.userData.firstName"
-                       autofocus="true" ng-pattern="/^[\w\s\-\x7f-\xff]*$/" ng-minlength="2" ng-maxlength="100" required>
+    <div class="col-md-12 buffer-bottom">
+        <h6 class="text-muted">YOU'RE BOOKING</h6>
+        <h4>{{reservationCtrl.experienceTitle}}</h4>
+        <div style="display:flex; align-items: baseline">
+            <span class="accent" style="margin-top:-4px; font-size: 28px" ng-if="reservationCtrl.totalAmount">{{::reservationCtrl.hold.price.totalGross.amount | currency}}</span>
+            <!-- <span style="margin-left: 5px" class="text-muted">incl. taxes</span> -->
+            <span class="pull-right hijinks-orange clickable" ng-click="reservationCtrl.showBreakdown = !reservationCtrl.showBreakdown" style="font-size: 10px; display:flex; flex:2; justify-content: flex-end">{{reservationCtrl.showBreakdown ? 'HIDE' : 'VIEW'}} DETAILS</span>
+        </div>
+        <div ng-if="reservationCtrl.showBreakdown">
+            <div class="angular-reservation-breakdown">
+                <div style="padding: 10px;">
+                    <div ng-repeat="person in reservationCtrl.details" ng-if="reservationCtrl.details[0].flatFee !== true">
+                        <span style="width:80%" ng-if="reservationCtrl.details[$index].selected > 0">{{::person.name}} x {{::reservationCtrl.details[$index].selected}}</span>
+                        <span class="pull-right text-muted" ng-if="reservationCtrl.details[$index].selected > 0  && person.price.amount">{{::(person.price.amount * reservationCtrl.details[$index].selected) | currency}}</span>
+                    </div>
+                    <hr style="margin-top:10px; margin-bottom: 10px" ng-if="reservationCtrl.details[0].flatFee !== true"/>
+                    <div>
+                        <span>Taxes & Fees</span>
+                        <span class="pull-right text-muted">{{::reservationCtrl.hold.price.totalTaxes.amount | currency}}</span>
+                    </div>
+                    <div>
+                        <span>Total </span>
+                        <span class="pull-right text-muted">{{::reservationCtrl.hold.price.totalGross.amount | currency}}</span>
+                    </div>
+                </div>
             </div>
+        </div>
+        <div style="height:20px">
+            <span class="pull-left"><i class="fa fa-calendar accent"></i> {{::reservationCtrl.selectedDate | date}}</span>
+            <span class="pull-right"><i style="width:13px; text-align: center" class="fa fa-clock-o accent"></i> {{::reservationCtrl.selectedHour}}</span>
+        </div>
+    </div>
+    <div class="col-md-12" ng-if="reservationCtrl.showOr">
+        <div id="payment-request-button"></div>
+        <h4 class="line text-muted" style="margin:30px 0 30px 0"><span class="line-text">Or</span></h4>
+    </div>
+    <div class="col-md-12 buffer-bottom">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="input-group">
+                <span class="input-group-addon">
+                    <span class="fa fa-user" aria-hidden="true" style="font-size: 14px"></span>
+                </span>
 
-            <div class="help-block" ng-messages="reserveForm.firstName.$error" ng-if="reserveForm.$submitted">
-                <p ng-message="minlength" class="text-danger">{{::"minLength" | translate: '{minLength: "2"}'}}</p>
-                <p ng-message="maxlength" class="text-danger">{{::"maxLength" | translate: '{maxLength: "100"}'}}</p>
-                <p ng-message="pattern" class="text-danger">{{::"invalidCharacters" | translate}}</p>
-                <p ng-message="required" class="text-danger">{{::"required" | translate}}</p>
+                    <input id="firstName" name="firstName" class="form-control" placeholder="First Name" type="text" ng-model="reservationCtrl.userData.firstName"
+                        autofocus="true" ng-pattern="/^[\w\s\-\x7f-\xff]*$/" ng-minlength="2" ng-maxlength="100" required>
+                </div>
+
+                <div class="help-block" ng-messages="reserveForm.firstName.$error" ng-if="reserveForm.$submitted">
+                    <p ng-message="minlength" class="text-danger">{{::"minLength" | translate: '{minLength: "2"}'}}</p>
+                    <p ng-message="maxlength" class="text-danger">{{::"maxLength" | translate: '{maxLength: "100"}'}}</p>
+                    <p ng-message="pattern" class="text-danger">{{::"invalidCharacters" | translate}}</p>
+                    <p ng-message="required" class="text-danger">{{::"required" | translate}}</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="form-group col-md-12">
-        <label class="col-md-3 control-label" for="lastName">Last Name</label>
-        <div class="col-md-9">
-            <div class="input-group">
-            <span class="input-group-addon">
-                <span class="fa fa-user" aria-hidden="true" style="font-size: 14px"></span>
-            </span>
+    <div class="col-md-12 buffer-bottom">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="input-group">
+                <span class="input-group-addon">
+                    <span class="fa fa-user" aria-hidden="true" style="font-size: 14px"></span>
+                </span>
 
-                <input id="lastName" name="lastName" class="form-control" placeholder="Last Name" type="text" ng-model="reservationCtrl.userData.lastName"
-                       autofocus="true" ng-pattern="/^[\w\s\-\x7f-\xff]*$/" ng-minlength="2" ng-maxlength="100" required>
-            </div>
+                    <input id="lastName" name="lastName" class="form-control" placeholder="Last Name" type="text" ng-model="reservationCtrl.userData.lastName"
+                        autofocus="true" ng-pattern="/^[\w\s\-\x7f-\xff]*$/" ng-minlength="2" ng-maxlength="100" required>
+                </div>
 
-            <div class="help-block" ng-messages="reserveForm.lastName.$error" ng-if="reserveForm.$submitted">
-                <p ng-message="minlength" class="text-danger">{{::"minLength" | translate: '{minLength: "2"}'}}</p>
-                <p ng-message="maxlength" class="text-danger">{{::"maxLength" | translate: '{maxLength: "100"}'}}</p>
-                <p ng-message="pattern" class="text-danger">{{::"invalidCharacters" | translate}}</p>
-                <p ng-message="required" class="text-danger">{{::"required" | translate}}</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group col-md-12">
-        <label class="col-md-3 control-label" for="phone">{{::"phone" | translate}}</label>
-        <div class="col-md-9">
-            <div class="input-group">
-            <span class="input-group-addon">
-                <span class="fa fa-phone" aria-hidden="true" style="font-size: 14px"></span>
-            </span>
-
-                <input id="phone" name="phone" class="form-control" placeholder="{{::'phone' | translate}}" type="tel" ng-model="reservationCtrl.userData.phone" ng-minlength="5" ng-maxlength="15" required>
-            </div>
-
-            <div class="help-block" ng-messages="reserveForm.phone.$error" ng-if="reserveForm.$submitted">
-                <p ng-message="minlength" class="text-danger">{{::"minLength" | translate: '{minLength: "5"}'}}</p>
-                <p ng-message="maxlength" class="text-danger">{{::"maxLength" | translate: '{maxLength: "15"}'}}</p>
-                <p ng-message="pattern" class="text-danger">{{::"invalidPhone" | translate}}</p>
-                <p ng-message="required" class="text-danger">{{::"required" | translate}}</p>
+                <div class="help-block" ng-messages="reserveForm.lastName.$error" ng-if="reserveForm.$submitted">
+                    <p ng-message="minlength" class="text-danger">{{::"minLength" | translate: '{minLength: "2"}'}}</p>
+                    <p ng-message="maxlength" class="text-danger">{{::"maxLength" | translate: '{maxLength: "100"}'}}</p>
+                    <p ng-message="pattern" class="text-danger">{{::"invalidCharacters" | translate}}</p>
+                    <p ng-message="required" class="text-danger">{{::"required" | translate}}</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="form-group col-md-12">
-        <label class="col-md-3 control-label" for="email">{{::"email" | translate}}</label>
-        <div class="col-md-9">
-            <div class="input-group">
-            <span class="input-group-addon">
-                <span class="fa fa-envelope" aria-hidden="true" style="font-size: 14px"></span>
-            </span>
+    <div class="col-md-12 buffer-bottom">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="input-group">
+                <span class="input-group-addon">
+                    <span class="fa fa-phone" aria-hidden="true" style="font-size: 14px"></span>
+                </span>
 
-                <input id="email" name="email" class="form-control" placeholder="{{::'email' | translate}}" type="email" ng-model="reservationCtrl.userData.email"
-                       ng-pattern="/[\w|.|-]*@\w*\.[\w|.]*/" required>
-            </div>
+                    <input id="phone" name="phone" class="form-control" placeholder="{{::'phone' | translate}}" type="tel" ng-model="reservationCtrl.userData.phone" ng-minlength="5" ng-maxlength="15" required>
+                </div>
 
-            <div class="help-block" ng-messages="reserveForm.email.$error" ng-if="reserveForm.$submitted">
-                <p ng-message="pattern" class="text-danger">{{::"invalidEmail" | translate}}</p>
-                <p ng-message="required" class="text-danger">{{::"required" | translate}}</p>
+                <div class="help-block" ng-messages="reserveForm.phone.$error" ng-if="reserveForm.$submitted">
+                    <p ng-message="minlength" class="text-danger">{{::"minLength" | translate: '{minLength: "5"}'}}</p>
+                    <p ng-message="maxlength" class="text-danger">{{::"maxLength" | translate: '{maxLength: "15"}'}}</p>
+                    <p ng-message="pattern" class="text-danger">{{::"invalidPhone" | translate}}</p>
+                    <p ng-message="required" class="text-danger">{{::"required" | translate}}</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-12 text-center buffer-bottom">
-        <div class="buffer-bottom text-left"><span style="font-size:13px" class="text-muted">You can confirm your details on the next screen.</span></div>
-        <button id="reserve" type="submit" name="reserve" ng-disabled="!(reservationCtrl.userData.firstName && reservationCtrl.userData.lastName && reservationCtrl.userData.phone && reservationCtrl.userData.email)" class="btn btn-block btn-success">{{::"reserve" | translate}}</button>
+    <div class="col-md-12 buffer-bottom">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="input-group">
+                <span class="input-group-addon">
+                    <span class="fa fa-envelope" aria-hidden="true" style="font-size: 14px"></span>
+                </span>
+
+                    <input id="email" name="email" class="form-control" placeholder="{{::'email' | translate}}" type="email" ng-model="reservationCtrl.userData.email"
+                        ng-pattern="/[\w|.|-]*@\w*\.[\w|.]*/" required>
+                </div>
+
+                <div class="help-block" ng-messages="reserveForm.email.$error" ng-if="reserveForm.$submitted">
+                    <p ng-message="pattern" class="text-danger">{{::"invalidEmail" | translate}}</p>
+                    <p ng-message="required" class="text-danger">{{::"required" | translate}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 text-center" style="padding-bottom:10px">
+        <button class="btn btn-danger btn-lg" style="font-size: 16px; width:100%; border: none;" type="button" ng-click="reservationCtrl.reserve(reservationCtrl.selectedDate, reservationCtrl.selectedHour, reservationCtrl.userData)">{{::"confirmOK" | translate}}</button>
+        <div style="padding-top:10px"><a class="clickable text-muted" ng-click="reservationCtrl.setSummary(false);">« Edit booking details</a></div>
     </div>
 
     <div class="col-md-12">
@@ -94,23 +134,6 @@
         <div uib-alert class="alert-danger text-center" ng-if="reservationCtrl.reservationStatus == 'Error'" style="margin-top: 1em">
             <div ng-if="reservationCtrl.reservationMessage">{{::reservationCtrl.reservationMessage}}</div>
             <span>Please contact your financial institution for support.</span>
-        </div>
-    </div>
-
-    <div class="col-md-12 buffer-bottom" style="margin-top:20px;border-top: 1px solid #f6f6f6;">
-        <h6 class="text-muted">YOU'RE BOOKING</h6>
-        <h4>{{reservationCtrl.experienceTitle}}</h4>
-        <div style="height:20px">
-            <span class="pull-left"><i class="fa fa-user accent"></i> {{::reservationCtrl.totalSelectedPeople}} tickets</span>
-            <span class="pull-right"><i class="fa fa-calendar accent"></i> {{::reservationCtrl.selectedDate | date}}</span>
-        </div>
-        <div style="margin-top:5px" ng-if="reservationCtrl.totalAmount && reservationCtrl.details[0].flatFee !== true">
-            <span class="pull-left" ng-if="reservationCtrl.totalAmount"><i class="fa fa-money accent"></i> {{::reservationCtrl.totalAmount | currency}}</span>
-            <span class="pull-right"><i class="fa fa-clock-o accent"></i> {{::reservationCtrl.selectedHour}}</span>
-        </div>
-        <div style="margin-top:5px" ng-if="reservationCtrl.totalAmount && reservationCtrl.details[0].flatFee === true">
-            <span class="pull-left" ng-if="reservationCtrl.totalAmount"><i class="fa fa-money accent"></i> {{::reservationCtrl.details[0].price.amount | currency}}</span>
-            <span class="pull-right"><i class="fa fa-clock-o accent"></i> {{::reservationCtrl.selectedHour}}</span>
         </div>
     </div>
 </div>
