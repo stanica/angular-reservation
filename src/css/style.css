@@ -20,7 +20,6 @@
 }
 
 .angular-reservation-datepicker {
-    width: 95%;
     margin: auto;
     margin-top: 2em;
     margin-bottom: 2em;
@@ -121,6 +120,10 @@ li:first-child a{
     border-bottom: 1px solid #e87528;
 }
 
+.uib-day button {
+    padding: 7px 10px;
+    font-size: 13px;
+}
 .uib-daypicker table {
   width: 100%;
 }
@@ -143,6 +146,8 @@ li:first-child a{
 }
 .uib-title {
     height: 29px;
+    font-size: 19px !important;
+    padding: 0 !important;
 }
 .uib-right:hover, .uib-left:hover, .uib-title:hover {
   background-color: #39434e !important;

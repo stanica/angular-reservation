@@ -1,6 +1,6 @@
 <div class="outlined" ng-init="reservationCtrl.getDetails()">
     <uib-tabset active="reservationCtrl.selectedTab" justified="true" class="angular-reservation-bump" ng-click="reservationCtrl.holdStatus=''">
-        <uib-tab index="0" style="border-radius:0;">
+        <uib-tab ng-click="reservationCtrl.loader = false" index="0" style="border-radius:0;">
             <uib-tab-heading>
                 <span class="fa fa-calendar" aria-hidden="true" class="angular-reservation-icon-size"></span>
                 <h5>{{::"date" | translate}}</h5>
@@ -19,7 +19,7 @@
             </uib-tab-heading>
 
             <div class="spacer" ng-if="reservationCtrl.loader || reservationCtrl.loaderFareharbor"></div>
-            <div ng-include="'loader.html'" class="text-center" ng-if="reservationCtrl.loader"></div>
+            <div style="padding-bottom: 10px" ng-include="'loader.html'" class="text-center" ng-if="reservationCtrl.loader"></div>
 
             <div class="angular-reservation-availableHour" ng-if="!reservationCtrl.loader && reservationCtrl.availableHours.length > 0">
                 <div ng-include="reservationCtrl.availableHoursTemplate"></div>
@@ -28,7 +28,7 @@
             <div ng-if="!reservationCtrl.loader && (reservationCtrl.availableHours.length == 0)">
                 <div ng-include="reservationCtrl.noAvailableHoursTemplate"></div>
             </div>
-            <div ng-include="'loader.html'" class="text-center" ng-if="reservationCtrl.loaderFareharbor"></div>
+            <div style="padding-bottom: 10px" ng-include="'loader.html'" class="text-center" ng-if="reservationCtrl.loaderFareharbor"></div>
         </uib-tab>
 
         <uib-tab index="2" disable="reservationCtrl.thirdTabLocked">

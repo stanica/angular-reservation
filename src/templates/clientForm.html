@@ -14,7 +14,7 @@
                         <span style="width:80%" ng-if="reservationCtrl.details[$index].selected > 0">{{::person.name}} x {{::reservationCtrl.details[$index].selected}}</span>
                         <span class="pull-right text-muted" ng-if="reservationCtrl.details[$index].selected > 0  && person.price.amount">{{::(person.price.amount * reservationCtrl.details[$index].selected) | currency}}</span>
                     </div>
-                    <hr style="margin-top:10px; margin-bottom: 10px" ng-if="reservationCtrl.details[0].flatFee !== true"/>
+                    <hr style="margin: 10px -10px" ng-if="reservationCtrl.details[0].flatFee !== true"/>
                     <div>
                         <span>Taxes & Fees</span>
                         <span class="pull-right text-muted">{{::reservationCtrl.hold.price.totalTaxes.amount | currency}}</span>
@@ -33,7 +33,7 @@
     </div>
     <div class="col-md-12" ng-if="reservationCtrl.showOr">
         <div id="payment-request-button"></div>
-        <h4 class="line text-muted" style="margin:30px 0 30px 0"><span class="line-text">Or</span></h4>
+        <h4 class="text-center" style="margin:30px 0 15px 0">Or enter payment details below</h4>
     </div>
     <div class="col-md-12 buffer-bottom">
         <div class="row">
@@ -47,11 +47,11 @@
                         autofocus="true" ng-pattern="/^[\w\s\-\x7f-\xff]*$/" ng-minlength="2" ng-maxlength="100" required>
                 </div>
 
-                <div class="help-block" ng-messages="reserveForm.firstName.$error" ng-if="reserveForm.$submitted">
-                    <p ng-message="minlength" class="text-danger">{{::"minLength" | translate: '{minLength: "2"}'}}</p>
-                    <p ng-message="maxlength" class="text-danger">{{::"maxLength" | translate: '{maxLength: "100"}'}}</p>
-                    <p ng-message="pattern" class="text-danger">{{::"invalidCharacters" | translate}}</p>
-                    <p ng-message="required" class="text-danger">{{::"required" | translate}}</p>
+                <div ng-messages="reserveForm.firstName.$error" ng-if="reserveForm.$submitted">
+                    <span ng-message="minlength" class="text-danger">{{::"minLength" | translate: '{minLength: "2"}'}}</span>
+                    <span ng-message="maxlength" class="text-danger">{{::"maxLength" | translate: '{maxLength: "100"}'}}</span>
+                    <span ng-message="pattern" class="text-danger">{{::"invalidCharacters" | translate}}</span>
+                    <span ng-message="required" class="text-danger">{{::"required" | translate}}</span>
                 </div>
             </div>
         </div>
@@ -69,11 +69,11 @@
                         autofocus="true" ng-pattern="/^[\w\s\-\x7f-\xff]*$/" ng-minlength="2" ng-maxlength="100" required>
                 </div>
 
-                <div class="help-block" ng-messages="reserveForm.lastName.$error" ng-if="reserveForm.$submitted">
-                    <p ng-message="minlength" class="text-danger">{{::"minLength" | translate: '{minLength: "2"}'}}</p>
-                    <p ng-message="maxlength" class="text-danger">{{::"maxLength" | translate: '{maxLength: "100"}'}}</p>
-                    <p ng-message="pattern" class="text-danger">{{::"invalidCharacters" | translate}}</p>
-                    <p ng-message="required" class="text-danger">{{::"required" | translate}}</p>
+                <div ng-messages="reserveForm.lastName.$error" ng-if="reserveForm.$submitted">
+                    <span ng-message="minlength" class="text-danger">{{::"minLength" | translate: '{minLength: "2"}'}}</span>
+                    <span ng-message="maxlength" class="text-danger">{{::"maxLength" | translate: '{maxLength: "100"}'}}</span>
+                    <span ng-message="pattern" class="text-danger">{{::"invalidCharacters" | translate}}</span>
+                    <span ng-message="required" class="text-danger">{{::"required" | translate}}</span>
                 </div>
             </div>
         </div>
@@ -87,14 +87,14 @@
                     <span class="fa fa-phone" aria-hidden="true" style="font-size: 14px"></span>
                 </span>
 
-                    <input id="phone" name="phone" class="form-control" placeholder="{{::'phone' | translate}}" type="tel" ng-model="reservationCtrl.userData.phone" ng-minlength="5" ng-maxlength="15" required>
+                    <input id="phone" name="phone" class="form-control" placeholder="{{::'phone' | translate}}" type="tel" ng-model="reservationCtrl.userData.phone" ng-minlength="10" ng-maxlength="15" required>
                 </div>
 
-                <div class="help-block" ng-messages="reserveForm.phone.$error" ng-if="reserveForm.$submitted">
-                    <p ng-message="minlength" class="text-danger">{{::"minLength" | translate: '{minLength: "5"}'}}</p>
-                    <p ng-message="maxlength" class="text-danger">{{::"maxLength" | translate: '{maxLength: "15"}'}}</p>
-                    <p ng-message="pattern" class="text-danger">{{::"invalidPhone" | translate}}</p>
-                    <p ng-message="required" class="text-danger">{{::"required" | translate}}</p>
+                <div ng-messages="reserveForm.phone.$error" ng-if="reserveForm.$submitted">
+                    <span ng-message="minlength" class="text-danger">{{::"minLength" | translate: '{minLength: "10"}'}}</span>
+                    <span ng-message="maxlength" class="text-danger">{{::"maxLength" | translate: '{maxLength: "15"}'}}</span>
+                    <span ng-message="pattern" class="text-danger">{{::"invalidPhone" | translate}}</span>
+                    <span ng-message="required" class="text-danger">{{::"required" | translate}}</span>
                 </div>
             </div>
         </div>
@@ -112,16 +112,16 @@
                         ng-pattern="/[\w|.|-]*@\w*\.[\w|.]*/" required>
                 </div>
 
-                <div class="help-block" ng-messages="reserveForm.email.$error" ng-if="reserveForm.$submitted">
-                    <p ng-message="pattern" class="text-danger">{{::"invalidEmail" | translate}}</p>
-                    <p ng-message="required" class="text-danger">{{::"required" | translate}}</p>
+                <div ng-messages="reserveForm.email.$error" ng-if="reserveForm.$submitted">
+                    <span ng-message="pattern" class="text-danger">{{::"invalidEmail" | translate}}</span>
+                    <span ng-message="required" class="text-danger">{{::"required" | translate}}</span>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="col-md-12 text-center" style="padding-bottom:10px">
-        <button class="btn btn-danger btn-lg" style="font-size: 16px; width:100%; border: none;" type="button" ng-click="reservationCtrl.reserve(reservationCtrl.selectedDate, reservationCtrl.selectedHour, reservationCtrl.userData)">{{::"confirmOK" | translate}}</button>
+        <button ng-disabled="reserveForm.$invalid" class="btn btn-danger btn-lg" style="font-size: 16px; width:100%; border: none;" type="submit" ng-click="reservationCtrl.reserve(reservationCtrl.selectedDate, reservationCtrl.selectedHour, reservationCtrl.userData)">{{::"confirmOK" | translate}}</button>
         <div style="padding-top:10px"><a class="clickable text-muted" ng-click="reservationCtrl.setSummary(false);">« Edit booking details</a></div>
     </div>
 

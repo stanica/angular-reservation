@@ -401,7 +401,6 @@
                     obj.phone = userData.phone;
                     Order.widget.updateStatus.update({id:data.transactionId}, obj);
                     if(ev) {
-                        console.log(ev);
                         var order = {
                             token: ev.token.id,
                             amount: vm.hold.totalPayable.amount,
