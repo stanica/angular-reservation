@@ -187,7 +187,8 @@ a.list-group-item:hover {
 
 .list-group-item {
   background-color: #f8f8f8;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
+  border-radius: 4px;
 }
 
 li.uib-tab a {

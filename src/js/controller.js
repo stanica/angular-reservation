@@ -54,11 +54,17 @@
         vm.vendor = $scope.vendor;
         vm.id = $scope.id;
         vm.externalId = $scope.externalId;
-        vm.product = $scope.product;
-        vm.variant = $scope.variant;
+        vm.product = JSON.parse($scope.product);
+        vm.variant = '';
+        for(var x=0; x<vm.product.variants.length; x++){
+            if(vm.product.variants[x].externalSku === vm.externalId){
+                vm.variant = vm.product.variants[x];
+                break;
+            }
+        }
         vm.user = $scope.user;
         vm.experienceTitle = '';
-        vm.currency = ' ';
+        vm.currency = $scope.currency;
 
         $translate.use(reservationConfig.language);
 
@@ -67,9 +73,8 @@
         vm.onSelectDate = function(date) {
             removeHold().then(function(result){
                 ga('send', 'event', 'calendar-widget', 'next');
-                var product = JSON.parse(vm.product);
-                vm.currency = product.integration.fields.currency;
-                var variant = JSON.parse(vm.variant);
+                var product = vm.product;
+                var variant = vm.variant;
                 var market = '';
                 for(var x=0; x<product.features.length; x++){
                     if(product.features[x].key === 'Market'){
@@ -107,6 +112,9 @@
             if(vm.vendor === 'fareharbor api'){
                 vm.details = [];
                 onBeforeGetAvailableHours({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:date, externalId: vm.externalId});
+            }
+            if(vm.details[0]){
+                vm.currency = vm.details[0].price.currency;
             }
         }
 
@@ -232,13 +240,14 @@
          * Function executed before get holding time slot.
          */
         function onBeforeHoldDate(params){
-            var product=JSON.parse(vm.product);
+            var product=vm.product;
             var people = {};
             for(var x=0; x<vm.details.length; x++){
                 people[vm.details[x].id] = vm.details[x].selected;
             }
             params.people = people;
             var selectedDateFormatted = $filter('date')(vm.selectedDate, vm.dateFormat);
+            console.log(product.integration.fields.currency)
             reservationAPIFactory.hodl({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:selectedDateFormatted, externalId: vm.externalId, eventId:params.eventId, people:params.people, currency: product.integration.fields.currency, country: product.address.country}).then(function(data){
                 if(reservationAPIFactory.hold.status === 'Error'){
                     vm.holdStatus = 'Error';
@@ -247,7 +256,7 @@
                 }
                 else {
                     vm.hold = reservationAPIFactory.hold;
-                    vm.curency = vm.hold.totalPayable.currency || product.integration.fields.currency;
+                    vm.currency = vm.hold.totalPayable.currency || product.integration.fields.currency;
                     PaymentMethod.active.query().$promise.then(function(res){
                         var stripeId = '';
                         for(var x=0; x<res.length; x++){
@@ -257,14 +266,14 @@
                             }
                         }
                         var stripe = Stripe(stripeId);
-                        var product = JSON.parse(vm.product);
-                        var v = JSON.parse(vm.variant);
+                        var product = vm.product;
+                        var v = vm.variant;
                         var paymentRequest = stripe.paymentRequest({
                             country: product.address.country === 'Canada' ? 'CA' : 'US',
                             currency: vm.hold.totalPayable.currency.toLowerCase() || product.integration.fields.currency.toLowerCase(),
                             total: {
                             label: v.name,
-                            amount: (vm.hold.totalPayable.amount * 100).toFixed(0),
+                            amount: +(vm.hold.totalPayable.amount * 100).toFixed(0),
                             },
                             requestPayerName: true,
                             requestPayerEmail: true,
@@ -288,7 +297,6 @@
                                 prButton.mount('#payment-request-button');
                             } else {
                                 vm.showOr = false;
-                                document.getElementById('payment-request-button').style.display = 'none';
                             }
                         });
                         paymentRequest.on('token', function(ev) {
@@ -315,7 +323,7 @@
             vm.minimumPeople = 0;
             var selectedDateFormatted = $filter('date')(new Date(params.date), vm.dateFormat);
             params.date = selectedDateFormatted;
-            params.country = JSON.parse(vm.product).address.country;
+            params.country = vm.product.address.country;
             reservationAPIFactory.getVendorAvailableHours(params).then(function (data) {
                 vm.loader = false;
                 vm.loaderFareharbor = false;
@@ -357,7 +365,8 @@
          * Function executed before reserve function
          */
         function onBeforeReserve(date, hour, userData, ev) {
-            var v = JSON.parse(vm.variant), product=JSON.parse(vm.product);
+            console.log('f')
+            var v = vm.variant, product=vm.product;
             //userData.finalPrice = vm.hold.totalPayable.amount;
             reservationService.onBeforeReserve(date, hour, userData).then(function (){
                 $rootScope.cart.addItem({sku:v.experienceSku, businessId:product.businessId, name:v.name, slug:product.slug, mrp:v.mrp, price:v.price, quantity:1, image:v.image,category:product.category, currency:vm.hold.totalPayable.currency || product.integration.fields.currency, partner:product},true, false);
@@ -549,7 +558,7 @@
                     };
                 }
             }
-            var params = {transactionId: transactionId, selectedDate: selectedDateFormatted, selectedHour: hour, userData: userData, holdId: vm.hold.id, timeSlot: vm.selectedSlot, apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId, people:people, title: vm.details[0].title, country: JSON.parse(vm.product).address.country};
+            var params = {transactionId: transactionId, selectedDate: selectedDateFormatted, selectedHour: hour, userData: userData, holdId: vm.hold.id, timeSlot: vm.selectedSlot, apiKey: vm.apiKey, vendor: vm.vendor, id: vm.id, externalId: vm.externalId, people:people, title: vm.details[0].title, country: vm.product.address.country};
             reservationAPIFactory.reserve(params).then(function () {
                 vm.loader = false;
 

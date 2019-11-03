@@ -27,7 +27,7 @@
         </div>
 		<div style="padding:20px 0; margin: 0 auto; width:95%">
 			<span ng-if="reservationCtrl.minimumPeople > 1 && reservationCtrl.getTotalPeople() < reservationCtrl.minimumPeople" style="display:block;margin-bottom: 10px; color:firebrick">A minimum of {{::reservationCtrl.minimumPeople}} is required to make this booking</span>
-			<a ng-disabled="!reservationCtrl.selectedPeople || reservationCtrl.dateDisabled || (reservationCtrl.minimumPeople > 1 && reservationCtrl.getTotalPeople() < reservationCtrl.minimumPeople)" ng-click="reservationCtrl.onSelectDate(reservationCtrl.selectedDate)" class="btn btn-success btn-block text-center">Next »</a>
+			<a ng-disabled="!reservationCtrl.selectedPeople || reservationCtrl.dateDisabled || (reservationCtrl.minimumPeople > 1 && reservationCtrl.getTotalPeople() < reservationCtrl.minimumPeople)" ng-click="reservationCtrl.onSelectDate(reservationCtrl.selectedDate)" style="font-size: 17px" class="btn btn-success btn-block text-center">Next »</a>
 		</div>
 	</div>
 </div>

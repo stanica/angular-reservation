@@ -4,7 +4,7 @@
 	   ng-class="{'angular-reservation-selected': reservationCtrl.selectedHour == item}">
 	    <div style="display:inline-block"><span>{{::item.startTime | ignoreTimeZone | date  : 'shortTime'}}{{::(item.endTime && item.endTime !== item.startTime) ? ' - ' : ''}}<span ng-if="::item.endTime !== item.startTime">{{::item.endTime | ignoreTimeZone | date  : 'shortTime'}}</span></span><div class="hijinks-orange bold" ng-if="item.numSeatsAvailable < 5">Only {{::item.numSeatsAvailable}} left!</div></div>
 	    <!--<div style="display:inline-block;float:right"><span></span></div>-->
-	    <span style="display:inline-block;float:right"><span style="position:absolute; right:15px; top:50%; margin-top:-15px" class="btn btn-success btn-sm">BOOK</span></span>
+	    <span style="display:inline-block;float:right"><span style="position:absolute; right:15px; top:50%; margin-top:-15px; font-size: 13px;" class="btn btn-success btn-sm">SELECT</span></span>
 	</a>
   <div uib-alert class="alert-danger text-center" ng-if="reservationCtrl.holdStatus == 'Error'" style="margin-top: 1em">
       <div ng-if="reservationCtrl.holdStatusMessage">{{::reservationCtrl.holdStatusMessage}}</div>
@@ -19,14 +19,14 @@
 		<h6 class="text-muted">YOU'RE BOOKING</h6>
 		<h4>{{::reservationCtrl.experienceTitle}}</h4>
 		<div style="height:20px">
-			<span class="pull-left"><i class="fa fa-user accent"></i> {{::reservationCtrl.totalSelectedPeople}} tickets</span>
-			<span class="pull-right"><i class="fa fa-calendar accent"></i> {{::reservationCtrl.selectedDate | date}}</span>
+			<span class="pull-left"><i class="fa fa-fw fa-user accent"></i> {{::reservationCtrl.totalSelectedPeople}} tickets</span>
+			<span class="pull-right"><i class="fa fa-fw fa-calendar accent"></i> {{::reservationCtrl.selectedDate | date}}</span>
 		</div>
 		<div style="margin-top:5px" ng-if="reservationCtrl.totalAmount && reservationCtrl.details[0].flatFee !== true">
-			<span class="pull-left"><i class="fa fa-money accent"></i> {{::reservationCtrl.totalAmount | currency}}</span>
+			<span class="pull-left"><i class="fa fa-fw fa-money accent"></i> {{::reservationCtrl.currency.substring(0,2)}} {{::reservationCtrl.totalAmount | currency}}</span>
 		</div>
 		<div style="margin-top:5px" ng-if="reservationCtrl.totalAmount && reservationCtrl.details[0].flatFee === true">
-			<span class="pull-left"><i class="fa fa-money accent"></i> {{::reservationCtrl.details[0].price.amount | currency}}</span>
+			<span class="pull-left"><i class="fa fa-fw fa-money accent"></i> {{::reservationCtrl.currency.substring(0,2)}} {{::reservationCtrl.details[0].price.amount | currency}}</span>
 		</div>
 	</div>
 </div>

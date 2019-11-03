@@ -14,7 +14,7 @@
                 id: '@',
                 externalId: '@',
                 product: '@',
-                variant: '@',
+                currency: '@',
                 customMonth: '&',
                 user: '@',
                 fetchingAvailability: '='
