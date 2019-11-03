@@ -3,7 +3,7 @@
         <h6 class="text-muted">YOU'RE BOOKING</h6>
         <h4>{{reservationCtrl.experienceTitle}}</h4>
         <div style="display:flex; align-items: baseline">
-            <span class="accent" style="margin-top:-4px; font-size: 28px" ng-if="reservationCtrl.totalAmount">{{::reservationCtrl.hold.price.totalGross.amount | currency}}</span>
+            <span class="accent" style="margin-top:-4px; font-size: 28px" ng-if="reservationCtrl.totalAmount">{{::reservationCtrl.currency.substring(0,2)}} {{::reservationCtrl.hold.price.totalGross.amount | currency}}</span>
             <!-- <span style="margin-left: 5px" class="text-muted">incl. taxes</span> -->
             <span class="pull-right hijinks-orange clickable" ng-click="reservationCtrl.showBreakdown = !reservationCtrl.showBreakdown" style="font-size: 10px; display:flex; flex:2; justify-content: flex-end">{{reservationCtrl.showBreakdown ? 'HIDE' : 'VIEW'}} DETAILS</span>
         </div>
