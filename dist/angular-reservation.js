@@ -304,17 +304,22 @@
                         var stripe = Stripe(stripeId);
                         var product = JSON.parse(vm.product);
                         var v = JSON.parse(vm.variant);
-                        var paymentRequest = stripe.paymentRequest({
-                            country: product.address.country === 'Canada' ? 'CA' : 'US',
-                            currency: vm.hold.totalPayable.currency.toLowerCase() || product.integration.fields.currency.toLowerCase(),
-                            total: {
-                              label: v.name,
-                              amount: vm.hold.totalPayable.amount * 100,
-                            },
-                            requestPayerName: true,
-                            requestPayerEmail: true,
-                            requestPayerPhone: true
-                          });
+                        try {
+                            var paymentRequest = stripe.paymentRequest({
+                                country: product.address.country === 'Canada' ? 'CA' : 'US',
+                                currency: vm.hold.totalPayable.currency.toLowerCase() || product.integration.fields.currency.toLowerCase(),
+                                total: {
+                                label: v.name,
+                                amount: vm.hold.totalPayable.amount * 100,
+                                },
+                                requestPayerName: true,
+                                requestPayerEmail: true,
+                                requestPayerPhone: true
+                            });
+                        }
+                        catch(error){
+                            console.log(error);
+                        }
                         var elements = stripe.elements();
                         var prButton = elements.create('paymentRequestButton', {
                         style: {
@@ -326,16 +331,24 @@
                         paymentRequest: paymentRequest,
                         });
                         // Check the availability of the Payment Request API first.
-                        paymentRequest.canMakePayment().then(function(result) {
-                        if (result) {
-                            vm.showOr = true;
-                            $rootScope.$apply();
-                            prButton.mount('#payment-request-button');
-                        } else {
-                            vm.showOr = false;
-                            document.getElementById('payment-request-button').style.display = 'none';
+                        try {
+                            paymentRequest.canMakePayment().then(function(result) {
+                                if (result) {
+                                    vm.showOr = true;
+                                    $rootScope.$apply();
+                                    prButton.mount('#payment-request-button');
+                                } else {
+                                    vm.showOr = false;
+                                    document.getElementById('payment-request-button').style.display = 'none';
+                                }
+                            });
                         }
-                        });
+                        catch(error){
+                            console.log(error);
+                            vm.selectedTab = 2;
+                            vm.loader = false;
+                            vm.thirdTabLocked = false;
+                        }
                         paymentRequest.on('token', function(ev) {
                             onBeforeReserve(vm.selectedDate, vm.selectedHour, {
                                 firstName: ev.payerName.split(' ')[0],
