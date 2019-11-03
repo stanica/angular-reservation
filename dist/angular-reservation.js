@@ -292,7 +292,6 @@
             }
             params.people = people;
             var selectedDateFormatted = $filter('date')(vm.selectedDate, vm.dateFormat);
-            console.log(product.integration.fields.currency)
             reservationAPIFactory.hodl({apiKey: vm.apiKey, vendor: vm.vendor, id:vm.id, date:selectedDateFormatted, externalId: vm.externalId, eventId:params.eventId, people:params.people, currency: product.integration.fields.currency, country: product.address.country}).then(function(data){
                 if(reservationAPIFactory.hold.status === 'Error'){
                     vm.holdStatus = 'Error';
@@ -410,7 +409,6 @@
          * Function executed before reserve function
          */
         function onBeforeReserve(date, hour, userData, ev) {
-            console.log('f')
             var v = vm.variant, product=vm.product;
             //userData.finalPrice = vm.hold.totalPayable.amount;
             reservationService.onBeforeReserve(date, hour, userData).then(function (){
