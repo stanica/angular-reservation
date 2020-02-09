@@ -7,7 +7,7 @@
                 <!--<h5 ng-if="!reservationCtrl.secondTabLocked">{{reservationCtrl.selectedDate | date: reservationCtrl.dateFormat}}</h5>-->
             </uib-tab-heading>
             <div class="spacer" ng-if="reservationCtrl.loader"></div>
-            <div ng-include="'loader.html'" class="text-center buffer-top" ng-if="reservationCtrl.loader"></div>
+            <div ng-include="'loader.html'" class="text-center buffer-top" style="padding-bottom:10px" ng-if="reservationCtrl.loader"></div>
             <div ng-include="reservationCtrl.datepickerTemplate"></div>
         </uib-tab>
 
