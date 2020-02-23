@@ -12,7 +12,7 @@
                 <div style="padding: 10px;">
                     <div ng-repeat="person in reservationCtrl.details" ng-if="reservationCtrl.details[0].flatFee !== true">
                         <span style="width:80%" ng-if="reservationCtrl.details[$index].selected > 0">{{::person.name}} x {{::reservationCtrl.details[$index].selected}}</span>
-                        <span class="pull-right text-muted" ng-if="reservationCtrl.details[$index].selected > 0  && person.price.amount">{{::reservationCtrl.hold.price.totalGross.amount | currency}}</span>
+                        <span class="pull-right text-muted" ng-if="reservationCtrl.details[$index].selected > 0  && person.price.amount">{{::person.price.amount | currency}}</span>
                     </div>
                     <hr style="margin: 10px -10px" ng-if="reservationCtrl.details[0].flatFee !== true"/>
                     <div>
